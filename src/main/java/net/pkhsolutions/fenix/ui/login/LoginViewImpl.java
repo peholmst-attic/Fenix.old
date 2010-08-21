@@ -19,6 +19,7 @@ import java.util.Locale;
 
 import net.pkhsolutions.fenix.i18n.I18N;
 import net.pkhsolutions.fenix.ui.mvp.AbstractView;
+import net.pkhsolutions.fenix.ui.mvp.VaadinView;
 
 import org.springframework.stereotype.Component;
 
@@ -38,9 +39,9 @@ import com.vaadin.ui.themes.BaseTheme;
  * @author petter
  * 
  */
-@Component
+@Component(LoginView.BEAN_NAME)
 public class LoginViewImpl extends AbstractView<LoginView, LoginPresenter>
-		implements LoginView {
+		implements LoginView, VaadinView {
 
 	private static final long serialVersionUID = -8071814016264582837L;
 

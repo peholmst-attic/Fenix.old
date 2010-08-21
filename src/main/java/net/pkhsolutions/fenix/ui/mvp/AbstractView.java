@@ -28,7 +28,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * TODO Document me!
+ * This is an abstract base class for {@link View}-implementations and is to be
+ * used together with concrete {@link Presenter}-implementations.
+ * <p>
+ * This view base class is designed to be configured inside a Spring application
+ * context. It uses autowiring by type to find its corresponding Presenter. That
+ * is, if the application context contains exactly one bean of type
+ * <code>P</code>, it will automatically be injected into this view. Otherwise,
+ * the initialization of the application context will fail. Please see the
+ * {@link Presenter} javadocs for an example of how the view and the presenter
+ * could be configured.
+ * <p>
+ * As a convenience, a {@link I18N} instance is also automatically injected,
+ * making it easy to create localized view implementations.
  * 
  * @author Petter Holmström
  * 

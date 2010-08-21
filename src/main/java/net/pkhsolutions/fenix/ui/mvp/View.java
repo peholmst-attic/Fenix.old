@@ -17,8 +17,6 @@ package net.pkhsolutions.fenix.ui.mvp;
 
 import java.io.Serializable;
 
-import com.vaadin.ui.ComponentContainer;
-
 /**
  * This interface represents a View in the Model-View-Presenter (MVP) pattern.
  * The view is responsible for displaying information to the user when requested
@@ -39,15 +37,6 @@ import com.vaadin.ui.ComponentContainer;
  * @author Petter Holmström
  */
 public interface View extends Serializable {
-
-	/**
-	 * Gets the visual component that constitutes the view. If this method is
-	 * called before the view has been initialized, the results are undefined.
-	 * 
-	 * @see #init()
-	 * @return the view component
-	 */
-	public ComponentContainer getViewComponent();
 
 	/**
 	 * Gets the display name of the view to be shown in the UI. If this method

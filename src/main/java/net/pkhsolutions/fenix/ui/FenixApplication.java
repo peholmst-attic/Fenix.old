@@ -25,6 +25,7 @@ import javax.annotation.Resource;
 import net.pkhsolutions.fenix.i18n.I18N;
 import net.pkhsolutions.fenix.i18n.I18NListener;
 import net.pkhsolutions.fenix.ui.login.LoginView;
+import net.pkhsolutions.fenix.ui.mvp.VaadinView;
 import net.pkhsolutions.fenix.util.ListenerList;
 import net.pkhsolutions.fenix.util.ListenerList.ListenerVisitor;
 
@@ -139,7 +140,8 @@ public class FenixApplication extends Application implements I18N,
 			logger.debug("Showing login window");
 		}
 		// Look up the login view from the GUI Context
-		final LoginView loginView = guiContext.getBean(LoginView.class);
+		final VaadinView loginView = guiContext.getBean(LoginView.BEAN_NAME,
+				VaadinView.class);
 		setMainWindow(new Window(loginView.getDisplayName(),
 				loginView.getViewComponent()));
 	}
@@ -151,8 +153,8 @@ public class FenixApplication extends Application implements I18N,
 		}
 		/*
 		 * Update the flag so that this method is not accidentally called
-		 * another time when the GUI context closes (see the event
-		 * handler at the bottom of this class).
+		 * another time when the GUI context closes (see the event handler at
+		 * the bottom of this class).
 		 */
 		applicationIsClosing = true;
 		// Close the GUI context

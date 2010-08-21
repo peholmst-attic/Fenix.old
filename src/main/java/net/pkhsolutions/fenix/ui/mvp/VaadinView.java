@@ -13,37 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.pkhsolutions.fenix.ui.login;
+package net.pkhsolutions.fenix.ui.mvp;
 
-import net.pkhsolutions.fenix.ui.mvp.View;
+import com.vaadin.ui.ComponentContainer;
 
 /**
+ * This is an extended version of the {@link View} interface that ties the View
+ * to the Vaadin Framework and provides a method for plugging in the View into a
+ * Vaadin application window (or other component).
  * 
- * @author petter
- *
+ * @author Petter Holmström
  */
-public interface LoginView extends View {
-	
-	public static final String BEAN_NAME = "loginViewBean";
-	
+public interface VaadinView extends View {
+
 	/**
+	 * Gets the visual component that constitutes the view. If this method is
+	 * called before the view has been initialized, the results are undefined.
 	 * 
+	 * @see View#init()
+	 * @return the view component
 	 */
-	public void showBadCredentials();
-	
-	/**
-	 * 
-	 */
-	public void showAccountDisabled();
-	
-	/**
-	 * 
-	 */
-	public void showAccountLocked();
-	
-	/**
-	 * 
-	 */
-	public void clearForm();
-	
+	public ComponentContainer getViewComponent();
+
 }
