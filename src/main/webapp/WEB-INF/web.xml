@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	<display-name>Fenix</display-name>
+	<context-param>
+		<param-name>productionMode</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>classpath:log4j.properties</param-value>
+	</context-param>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/applicationContext.xml /WEB-INF/applicationContext-security.xml</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<servlet>
+		<!-- The Vaadin application servlet -->
+		<servlet-name>FenixApplication</servlet-name>
+		<servlet-class>net.pkhsolutions.fenix.servlet.SpringApplicationServlet</servlet-class>
+		<init-param>
+			<param-name>applicationBean</param-name>
+			<!-- This bean name is configured in applicationContext.xml -->
+			<param-value>applicationBean</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>FenixApplication</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
+</web-app>
