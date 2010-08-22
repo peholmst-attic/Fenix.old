@@ -40,7 +40,10 @@ import org.springframework.beans.factory.annotation.Autowired;
  * could be configured.
  * <p>
  * As a convenience, a {@link I18N} instance is also automatically injected,
- * making it easy to create localized view implementations.
+ * making it easy to create localized view implementations. When the current
+ * locale is changed, the view is informed (see
+ * {@link #localeChanged(I18N, Locale, Locale)}), allowing it to update labels
+ * and other visible text in the UI.
  * 
  * @author Petter Holmström
  * 

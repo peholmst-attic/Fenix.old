@@ -35,12 +35,16 @@ import com.vaadin.ui.Window.Notification;
 import com.vaadin.ui.themes.BaseTheme;
 
 /**
+ * This is a Vaadin implementation of the {@link LoginView} interface. Please
+ * note the use of the {@link Component @Component} annotation and the
+ * {@link LoginView#BEAN_NAME} constant. Also note that this view, in addition
+ * to the {@link LoginView} interface, also implements the {@link VaadinView}
+ * interface.
  * 
- * @author petter
- * 
+ * @author Petter Holmström
  */
 @Component(LoginView.BEAN_NAME)
-public class LoginViewImpl extends AbstractView<LoginView, LoginPresenter>
+public final class LoginViewImpl extends AbstractView<LoginView, LoginPresenter>
 		implements LoginView, VaadinView {
 
 	private static final long serialVersionUID = -8071814016264582837L;
@@ -161,6 +165,10 @@ public class LoginViewImpl extends AbstractView<LoginView, LoginPresenter>
 		updateCaptions();
 	}
 
+	/**
+	 * Updates all the captions in the view with fresh messages from the
+	 * {@link I18N} instance.
+	 */
 	private void updateCaptions() {
 		loginPanel.setCaption(getI18n().getMessage("loginView.form.title"));
 		username.setCaption(getI18n().getMessage("loginView.form.username"));

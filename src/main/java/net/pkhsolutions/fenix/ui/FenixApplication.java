@@ -25,6 +25,7 @@ import javax.annotation.Resource;
 import net.pkhsolutions.fenix.i18n.I18N;
 import net.pkhsolutions.fenix.i18n.I18NListener;
 import net.pkhsolutions.fenix.ui.login.LoginView;
+import net.pkhsolutions.fenix.ui.mvp.AbstractView;
 import net.pkhsolutions.fenix.ui.mvp.VaadinView;
 import net.pkhsolutions.fenix.util.ListenerList;
 import net.pkhsolutions.fenix.util.ListenerList.ListenerVisitor;
@@ -45,57 +46,105 @@ import com.vaadin.Application;
 import com.vaadin.ui.Window;
 
 /**
- * TODO Document me!
+ * This is the main Vaadin application class for Fenix. It is designed to be
+ * configured inside a Spring application context using <a href=
+ * "http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/beans.html#beans-classpath-scanning"
+ * >classpath scanning</a> (as can be deduced from the {@link Component
+ * @Component} annotation).
+ * <p>
+ * The class requires the following beans to be available for injection:
+ * <ul>
+ * <li>A {@link MessageSource}.</li>
+ * <li>A &lt;{@link Locale}, String&gt; {@link Map} named
+ * <code>supportedLocales</code> (see {@link #getSupportedLocales()}).</li>
+ * <li>A {@link VaadinView} instance named {@link LoginView#BEAN_NAME}
+ * implementing the login view.</li>
+ * <li>TODO A Main view</li>
+ * </ul>
+ * <p>
+ * This class also implements the {@link I18N} interface. Thus, any views
+ * extending {@link AbstractView} will automatically have access to
+ * internationalized messages served by this application instance.
  * 
- * @author petter
+ * @see Presenter
+ * @see VaadinView
+ * @see View
+ * @see AbstractView
+ * @see net.pkhsolutions.fenix.servlet.SpringApplicationServlet
+ *      SpringApplicationServlet
+ * @author Petter Holmström
  */
 @Component
-public class FenixApplication extends Application implements I18N, ApplicationListener<ContextClosedEvent> {
+public class FenixApplication extends Application implements I18N,
+		ApplicationListener<ContextClosedEvent> {
 
 	private static final long serialVersionUID = -485013821375916930L;
 
 	/**
-	 * Protected SLF4J log for logging stuff.
+	 * Logger for logging stuff.
 	 */
 	protected final static Logger logger = LoggerFactory
 			.getLogger(FenixApplication.class);
-	
+
 	/**
-	 * 
+	 * Message source for internationalization, automatically injected by the
+	 * Spring application context.
+	 * <p>
+	 * See the <a href=
+	 * "http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/beans.html#beans-resource-annotation"
+	 * >Spring documentation</a> for more information about how the
+	 * {@link Resource @Resource} annotation is handled in Spring.
 	 */
 	@Resource
 	private MessageSource messages;
 
 	/**
-	 * 
+	 * Map of supported locales and their respective display names,
+	 * automatically injected by the Spring application context.
 	 */
 	@Resource
 	private Map<Locale, String> supportedLocales;
 
 	/**
-	 * 
+	 * The login view, automatically injected by the Spring application context.
 	 */
 	@Resource(name = LoginView.BEAN_NAME)
 	private VaadinView loginView;
 
 	/**
-	 * 
+	 * The application context instance itself, also automatically injected.
 	 */
 	@Resource
 	private ConfigurableApplicationContext applicationContext;
-	
-	private ListenerList<I18NListener> i18nListeners = new ListenerList<I18NListener>();	
-	
+
+	private ListenerList<I18NListener> i18nListeners = new ListenerList<I18NListener>();
+
 	/**
-	 * 
+	 * This flag is set when {@link #close()} is called. The reason for this is
+	 * that the application can be closed in two ways: by calling
+	 * <code>close()</code> or by closing the application context. Furthermore,
+	 * when the application context is closed, <code>close()</code is called,
+	 * and likevise, when <code>close()</code> is called, the application
+	 * context is closed. The use of this flag prevents any of the close
+	 * operations from being called more than once.
 	 */
 	private boolean applicationIsClosing = false;
-		
+
 	/**
-	 * 
+	 * Creates a new <code>FenixApplication</code>. The application has to be
+	 * initialized by calling {@link #init()}. As this application has to be
+	 * configured inside a Spring application, clients should never have to
+	 * invoke this constructor manually.
 	 */
 	public FenixApplication() {
 		if (logger.isDebugEnabled()) {
+			/*
+			 * This log entry is useful for debugging situations where too many
+			 * instances of the applications are created. This may happen if the
+			 * Spring application context has been incorrectly configured, e.g.
+			 * if the scope of this application is prototype instead of
+			 * singleton.
+			 */
 			logger.debug("Creating new instance of application [" + this + "]");
 		}
 	}
@@ -114,6 +163,8 @@ public class FenixApplication extends Application implements I18N, ApplicationLi
 				loginView.getViewComponent()));
 	}
 
+	// FIXME Detect when the user has logged in and move to the main view
+
 	@Override
 	public void close() {
 		if (logger.isDebugEnabled()) {
@@ -121,11 +172,11 @@ public class FenixApplication extends Application implements I18N, ApplicationLi
 		}
 		/*
 		 * Update the flag so that this method is not accidentally called
-		 * another time when the GUI context closes (see the event handler at
-		 * the bottom of this class).
+		 * another time when the application context closes (see the event
+		 * handler at the bottom of this class).
 		 */
 		applicationIsClosing = true;
-		// Close the GUI context
+		// Close the application context
 		applicationContext.close();
 		// Clear the security context to log the user out
 		SecurityContextHolder.clearContext();
@@ -201,10 +252,10 @@ public class FenixApplication extends Application implements I18N, ApplicationLi
 	@Override
 	public void onApplicationEvent(ContextClosedEvent event) {
 		/*
-		 * This makes it possible for any bean in the GUI Context to close the
-		 * application simply by closing the GUI Context. We have to check that
-		 * the application has not been explicitly closed by Vaadin first,
-		 * though.
+		 * This makes it possible for any bean in the application context to
+		 * close the application simply by closing the application context. We
+		 * have to check that the application has not been explicitly closed by
+		 * Vaadin first, though.
 		 */
 		if (!applicationIsClosing && applicationContext != null
 				&& applicationContext.isActive()) {

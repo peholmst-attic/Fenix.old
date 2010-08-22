@@ -30,8 +30,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 /**
- * TODO Document me!
+ * This class implements the Login Presenter. It receives a username/password
+ * combination from the View and attempts to authenticate them with a Spring
+ * {@link AuthenticationManager} (see {@link #attemptLogin(String, String)} for
+ * more information}.
+ * <p>
+ * The presenter also knows how to change the language of the application (see
+ * {@link #changeLocale(Locale)}).
  * 
+ * @see LoginView
  * @author Petter Holmström
  */
 @Component
