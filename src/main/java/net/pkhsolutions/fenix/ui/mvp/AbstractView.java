@@ -129,6 +129,7 @@ public abstract class AbstractView<V extends View, P extends Presenter<V>>
 		presenter.init();
 		if (logger.isDebugEnabled()) {
 			logger.debug("View and presenter initialized");
+			logger.debug("Registering I18NListener with [" + getI18n() + "]");
 		}
 		getI18n().addListener(this);
 	}
@@ -149,6 +150,9 @@ public abstract class AbstractView<V extends View, P extends Presenter<V>>
 	 */
 	@PreDestroy
 	public void destroy() {
+		if (logger.isDebugEnabled()) {
+			logger.debug("Unregistering I18NListener from [" + getI18n() + "]");
+		}
 		getI18n().removeListener(this);
 	}
 
