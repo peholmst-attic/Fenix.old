@@ -26,9 +26,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -41,20 +44,61 @@ import com.vaadin.Application;
 import com.vaadin.terminal.gwt.server.AbstractApplicationServlet;
 
 /**
- * This Vaadin application servlet looks up the {@link Application} instance
- * from the {@link WebApplicationContext} returned by
- * {@link WebApplicationContextUtils#getWebApplicationContext(javax.servlet.ServletContext)}
- * . The name of the application bean has to be defined as a servlet parameter
- * named <code>applicationBean</code>. In addition, the application bean has to
- * have prototype scope, otherwise all users will share the same application
- * instance (not good).
+ * This Vaadin application servlet assumes that each Vaadin application instance
+ * runs inside its own Spring application context, called a <em>GUI Context</em>
+ * . Every GUI Context is a child of the main {@link WebApplicationContext}
+ * returned by
+ * {@link WebApplicationContextUtils#getWebApplicationContext(javax.servlet.ServletContext)
+ * WebApplicationContextUtils} . Thus, any service beans defined in the main web
+ * application context are available for injection into any beans defined in the
+ * GUI Context.
+ * <p>
+ * In order to work, this servlet requires the name of the {@link Application}
+ * class. This name is specified in the <code>application</code> servlet
+ * parameters. The GUI Context is then constructed by <a href=
+ * "http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/beans.html#beans-classpath-scanning"
+ * >scanning</a> the package of the application class (and all its subpackages)
+ * for beans that are annotated with {@link Component @Component} or any other
+ * of the Spring stereotype annotations. Even the application class itself
+ * should be annotated with {@link Component @Component}.
+ * <p>
+ * The base packages to scan can be overriden by using the optional servlet
+ * parameter <code>guiBasePackages</code>. If this parameter is set, only the
+ * packages specified are scanned. Multiple package names must be separated by
+ * spaces.
+ * <p>
+ * Here is an example of how the servlet could be configured in the web
+ * application descriptor (<em>web.xml</em>): <code>
+ * <pre>
+ * &lt;servlet&gt;
+ *   &lt;servlet-name&gt;MyAppServlet&lt;/servlet-name&gt;
+ *   &lt;servlet-class>net.pkhsolutions.fenix.servlet.SpringApplicationServlet&lt;/servlet-class&gt;
+ *   &lt;init-param&gt;
+ *     &lt;param-name&gt;application&lt;/param-name&gt;
+ *     &lt;param-value&gt;com.foo.ui.MyApp&lt;/param-value&gt;
+ *   &lt;/init-param&gt;
+ * &lt;/servlet&gt; 
+ * </pre>
+ * </code> In this example, the <code>com.foo.ui</code> package and all its
+ * subpackages would be scanned for potential beans. The <code>MyApp</code>
+ * class would be defined like this: <code>
+ * <pre>
+ * {@link Component @Component}
+ * public class MyApp extends {@link Application} {
+ * 
+ *     public void {@link Application#init() init}() {
+ *         ...
+ *     }
+ * }
+ * </pre>
+ * </code>
  * <p>
  * This servlet also resolves the locale using a Spring locale resolver and
  * updates the requests accordingly.
  * <p>
- * This class is based on the <a
+ * This class is roughly based on the <a
  * href="http://dev.vaadin.com/browser/incubator/SpringApplication"
- * >SpringApplication example</a> by Petri Hakala, with some minor modifications
+ * >SpringApplication example</a> by Petri Hakala, with several modifications
  * here and there by yours truly.
  * 
  * @author Petter Holmström
@@ -73,7 +117,7 @@ public class SpringApplicationServlet extends AbstractApplicationServlet {
 
 	private Class<? extends Application> applicationClass;
 
-	private String applicationBean;
+	private String[] guiBasePackages;
 
 	private transient LocaleResolver localeResolver;
 
@@ -82,21 +126,55 @@ public class SpringApplicationServlet extends AbstractApplicationServlet {
 	public void init(ServletConfig servletConfig) throws ServletException {
 		super.init(servletConfig);
 		/*
-		 * Look up the name of the Vaadin application bean. The bean must be a
-		 * prototype.
+		 * Look up the application class name
 		 */
-		applicationBean = servletConfig.getInitParameter("applicationBean");
-		if (applicationBean == null) {
+		final String applicationClassName = servletConfig
+				.getInitParameter("application");
+
+		if (applicationClassName == null) {
 			if (logger.isErrorEnabled()) {
-				logger.error("ApplicationBean not specified in servlet parameters");
+				logger.error("Application not specified in servlet parameters");
 			}
 			throw new ServletException(
-					"ApplicationBean not specified in servlet parameters");
+					"Application not specified in servlet parameters");
+		}
+
+		/*
+		 * Try to load the class
+		 */
+		try {
+			applicationClass = (Class<? extends Application>) getClassLoader()
+					.loadClass(applicationClassName);
+		} catch (final ClassNotFoundException e) {
+			if (logger.isErrorEnabled()) {
+				logger.error("Failed to load application class ["
+						+ applicationClassName + "]");
+			}
+			throw new ServletException("Failed to load application class");
 		}
 
 		if (logger.isInfoEnabled()) {
-			logger.info("Using applicationBean '" + applicationBean + "'");
+			logger.info("Using application class [" + applicationClass + "]");
 		}
+
+		/*
+		 * Look up the GUI base package names
+		 */
+		String guiBasePackageNames = servletConfig
+				.getInitParameter("guiBasePackages");
+		if (guiBasePackageNames == null) {
+			if (logger.isInfoEnabled()) {
+				logger.info("No base packages specified, determining package from application class");
+			}
+			guiBasePackageNames = applicationClass.getPackage().getName();
+		}
+
+		if (logger.isInfoEnabled()) {
+			logger.info("Using GUI base packages [" + guiBasePackageNames + "]");
+		}
+
+		// Split the packages names up into an array
+		this.guiBasePackages = guiBasePackageNames.split(" ");
 
 		/*
 		 * Fetch the Spring web application context
@@ -104,22 +182,6 @@ public class SpringApplicationServlet extends AbstractApplicationServlet {
 		applicationContext = WebApplicationContextUtils
 				.getWebApplicationContext(servletConfig.getServletContext());
 
-		if (!applicationContext.isPrototype(applicationBean)) {
-			if (logger.isErrorEnabled()) {
-				logger.error("ApplicationBean must be a prototype");
-			}
-			throw new ServletException("ApplicationBean must be a prototype");
-		}
-
-		/*
-		 * Get the application class from the application context
-		 */
-		applicationClass = (Class<? extends Application>) applicationContext
-				.getType(applicationBean);
-		if (logger.isDebugEnabled()) {
-			logger.debug("Vaadin application class is [" + applicationClass
-					+ "]");
-		}
 		/*
 		 * Initialize the locale resolver
 		 */
@@ -207,11 +269,33 @@ public class SpringApplicationServlet extends AbstractApplicationServlet {
 	@Override
 	protected Application getNewApplication(HttpServletRequest request)
 			throws ServletException {
-		/*
-		 * As the application bean is defined as a prototype, this call will
-		 * always return a new application instance.
-		 */
-		return (Application) applicationContext.getBean(applicationBean);
+		if (logger.isDebugEnabled()) {
+			logger.debug("Creating a new GUI Context");
+		}
+		try {
+			final AnnotationConfigApplicationContext guiContext = new AnnotationConfigApplicationContext();
+			guiContext.setParent(applicationContext);
+			guiContext.scan(guiBasePackages);
+			guiContext.refresh();
+
+			final Application application = guiContext
+					.getBean(applicationClass);
+			if (logger.isDebugEnabled()) {
+				logger.debug("Fetching application instance [" + application
+						+ "] from GUI Context [" + guiContext + "]");
+			}
+			return application;
+		} catch (NoSuchBeanDefinitionException e) {
+			if (logger.isErrorEnabled()) {
+				logger.error("Context does not contain an Application bean", e);
+			}
+			throw new ServletException("No Application instance could be found");
+		} catch (BeansException e) {
+			if (logger.isErrorEnabled()) {
+				logger.error("Could not initialize GUI Context", e);
+			}
+			throw new ServletException("Could not create a new application");
+		}
 	}
 
 }

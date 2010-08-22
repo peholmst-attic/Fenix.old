@@ -31,21 +31,15 @@ import net.pkhsolutions.fenix.util.ListenerList.ListenerVisitor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanDefinitionStoreException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 
 import com.vaadin.Application;
 import com.vaadin.ui.Window;
@@ -55,8 +49,8 @@ import com.vaadin.ui.Window;
  * 
  * @author petter
  */
-public class FenixApplication extends Application implements I18N,
-		ApplicationContextAware, ApplicationListener<ContextClosedEvent> {
+@Component
+public class FenixApplication extends Application implements I18N, ApplicationListener<ContextClosedEvent> {
 
 	private static final long serialVersionUID = -485013821375916930L;
 
@@ -65,11 +59,11 @@ public class FenixApplication extends Application implements I18N,
 	 */
 	protected final static Logger logger = LoggerFactory
 			.getLogger(FenixApplication.class);
-
+	
 	/**
 	 * 
 	 */
-	@Autowired
+	@Resource
 	private MessageSource messages;
 
 	/**
@@ -78,16 +72,25 @@ public class FenixApplication extends Application implements I18N,
 	@Resource
 	private Map<Locale, String> supportedLocales;
 
-	private ListenerList<I18NListener> i18nListeners = new ListenerList<I18NListener>();
+	/**
+	 * 
+	 */
+	@Resource(name = LoginView.BEAN_NAME)
+	private VaadinView loginView;
 
-	private org.springframework.core.io.Resource guiContextLocation;
-
-	private GenericApplicationContext guiContext;
-
-	private ApplicationContext parentApplicationContext;
-
+	/**
+	 * 
+	 */
+	@Resource
+	private ConfigurableApplicationContext applicationContext;
+	
+	private ListenerList<I18NListener> i18nListeners = new ListenerList<I18NListener>();	
+	
+	/**
+	 * 
+	 */
 	private boolean applicationIsClosing = false;
-
+		
 	/**
 	 * 
 	 */
@@ -97,51 +100,16 @@ public class FenixApplication extends Application implements I18N,
 		}
 	}
 
-	/**
-	 * 
-	 * @param guiContextLocation
-	 */
-	@Required
-	public void setGuiContextLocation(
-			org.springframework.core.io.Resource guiContextLocation) {
-		this.guiContextLocation = guiContextLocation;
-	}
-
 	@Override
 	public void init() {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Initializing application [" + this + "]");
 		}
-		// Update the application holder
-		ApplicationHolder.setApplication(this);
-
-		// Initialize the GUI context
-		guiContext = new GenericApplicationContext(parentApplicationContext);
-		{
-			guiContext.setDisplayName("GUI Context for [" + this + "]");
-			XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(
-					guiContext);
-			if (logger.isDebugEnabled()) {
-				logger.debug("Loading GUI Context from resource ["
-						+ guiContextLocation + "]");
-			}
-			try {
-				beanDefinitionReader.loadBeanDefinitions(guiContextLocation);
-			} catch (BeanDefinitionStoreException e) {
-				logger.error("Error loading GUI context from resource ["
-						+ guiContextLocation + "]", e);
-				throw e;
-			}
-			guiContext.refresh();
-		}
-
 		// Show the login screen
 		if (logger.isDebugEnabled()) {
 			logger.debug("Showing login window");
 		}
 		// Look up the login view from the GUI Context
-		final VaadinView loginView = guiContext.getBean(LoginView.BEAN_NAME,
-				VaadinView.class);
 		setMainWindow(new Window(loginView.getDisplayName(),
 				loginView.getViewComponent()));
 	}
@@ -158,11 +126,9 @@ public class FenixApplication extends Application implements I18N,
 		 */
 		applicationIsClosing = true;
 		// Close the GUI context
-		guiContext.close();
+		applicationContext.close();
 		// Clear the security context to log the user out
 		SecurityContextHolder.clearContext();
-		// Clear the application holder
-		ApplicationHolder.clearApplication();
 		super.close();
 	}
 
@@ -233,12 +199,6 @@ public class FenixApplication extends Application implements I18N,
 	}
 
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext)
-			throws BeansException {
-		this.parentApplicationContext = applicationContext;
-	}
-
-	@Override
 	public void onApplicationEvent(ContextClosedEvent event) {
 		/*
 		 * This makes it possible for any bean in the GUI Context to close the
@@ -246,9 +206,9 @@ public class FenixApplication extends Application implements I18N,
 		 * the application has not been explicitly closed by Vaadin first,
 		 * though.
 		 */
-		if (!applicationIsClosing && guiContext != null
-				&& guiContext.isActive()) {
-			guiContext.close();
+		if (!applicationIsClosing && applicationContext != null
+				&& applicationContext.isActive()) {
+			applicationContext.close();
 		}
 	}
 

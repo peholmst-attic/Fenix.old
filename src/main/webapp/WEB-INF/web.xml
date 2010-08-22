@@ -29,9 +29,8 @@
 		<servlet-name>FenixApplication</servlet-name>
 		<servlet-class>net.pkhsolutions.fenix.servlet.SpringApplicationServlet</servlet-class>
 		<init-param>
-			<param-name>applicationBean</param-name>
-			<!-- This bean name is configured in applicationContext.xml -->
-			<param-value>applicationBean</param-value>
+			<param-name>application</param-name>
+			<param-value>net.pkhsolutions.fenix.ui.FenixApplication</param-value>
 		</init-param>
 	</servlet>
 	<servlet-mapping>

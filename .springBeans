@@ -9,7 +9,6 @@
 	<configs>
 		<config>src/main/webapp/WEB-INF/applicationContext-security.xml</config>
 		<config>src/main/webapp/WEB-INF/applicationContext.xml</config>
-		<config>src/main/webapp/WEB-INF/guiContext.xml</config>
 	</configs>
 	<configSets>
 		<configSet>
@@ -19,7 +18,6 @@
 			<configs>
 				<config>src/main/webapp/WEB-INF/applicationContext.xml</config>
 				<config>src/main/webapp/WEB-INF/applicationContext-security.xml</config>
-				<config>src/main/webapp/WEB-INF/guiContext.xml</config>
 			</configs>
 		</configSet>
 	</configSets>

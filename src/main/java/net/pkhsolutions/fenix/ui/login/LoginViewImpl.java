@@ -92,6 +92,9 @@ public class LoginViewImpl extends AbstractView<LoginView, LoginPresenter>
 
 	@Override
 	public void clearForm() {
+		if (logger.isDebugEnabled()) {
+			logger.debug("Clearing form");
+		}
 		password.setValue("");
 		username.setValue("");
 	}

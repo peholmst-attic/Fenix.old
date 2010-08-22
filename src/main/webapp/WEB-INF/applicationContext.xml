@@ -13,8 +13,8 @@
 	<!-- This makes it possible to use annotations (@Component, @Repository, 
 		etc.) to configure the beans in this application context. The packages net.pkhsolutions.fenix.services 
 		and net.pkhsolutions.fenix.intra will be scanned, including their sub packages. -->
-	<context:component-scan base-package="net.pkhsolutions.fenix.services" />
-	<context:component-scan base-package="net.pkhsolutions.fenix.intra" />
+	<!--  <context:component-scan base-package="net.pkhsolutions.fenix.services" />
+	<context:component-scan base-package="net.pkhsolutions.fenix.intra" />-->
 
 	<!-- Message source for internationalization. -->
 	<bean id="messageSource"
@@ -47,11 +47,6 @@
 		<entry key-ref="localeSwedish_Finland" value="Svenska" />
 		<entry key-ref="localeFinnish" value="Suomi" />
 	</util:map>
-
-	<bean id="applicationBean" class="net.pkhsolutions.fenix.ui.FenixApplication"
-		scope="prototype" autowire-candidate="false">
-		<property name="guiContextLocation" value="WEB-INF/guiContext.xml" />
-	</bean>
 	
 	<!-- This creates a pooling DBCP data source. The configuration parameters -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
