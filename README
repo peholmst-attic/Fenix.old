@@ -1,0 +1,11 @@
+Fenix README
+============
+
+TODO Add a description of this application
+
+If you want to open this project using Eclipse, you will need the following:
+- The JEE version of Eclipse version 3.5 or newer (this project was created using Eclipse 3.6)
+- M2Eclipse and M2Eclipse Maven Integration for WTP (http://m2eclipse.sonatype.org/installing-m2eclipse.html)
+- Optionally: Spring IDE (http://www.springsource.org) 
+              OR
+              SpringSource Tool Suite (http://www.springsource.com/developer/sts)		
