@@ -27,8 +27,8 @@ import net.pkhsolutions.fenix.i18n.I18NListener;
 import net.pkhsolutions.fenix.ui.login.LoginView;
 import net.pkhsolutions.fenix.ui.mvp.AbstractView;
 import net.pkhsolutions.fenix.ui.mvp.VaadinView;
-import net.pkhsolutions.fenix.util.ListenerList;
-import net.pkhsolutions.fenix.util.ListenerList.ListenerVisitor;
+import net.pkhsolutions.fenix.util.VisitableList;
+import net.pkhsolutions.fenix.util.VisitableList.Visitor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -117,7 +117,7 @@ public class FenixApplication extends Application implements I18N,
 	@Resource
 	private ConfigurableApplicationContext applicationContext;
 
-	private ListenerList<I18NListener> i18nListeners = new ListenerList<I18NListener>();
+	private VisitableList<I18NListener> i18nListeners = new VisitableList<I18NListener>();
 
 	/**
 	 * This flag is set when {@link #close()} is called. The reason for this is
@@ -238,7 +238,7 @@ public class FenixApplication extends Application implements I18N,
 						+ oldLocale + "] to [" + locale
 						+ "], notifying listeners");
 			}
-			i18nListeners.visitListeners(new ListenerVisitor<I18NListener>() {
+			i18nListeners.visitList(new Visitor<I18NListener>() {
 
 				@Override
 				public void visit(I18NListener listener) {
@@ -265,11 +265,11 @@ public class FenixApplication extends Application implements I18N,
 
 	@Override
 	public void addListener(I18NListener listener) {
-		i18nListeners.addListener(listener);
+		i18nListeners.add(listener);
 	}
 
 	@Override
 	public void removeListener(I18NListener listener) {
-		i18nListeners.removeListener(listener);
+		i18nListeners.remove(listener);
 	}
 }
