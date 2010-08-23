@@ -18,7 +18,7 @@ package net.pkhsolutions.fenix.util;
 import org.easymock.EasyMock;
 
 /**
- * TODO Document me!
+ * This is a utility class for working with EasyMock mock objects.
  * 
  * @author Petter Holmström
  */
@@ -29,11 +29,14 @@ public class MockUtils {
 	}
 
 	/**
-	 * TODO Document me!
-	 * @param <T>
+	 * Verifies every mock in the <code>mocks</code> array. If any of the mocks
+	 * throw an <code>IllegalStateException</code> - meaning that it has not
+	 * been replayed - the exception is ignored and the verification continues.
+	 * 
 	 * @param mocks
+	 *            the array of mocks to verify.
 	 */
-	public static <T> void verifyMock(Object... mocks) {
+	public static void verifyMock(Object... mocks) {
 		for (Object m : mocks) {
 			try {
 				EasyMock.verify(m);
