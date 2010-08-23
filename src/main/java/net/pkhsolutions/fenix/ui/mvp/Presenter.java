@@ -19,10 +19,8 @@ import java.io.Serializable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -83,8 +81,7 @@ import org.springframework.stereotype.Component;
  * @param <V>
  *            the type of the View.
  */
-public abstract class Presenter<V extends View> implements Serializable,
-		ApplicationContextAware {
+public abstract class Presenter<V extends View> implements Serializable {
 
 	private static final long serialVersionUID = 2534637487948598474L;
 
@@ -101,13 +98,8 @@ public abstract class Presenter<V extends View> implements Serializable,
 	@Autowired
 	private V view;
 
+	@Autowired
 	private ApplicationContext applicationContext;
-
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext)
-			throws BeansException {
-		this.applicationContext = applicationContext;
-	}
 
 	/**
 	 * Gets the Spring application context that this presenter has been
