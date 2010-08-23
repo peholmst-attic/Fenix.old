@@ -17,7 +17,6 @@ package net.pkhsolutions.fenix.util;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -35,8 +34,8 @@ import org.junit.Test;
  */
 public class VisitableListTest {
 
-	private VisitableList<String> list;
-	private Visitor<String> visitor;
+	VisitableList<String> list;
+	Visitor<String> visitor;
 
 	@SuppressWarnings("unchecked")
 	@Before
@@ -47,11 +46,7 @@ public class VisitableListTest {
 
 	@After
 	public void tearDown() {
-		try {
-			verify(visitor);
-		} catch (IllegalStateException e) {
-			// Ignore it, we are not using the visitor mock in this test.
-		}
+		MockUtils.verifyMock(visitor);
 	}
 
 	@Test
