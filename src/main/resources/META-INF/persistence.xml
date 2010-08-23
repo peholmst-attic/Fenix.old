@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
-	<persistence-unit name="FenixPU">
+	<persistence-unit name="FenixPU" transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<class>net.pkhsolutions.fenix.auditlog.AuditLogRecord</class>
+		<class>net.pkhsolutions.fenix.auditlog.EntityAuditLogRecord</class>
+		<class>net.pkhsolutions.fenix.auditlog.UserAuditLogRecord</class>
+		<exclude-unlisted-classes/>
 	</persistence-unit>
 </persistence>
