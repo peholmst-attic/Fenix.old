@@ -43,8 +43,8 @@ some additional tweaking of the Tomcat server installation itself must be perfor
 deployed. 
 
 Locate the file 'org.springframework.instrument.tomcat-XXX.jar' (it should be in your local Maven repository, as it
-has been included as a dependency in the Fenix POM) and copy it into $CATALINA_HOME/lib, where $CATALINA_HOME represents 
-the root of the Tomcat installation.
+has been included as a dependency in the Fenix POM) and copy it into $CATALINA_HOME/lib, where $CATALINA_HOME 
+represents the root of the Tomcat installation.
 
 Then package Fenix into a WAR (e.g. by issuing the 'mvn package' command) and deploy it as you would deploy any
 other web application.
