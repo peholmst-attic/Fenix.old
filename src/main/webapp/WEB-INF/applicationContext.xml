@@ -51,7 +51,7 @@
 		<entry key-ref="localeFinnish" value="Suomi" />
 	</util:map>
 
-	<!-- This creates a pooling DBCP data source. The configuration parameters -->
+	<!-- This creates a pooling DBCP data source. TODO Write about configuration parameters -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="${database.driverClassName}" />
 		<property name="username" value="${database.username}" />
