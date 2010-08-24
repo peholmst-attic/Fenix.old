@@ -14,6 +14,7 @@
 		</license>
 	</licenses>
 	<build>
+		<finalName>Fenix</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
