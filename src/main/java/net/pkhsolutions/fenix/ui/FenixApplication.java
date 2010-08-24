@@ -78,6 +78,8 @@ import com.vaadin.ui.Window;
 public class FenixApplication extends Application implements I18N,
 		ApplicationListener<ContextClosedEvent> {
 
+	// TODO Fix serialization problems
+	
 	private static final long serialVersionUID = -485013821375916930L;
 
 	/**
@@ -148,7 +150,7 @@ public class FenixApplication extends Application implements I18N,
 			logger.debug("Creating new instance of application [" + this + "]");
 		}
 	}
-
+	
 	@Override
 	public void init() {
 		if (logger.isDebugEnabled()) {
