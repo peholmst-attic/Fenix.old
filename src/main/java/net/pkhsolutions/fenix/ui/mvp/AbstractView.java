@@ -26,18 +26,18 @@ import net.pkhsolutions.fenix.i18n.I18NListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 /**
  * This is an abstract base class for {@link View}-implementations and is to be
  * used together with concrete {@link Presenter}-implementations.
  * <p>
  * This view base class is designed to be configured inside a Spring application
- * context. It uses autowiring by type to find its corresponding Presenter. That
- * is, if the application context contains exactly one bean of type
- * <code>P</code>, it will automatically be injected into this view. Otherwise,
- * the initialization of the application context will fail. Please see the
- * {@link Presenter} javadocs for an example of how the view and the presenter
- * could be configured.
+ * context. By autowiring the {@link #AbstractView(Presenter) constructor} of
+ * the concrete subclass, the corresponding Presenter can be automatically
+ * injected. Please see the {@link Presenter} javadocs for an example of how the
+ * view and the presenter could be configured.
  * <p>
  * As a convenience, a {@link I18N} instance is also automatically injected,
  * making it easy to create localized view implementations. When the current
@@ -63,11 +63,13 @@ public abstract class AbstractView<V extends View, P extends Presenter<V>>
 	protected static final Logger logger = LoggerFactory
 			.getLogger(AbstractView.class);
 
-	/**
-	 * The presenter is injected by autowiring. If the application context does
-	 * not contain one and only one instance of type P, this will fail.
+	/*
+	 * We cannot autowire the presenter, as Spring autowiring does not play well
+	 * with generic types. In this case, it would look for a type of class
+	 * Presenter instead of P. If our application had only one presenter, it
+	 * would work, otherwise Spring would not know which presenter to inject and
+	 * throw an exception.
 	 */
-	@Autowired
 	private P presenter;
 
 	/**
@@ -78,6 +80,40 @@ public abstract class AbstractView<V extends View, P extends Presenter<V>>
 	private I18N i18n;
 
 	/**
+	 * Creates a new <code>AbstractView</code>, with the specified presenter.
+	 * <p>
+	 * If class path scanning is used in the Spring application context,
+	 * subclasses should make this method public and autowire it, e.g. like
+	 * this:
+	 * 
+	 * <code>
+	 * <pre>
+	 * {@link Component @Component}
+	 * public class MyViewImpl extends {@link AbstractView}&lt;MyView, MyPresenter&gt; 
+	 *     implements MyView {
+	 *     
+	 *     {@link Autowired @Autowired}
+	 *     public MyViewImpl(MyPresenter presenter) {
+	 *         super(presenter);
+	 *     }
+	 *     
+	 *     ...
+	 * }
+	 * </code> </pre>
+	 * 
+	 * Otherwise, the constructor parameter has to be manually specified in the
+	 * Spring application context.
+	 * 
+	 * 
+	 * @param presenter
+	 *            the presenter to use (must not be <code>null</code>).
+	 */
+	protected AbstractView(P presenter) {
+		Assert.notNull(presenter, "presenter must not be null");
+		this.presenter = presenter;
+	}
+
+	/**
 	 * Gets the <code>I18N</code> instance that can be used to retrieve
 	 * localized messages, etc. It will be automatically injected by the Spring
 	 * application context using autowiring. Thus, at least when {@link #init()}
@@ -86,19 +122,16 @@ public abstract class AbstractView<V extends View, P extends Presenter<V>>
 	 * 
 	 * @return the I18N instance.
 	 */
-	protected I18N getI18n() {
+	protected final I18N getI18n() {
 		return i18n;
 	}
 
 	/**
-	 * Gets the presenter for this view. The actual presenter instance will be
-	 * automatically injected by the Spring application context using
-	 * autowiring. Thus, at least when {@link #init()} is called (and after
-	 * that), this method will return a non-<code>null</code> instance.
+	 * Gets the presenter for this view.
 	 * 
-	 * @return the presenter instance.
+	 * @return the presenter instance (never <code>null</code>).
 	 */
-	protected P getPresenter() {
+	protected final P getPresenter() {
 		return presenter;
 	}
 
@@ -106,11 +139,11 @@ public abstract class AbstractView<V extends View, P extends Presenter<V>>
 	 * {@inheritDoc}
 	 * <p>
 	 * This method starts by calling {@link #initView()} and then calls
-	 * {@link Presenter#init()} on the injected presenter instance. As it has
-	 * been annotated with the {@link PostConstruct @PostConstruct} annotation,
-	 * the Spring application context will automatically invoke this method once
-	 * all the dependencies have been injected. Thus, a client normally never
-	 * has to invoke this method manually.
+	 * {@link Presenter#init(View))} on the injected presenter instance. As it
+	 * has been annotated with the {@link PostConstruct @PostConstruct}
+	 * annotation, the Spring application context will automatically invoke this
+	 * method once all the dependencies have been injected. Thus, a client
+	 * normally never has to invoke this method manually.
 	 * <p>
 	 * This method also registers this view as a listener with the
 	 * <code>I18N</code> instance <em>after</em> the view and the presenter have
@@ -119,6 +152,7 @@ public abstract class AbstractView<V extends View, P extends Presenter<V>>
 	 * @see #getI18n()
 	 * @see #getPresenter()
 	 */
+	@SuppressWarnings("unchecked")
 	@PostConstruct
 	@Override
 	public void init() {
@@ -129,7 +163,7 @@ public abstract class AbstractView<V extends View, P extends Presenter<V>>
 		if (logger.isDebugEnabled()) {
 			logger.debug("Initializing presenter [" + presenter + "]");
 		}
-		presenter.init();
+		getPresenter().init((V) this);
 		if (logger.isDebugEnabled()) {
 			logger.debug("View and presenter initialized");
 			logger.debug("Registering I18NListener with [" + getI18n() + "]");

@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 /**
  * This is an abstract base class for Presenters in the Model-View-Presenter
@@ -44,19 +45,13 @@ import org.springframework.stereotype.Component;
  * </ol>
  * <p>
  * This presenter base class is designed to be configured inside a Spring
- * application context. It uses autowiring by type to find its corresponding
- * View. That is, if the application context contains exactly one bean of type
- * <code>V</code>, it will automatically be injected into this presenter.
- * Otherwise, the initialization of the application context will fail.
- * <p>
- * If <a href=
+ * application context. If <a href=
  * "http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/beans.html#beans-classpath-scanning"
  * >classpath scanning</a> is used to find beans for the application context,
  * the presenter and view classes could look something like this:
- * <p>
  * 
- * <pre>
  * <code>
+ * <pre>
  * {@link Component @Component}
  * public class MyPresenter extends Presenter&lt;MyView&gt; {
  *     ...
@@ -69,10 +64,15 @@ import org.springframework.stereotype.Component;
  * {@link Component @Component}
  * public class MyViewImpl extends {@link AbstractView}&lt;MyView, MyPresenter&gt; 
  *     implements MyView {
+ *     
+ *     {@link Autowired @Autowired}
+ *     public MyViewImpl(MyPresenter presenter) {
+ *         super(presenter);
+ *     }
+ *     
  *     ...
  * }
  * </pre>
- * 
  * </code>
  * 
  * @see AbstractView
@@ -90,12 +90,13 @@ public abstract class Presenter<V extends View> implements Serializable {
 	 */
 	protected static final Logger logger = LoggerFactory
 			.getLogger(Presenter.class);
-
-	/**
-	 * The view instance is injected by autowiring. If the application context
-	 * does not contain one and only one instance of type V, this will fail.
+	/*
+	 * We cannot autowire the view, as Spring autowiring does not play well with
+	 * generic types. In this case, it would look for a type of class View
+	 * instead of V. If our application had only one view, it would work,
+	 * otherwise Spring would not know which view to inject and throw an
+	 * exception.
 	 */
-	@Autowired
 	private V view;
 
 	@Autowired
@@ -111,39 +112,41 @@ public abstract class Presenter<V extends View> implements Serializable {
 	 * 
 	 * @return the application context.
 	 */
-	protected ApplicationContext getApplicationContext() {
+	protected final ApplicationContext getApplicationContext() {
 		return applicationContext;
 	}
 
 	/**
-	 * Gets the view for this presenter. The view instance will be automatically
-	 * injected by the Spring application context using autowiring. Thus, at
-	 * least when {@link #init()} is called (and after that), this method will
-	 * return a non-<code>null</code> instance.
+	 * Gets the view for this presenter. The view instance will be set by the
+	 * {@link #init(View)} method.
 	 * 
-	 * @return the view instance.
+	 * @return the view instance (never <code>null</code> once the presenter has
+	 *         been initialized).
 	 */
 	protected final V getView() {
 		return view;
 	}
-
-	/*
-	 * An alternative way of initializing the presenter would be to annotate the
-	 * init() method below with PostConstruct, and configure the presenter to
-	 * depend on the view, e.g. by using the DependsOn annotation. However, to
-	 * avoid strange behavior that might occur if the developer forgets the
-	 * DependsOn annotation, the presenter is explicitly initialized by the
-	 * view.
-	 */
 
 	/**
 	 * This method is called by {@link AbstractView#init()} to initialize the
 	 * presenter. When this method is called, the view will already have been
 	 * initialized.
 	 * <p>
-	 * This implementation does nothing, subclasses may override.
+	 * Apart from setting the <code>view</code> property, this method does
+	 * nothing. Subclasses may override, but must remember to start by calling
+	 * <code>super.init(view)</code>.
+	 * 
+	 * @see #getView()
+	 * @param view
+	 *            the view instance, never <code>null</code>.
 	 */
-	public void init() {
+	public void init(V view) {
+		Assert.notNull(view, "view must not be null");
+		if (logger.isDebugEnabled()) {
+			logger.debug("Initializing presenter [" + this
+					+ "], setting view to [" + view + "]");
+		}
+		this.view = view;
 	}
 
 }

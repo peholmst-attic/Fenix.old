@@ -83,11 +83,12 @@ public final class LoginPresenter extends Presenter<LoginView> {
 		}
 		try {
 			getView().clearForm();
-			authenticationManager.authenticate(auth);
+			Authentication result = authenticationManager.authenticate(auth);
 			if (logger.isDebugEnabled()) {
 				logger.debug("Authentication of user '" + auth.getName()
 						+ "' succeeded");
 			}
+			getApplicationContext().publishEvent(new UserLoggedInEvent(result));
 		} catch (BadCredentialsException e) {
 			if (logger.isDebugEnabled()) {
 				logger.debug("Bad credentials for user '" + auth.getName()

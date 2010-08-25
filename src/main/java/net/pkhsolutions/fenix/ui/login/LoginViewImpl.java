@@ -21,6 +21,7 @@ import net.pkhsolutions.fenix.i18n.I18N;
 import net.pkhsolutions.fenix.ui.mvp.AbstractView;
 import net.pkhsolutions.fenix.ui.mvp.VaadinView;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vaadin.ui.Alignment;
@@ -44,8 +45,9 @@ import com.vaadin.ui.themes.BaseTheme;
  * @author Petter Holmström
  */
 @Component(LoginView.BEAN_NAME)
-public final class LoginViewImpl extends AbstractView<LoginView, LoginPresenter>
-		implements LoginView, VaadinView {
+public final class LoginViewImpl extends
+		AbstractView<LoginView, LoginPresenter> implements LoginView,
+		VaadinView {
 
 	private static final long serialVersionUID = -8071814016264582837L;
 
@@ -54,6 +56,13 @@ public final class LoginViewImpl extends AbstractView<LoginView, LoginPresenter>
 	private TextField password;
 	private Button loginButton;
 	private Panel loginPanel;
+
+	// Remember to autowire the constructor, otherwise Spring won't be able
+	// to create new instances of this class!
+	@Autowired
+	public LoginViewImpl(LoginPresenter presenter) {
+		super(presenter);
+	}
 
 	@Override
 	public ComponentContainer getViewComponent() {
