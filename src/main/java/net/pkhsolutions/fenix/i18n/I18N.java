@@ -42,7 +42,7 @@ public interface I18N {
 	 *            or <code>null</code> if there are none.
 	 * @return the resolved message (never <code>null</code>).
 	 */
-	public String getMessage(String code, Object... args);
+	String getMessage(String code, Object... args);
 
 	/**
 	 * Gets all the locales that this application supports. More specifically,
@@ -52,7 +52,7 @@ public interface I18N {
 	 * @see #getLocaleDisplayName(Locale)
 	 * @return an unmodifiable set of {@link Locale}s.
 	 */
-	public Set<Locale> getSupportedLocales();
+	Set<Locale> getSupportedLocales();
 
 	/**
 	 * Gets the name of <code>locale</code> to display in the user interface.
@@ -67,7 +67,7 @@ public interface I18N {
 	 *            the locale whose display name should be returned.
 	 * @return the display name of the locale.
 	 */
-	public String getLocaleDisplayName(Locale locale);
+	String getLocaleDisplayName(Locale locale);
 
 	/**
 	 * Gets the current locale. The locale is not required to be in the set of
@@ -75,7 +75,7 @@ public interface I18N {
 	 * 
 	 * @return the current locale (may be <code>null</code>).
 	 */
-	public Locale getLocale();
+	Locale getLocale();
 
 	/**
 	 * Sets the current locale. The locale is not required to be in the set of
@@ -87,7 +87,7 @@ public interface I18N {
 	 * @param locale
 	 *            the locale to set.
 	 */
-	public void setLocale(Locale locale);
+	void setLocale(Locale locale);
 
 	/**
 	 * Registers a listener to be notified when the locale is changed. A
@@ -97,7 +97,7 @@ public interface I18N {
 	 * @param listener
 	 *            the listener to add.
 	 */
-	public void addListener(I18NListener listener);
+	void addListener(I18NListener listener);
 
 	/**
 	 * Unregisters a listener previously registered using
@@ -109,6 +109,6 @@ public interface I18N {
 	 * @param listener
 	 *            the listener to remove.
 	 */
-	public void removeListener(I18NListener listener);
+	void removeListener(I18NListener listener);
 
 }

@@ -42,6 +42,6 @@ public interface I18NListener extends Serializable {
 	 * @param newLocale
 	 *            the new locale.
 	 */
-	public void localeChanged(I18N source, Locale oldLocale, Locale newLocale);
+	void localeChanged(I18N source, Locale oldLocale, Locale newLocale);
 
 }
