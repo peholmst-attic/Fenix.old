@@ -33,6 +33,6 @@ public interface VaadinView extends View {
 	 * @see View#init()
 	 * @return the view component
 	 */
-	public ComponentContainer getViewComponent();
+	ComponentContainer getViewComponent();
 
 }

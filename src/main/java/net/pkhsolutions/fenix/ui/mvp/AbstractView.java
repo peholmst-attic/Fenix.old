@@ -16,6 +16,7 @@
 package net.pkhsolutions.fenix.ui.mvp;
 
 import java.util.Locale;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -205,9 +206,28 @@ public abstract class AbstractView<V extends View, P extends Presenter<V>>
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * This method does nothing. Subclasses may override.
+	 * This implementation does nothing. Subclasses may override.
 	 */
 	@Override
 	public void localeChanged(I18N source, Locale oldLocale, Locale newLocale) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * This implementation always returns true. Subclasses may override.
+	 */
+	@Override
+	public boolean okToClose() {
+		return true;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * This implementation does nothing. Subclasses may override.
+	 */
+	@Override
+	public void showView(Map<String, Object> userData) {
 	}
 }

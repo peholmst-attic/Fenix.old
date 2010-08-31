@@ -16,6 +16,7 @@
 package net.pkhsolutions.fenix.ui.mvp;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * This interface represents a View in the Model-View-Presenter (MVP) pattern.
@@ -46,7 +47,7 @@ public interface View extends Serializable {
 	 * @see #init()
 	 * @return the display name
 	 */
-	public String getDisplayName();
+	String getDisplayName();
 
 	/**
 	 * Gets the description of the view to be shown in the UI. If this method is
@@ -55,11 +56,42 @@ public interface View extends Serializable {
 	 * @see #init()
 	 * @return the description
 	 */
-	public String getDescription();
+	String getDescription();
 
 	/**
-	 * Initializes the view and the presenter. TODO document me more!
+	 * Initializes the view and the presenter. If the view will be shown outside
+	 * of a {@link ViewController}, the view should create any GUI components in
+	 * this method call. Otherwise, {@link #showView(Map)} may be a good
+	 * alternative.
+	 * 
+	 * @see #showView(Map)
 	 */
-	public void init();
+	void init();
 
+	/**
+	 * This method is called by the view controller before it closes the view.
+	 * The view can prevent itself from being closed by returning false, e.g. if
+	 * the user has unsaved changes.
+	 * <p>
+	 * If the view will not be used outside of the view controller, it may
+	 * dispose of any UI resources in this method. This is, however, not a
+	 * requirement.
+	 * 
+	 * @return true if it is OK to close the view, false if the view should
+	 *         remain open.
+	 */
+	boolean okToClose();
+
+	/**
+	 * This method is called by the view controller when the view is opened and
+	 * added to the view stack. If the view will not be used outside of the view
+	 * controller, it may create the GUI components and allocate resources in
+	 * this method.
+	 * 
+	 * @see #init()
+	 * 
+	 * @param userData
+	 *            a map of user-definable parameters (may be <code>null</code>).
+	 */
+	void showView(Map<String, Object> userData);
 }
