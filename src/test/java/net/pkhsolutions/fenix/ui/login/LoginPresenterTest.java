@@ -21,6 +21,7 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 import java.util.Locale;
 
@@ -32,6 +33,7 @@ import org.easymock.IAnswer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -48,6 +50,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 public class LoginPresenterTest {
 
 	AuthenticationManager authenticationManager;
+	ApplicationContext applicationContext;
 	LoginView loginView;
 	I18N i18n;
 	LoginPresenter presenter;
@@ -57,18 +60,19 @@ public class LoginPresenterTest {
 		authenticationManager = createMock(AuthenticationManager.class);
 		loginView = createMock(LoginView.class);
 		i18n = createMock(I18N.class);
+		applicationContext = createMock(ApplicationContext.class);
 
 		presenter = new LoginPresenter();
-		ReflectionTestUtils.setField(presenter, "view", loginView);
 		ReflectionTestUtils.setField(presenter, "authenticationManager",
 				authenticationManager);
 		ReflectionTestUtils.setField(presenter, "i18n", i18n);
-		presenter.init();
+		ReflectionTestUtils.setField(presenter, "applicationContext", applicationContext);
+		presenter.init(loginView);
 	}
 
 	@After
 	public void tearDown() {
-		MockUtils.verifyMock(authenticationManager, loginView, i18n);
+		MockUtils.verifyMock(authenticationManager, loginView, i18n, applicationContext);
 	}
 
 	@Test
@@ -77,6 +81,7 @@ public class LoginPresenterTest {
 		replay(i18n);
 		replay(loginView);
 		replay(authenticationManager);
+		replay(applicationContext);
 
 		presenter.changeLocale(Locale.US);
 	}
@@ -84,6 +89,7 @@ public class LoginPresenterTest {
 	@Test
 	public void testAttemptLoginSuccess() {
 		final Capture<Authentication> authentication = new Capture<Authentication>();
+		final Capture<UserLoggedInEvent> event = new Capture<UserLoggedInEvent>();
 		expect(authenticationManager.authenticate(capture(authentication)))
 				.andAnswer(new IAnswer<Authentication>() {
 
@@ -99,9 +105,13 @@ public class LoginPresenterTest {
 
 		replay(i18n);
 
+		applicationContext.publishEvent(capture(event));
+		replay(applicationContext);
+		
 		presenter.attemptLogin("joecool", "password");
 		assertEquals("joecool", authentication.getValue().getName());
 		assertEquals("password", authentication.getValue().getCredentials());
+		assertSame(event.getValue().getAuthentication(), authentication.getValue());
 	}
 
 	@Test
@@ -116,7 +126,8 @@ public class LoginPresenterTest {
 		loginView.showBadCredentials();
 		replay(loginView);
 
-		replay(i18n);
+		replay(i18n);		
+		replay(applicationContext);
 
 		presenter.attemptLogin("joecool", "password");
 	}
@@ -134,7 +145,8 @@ public class LoginPresenterTest {
 		replay(loginView);
 
 		replay(i18n);
-
+		replay(applicationContext);
+		
 		presenter.attemptLogin("joecool", "password");
 	}
 
@@ -151,6 +163,7 @@ public class LoginPresenterTest {
 		replay(loginView);
 
 		replay(i18n);
+		replay(applicationContext);
 
 		presenter.attemptLogin("joecool", "password");
 	}
