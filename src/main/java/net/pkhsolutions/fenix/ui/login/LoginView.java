@@ -32,26 +32,26 @@ public interface LoginView extends View {
 	 * The name of the Login View bean when configured inside a Spring
 	 * application context.
 	 */
-	public static final String BEAN_NAME = "loginViewBean";
+	String BEAN_NAME = "loginViewBean";
 
 	/**
 	 * Informs the user that the credentials were bad.
 	 */
-	public void showBadCredentials();
+	void showBadCredentials();
 
 	/**
 	 * Informs the user that the account has been disabled.
 	 */
-	public void showAccountDisabled();
+	void showAccountDisabled();
 
 	/**
 	 * Informs the user that the account has been locked.
 	 */
-	public void showAccountLocked();
+	void showAccountLocked();
 
 	/**
 	 * Clears the username/password login form.
 	 */
-	public void clearForm();
+	void clearForm();
 
 }
