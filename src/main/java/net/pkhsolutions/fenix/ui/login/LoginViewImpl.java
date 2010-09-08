@@ -18,6 +18,7 @@ package net.pkhsolutions.fenix.ui.login;
 import java.util.Locale;
 
 import net.pkhsolutions.fenix.i18n.I18N;
+import net.pkhsolutions.fenix.ui.FenixTheme;
 import net.pkhsolutions.fenix.ui.mvp.AbstractView;
 import net.pkhsolutions.fenix.ui.mvp.VaadinView;
 
@@ -33,7 +34,6 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window.Notification;
-import com.vaadin.ui.themes.BaseTheme;
 
 /**
  * This is a Vaadin implementation of the {@link LoginView} interface. Please
@@ -128,7 +128,7 @@ public final class LoginViewImpl extends
 		loginPanel.addComponent(password);
 
 		loginButton = new Button();
-		loginButton.setStyleName("primary");
+		loginButton.setStyleName(FenixTheme.BUTTON_DEFAULT);
 		// TODO Make it possible to submit the form by pressing <Enter> in any
 		// of the text fields
 		loginPanel.addComponent(loginButton);
@@ -156,7 +156,7 @@ public final class LoginViewImpl extends
 		for (Locale locale : getI18n().getSupportedLocales()) {
 			final Button languageButton = new Button(getI18n()
 					.getLocaleDisplayName(locale));
-			languageButton.setStyleName(BaseTheme.BUTTON_LINK);
+			languageButton.setStyleName(FenixTheme.BUTTON_LINK);
 			languageButton.setData(locale);
 			languageButton.addListener(languageListener);
 			languages.addComponent(languageButton);

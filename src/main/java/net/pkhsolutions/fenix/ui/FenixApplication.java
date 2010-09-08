@@ -25,13 +25,18 @@ import javax.annotation.Resource;
 import net.pkhsolutions.fenix.i18n.I18N;
 import net.pkhsolutions.fenix.i18n.I18NListener;
 import net.pkhsolutions.fenix.ui.login.LoginView;
+import net.pkhsolutions.fenix.ui.login.UserLoggedInEvent;
+import net.pkhsolutions.fenix.ui.main.MainView;
 import net.pkhsolutions.fenix.ui.mvp.AbstractView;
+import net.pkhsolutions.fenix.ui.mvp.Presenter;
 import net.pkhsolutions.fenix.ui.mvp.VaadinView;
+import net.pkhsolutions.fenix.ui.mvp.View;
 import net.pkhsolutions.fenix.util.VisitableList;
 import net.pkhsolutions.fenix.util.VisitableList.Visitor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.MessageSource;
@@ -59,7 +64,7 @@ import com.vaadin.ui.Window;
  * <code>supportedLocales</code> (see {@link #getSupportedLocales()}).</li>
  * <li>A {@link VaadinView} instance named {@link LoginView#BEAN_NAME}
  * implementing the login view.</li>
- * <li>TODO A Main view</li>
+ * <li>TODO A Main view (DOCUMENT ME!)</li>
  * </ul>
  * <p>
  * This class also implements the {@link I18N} interface. Thus, any views
@@ -76,10 +81,10 @@ import com.vaadin.ui.Window;
  */
 @Component
 public class FenixApplication extends Application implements I18N,
-		ApplicationListener<ContextClosedEvent> {
+		ApplicationListener<ApplicationEvent> {
 
 	// TODO Fix serialization problems
-	
+
 	private static final long serialVersionUID = -485013821375916930L;
 
 	/**
@@ -112,6 +117,12 @@ public class FenixApplication extends Application implements I18N,
 	 */
 	@Resource(name = LoginView.BEAN_NAME)
 	private VaadinView loginView;
+
+	/**
+	 * The main view, automatically injected by the Spring application context.
+	 */
+	@Resource(name = MainView.BEAN_NAME)
+	private VaadinView mainView;
 
 	/**
 	 * The application context instance itself, also automatically injected.
@@ -150,12 +161,13 @@ public class FenixApplication extends Application implements I18N,
 			logger.debug("Creating new instance of application [" + this + "]");
 		}
 	}
-	
+
 	@Override
 	public void init() {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Initializing application [" + this + "]");
 		}
+		setTheme(FenixTheme.themeName());
 		// Show the login screen
 		if (logger.isDebugEnabled()) {
 			logger.debug("Showing login window");
@@ -165,7 +177,16 @@ public class FenixApplication extends Application implements I18N,
 				loginView.getViewComponent()));
 	}
 
-	// FIXME Detect when the user has logged in and move to the main view
+	private void showMainView() {
+		if (logger.isDebugEnabled()) {
+			logger.debug("Showing main window");
+		}
+		// Remove the old login window...
+		removeWindow(getMainWindow());
+		// ... and show the new main window
+		setMainWindow(new Window(mainView.getDisplayName(),
+				mainView.getViewComponent()));
+	}
 
 	@Override
 	public void close() {
@@ -178,7 +199,7 @@ public class FenixApplication extends Application implements I18N,
 		 * handler at the bottom of this class).
 		 */
 		applicationIsClosing = true;
-		// Close the application context
+		// Close the application context (if it has already been closed, nothing happens)
 		applicationContext.close();
 		// Clear the security context to log the user out
 		SecurityContextHolder.clearContext();
@@ -232,6 +253,7 @@ public class FenixApplication extends Application implements I18N,
 
 	@Override
 	public void setLocale(final Locale locale) {
+		// TODO Translate Vaadin system messages
 		final Locale oldLocale = getLocale();
 		LocaleContextHolder.setLocale(locale);
 		if (oldLocale != null && !oldLocale.equals(locale)) {
@@ -252,16 +274,25 @@ public class FenixApplication extends Application implements I18N,
 	}
 
 	@Override
-	public void onApplicationEvent(ContextClosedEvent event) {
-		/*
-		 * This makes it possible for any bean in the application context to
-		 * close the application simply by closing the application context. We
-		 * have to check that the application has not been explicitly closed by
-		 * Vaadin first, though.
-		 */
-		if (!applicationIsClosing && applicationContext != null
-				&& applicationContext.isActive()) {
-			applicationContext.close();
+	public void onApplicationEvent(ApplicationEvent event) {
+		if (event instanceof ContextClosedEvent) {
+			/*
+			 * This makes it possible for any bean in the application context to
+			 * close the application simply by closing the application context.
+			 * We have to check that the application has not been explicitly
+			 * closed by Vaadin first, though.
+			 */
+			if (!applicationIsClosing) {
+				close();
+			}
+		} else if (event instanceof UserLoggedInEvent) {
+			/*
+			 * The user has successfully logged in, update the security context
+			 * and go to the main view
+			 */
+			SecurityContextHolder.getContext().setAuthentication(
+					((UserLoggedInEvent) event).getAuthentication());
+			showMainView();
 		}
 	}
 

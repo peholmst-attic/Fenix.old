@@ -1,0 +1,35 @@
+@import url(../runo/styles.css);
+
+.main-view-header {
+	line-height: 30px;
+	left: 0;
+	right: 0;
+	border-bottom: 1px solid #999;
+}
+
+.main-view-header-title {
+	font-size: 25px;
+	text-shadow: #999 2px 2px 2px;
+	font-weight: bold;
+	padding-left: 5px;
+	/*font-size: 30px;
+	text-shadow: #2B425A 2px 2px 2px;
+	color: #FFF;
+	font-weight: bold;
+	text-transform: uppercase; */
+}
+
+.main-view-header-menu {
+	/*color: #FFF;*/	
+}
+
+/*
+.v-panel-caption {
+	text-align: center;
+	padding: 5px;
+	background: #4D749F;
+	color: #FFFFFF;
+	font-weight: bold;
+	-moz-border-radius: 5px 5px 0 0;
+	-webkit-border-radius: 5px 5px 0 0;
+}*/

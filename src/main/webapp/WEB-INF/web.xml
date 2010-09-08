@@ -32,6 +32,10 @@
 			<param-name>application</param-name>
 			<param-value>net.pkhsolutions.fenix.ui.FenixApplication</param-value>
 		</init-param>
+		<init-param>
+			<param-name>widgetset</param-name>
+			<param-value>net.pkhsolutions.fenix.ui.widgetset.FenixWidgetset</param-value>
+		</init-param>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>FenixApplication</servlet-name>

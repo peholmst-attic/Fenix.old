@@ -62,7 +62,8 @@ public interface View extends Serializable {
 	 * Initializes the view and the presenter. If the view will be shown outside
 	 * of a {@link ViewController}, the view should create any GUI components in
 	 * this method call. Otherwise, {@link #showView(Map)} may be a good
-	 * alternative.
+	 * alternative. Implementations may also choose to initialize the GUI components
+	 * in a completely different method, if that is more suitable.
 	 * 
 	 * @see #showView(Map)
 	 */

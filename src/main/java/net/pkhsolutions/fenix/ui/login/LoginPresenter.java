@@ -63,11 +63,15 @@ public final class LoginPresenter extends Presenter<LoginView> {
 	 * Attempts to login using the specified username and password. If login
 	 * succeeds, the authentication manager will publish a
 	 * {@link org.springframework.security.authentication.event.AuthenticationSuccessEvent
-	 * AuthenticationSuccessEvent} to the Spring application context. If login
-	 * fails, the user is notified and a corresponding
-	 * <code>AuthenticationFailure*</code> (e.g.
+	 * AuthenticationSuccessEvent} to the Spring application context. In
+	 * addition, the presenter will publish a {@link UserLoggedInEvent} to its
+	 * application context, which may be useful if the authentication manager
+	 * and the presenter are defined in separate contexts. If login fails, the
+	 * user is notified and a corresponding <code>AuthenticationFailure*</code>
+	 * (e.g.
 	 * {@link org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent
-	 * AuthenticationFailureBadCredentialsEvent}) event is published.
+	 * AuthenticationFailureBadCredentialsEvent}) event is published by the
+	 * authentication manager.
 	 * 
 	 * @param username
 	 *            the username.
