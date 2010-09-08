@@ -15,14 +15,14 @@
  */
 package net.pkhsolutions.fenix.ui;
 
-import com.vaadin.ui.themes.Runo;
+import com.vaadin.ui.themes.Reindeer;
 
 /**
  * TODO Document me!
  * 
  * @author petter
  */
-public class FenixTheme extends Runo {
+public class FenixTheme extends Reindeer {
 
 	public static final String THEME_NAME = "Fenix";
 

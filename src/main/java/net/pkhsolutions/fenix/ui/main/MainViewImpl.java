@@ -25,8 +25,11 @@ import net.pkhsolutions.fenix.ui.mvp.VaadinView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import org.vaadin.notifique.Notifique;
+import org.vaadin.notifique.Notifique.Message;
 
 import com.vaadin.Application;
+import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -45,14 +48,6 @@ import com.vaadin.ui.VerticalLayout;
 public final class MainViewImpl extends AbstractView<MainView, MainPresenter>
 		implements MainView, VaadinView {
 
-	private static final String STYLE_MAIN_VIEW_HEADER_MENU = "main-view-header-menu";
-
-	private static final String STYLE_MAIN_VIEW_HEADER_TITLE = "main-view-header-title";
-
-	private static final String STYLE_MAIN_VIEW_HEADER = "main-view-header";
-	
-	private static final String STYLE_MAIN_VIEW_CONFIRM_BAR = "main-view-confirm-bar";
-
 	private static final long serialVersionUID = 2659284453464649349L;
 
 	@Autowired
@@ -62,8 +57,6 @@ public final class MainViewImpl extends AbstractView<MainView, MainPresenter>
 
 	private ComponentContainer header;
 	
-	private ComponentContainer confirmationArea;
-
 	private Button changePasswordButton;
 
 	private Button logoutButton;
@@ -71,6 +64,8 @@ public final class MainViewImpl extends AbstractView<MainView, MainPresenter>
 	private Button changeLanguageButton;
 
 	private Label userLabel;
+	
+	private Notifique notifications;
 
 	@Autowired
 	public MainViewImpl(MainPresenter presenter) {
@@ -109,9 +104,9 @@ public final class MainViewImpl extends AbstractView<MainView, MainPresenter>
 		viewLayout.setSizeFull();
 		viewLayout.addComponent(header);
 		
-		confirmationArea = new HorizontalLayout();
-		confirmationArea.setWidth("100%");
-		viewLayout.addComponent(confirmationArea);
+		notifications = new Notifique(false);
+		notifications.setWidth("100%");
+		viewLayout.addComponent(notifications);
 
 		updateLabels();
 	}
@@ -121,16 +116,14 @@ public final class MainViewImpl extends AbstractView<MainView, MainPresenter>
 		final HorizontalLayout layout = new HorizontalLayout();
 		layout.setMargin(false);
 		layout.setWidth("100%");
-		layout.setStyleName(STYLE_MAIN_VIEW_HEADER);
 
-		final Label title = new Label("Fenix");
-		title.addStyleName(STYLE_MAIN_VIEW_HEADER_TITLE);
+		final Label title = new Label();
+		title.setIcon(new ThemeResource("icons/logo.png"));
 		layout.addComponent(title);
 		layout.setExpandRatio(title, 1.0f);
 		layout.setComponentAlignment(title, Alignment.MIDDLE_LEFT);
 
 		final HorizontalLayout menu = new HorizontalLayout();
-		menu.setStyleName(STYLE_MAIN_VIEW_HEADER_MENU);
 		menu.setSpacing(true);
 
 		userLabel = new Label();
@@ -206,8 +199,6 @@ public final class MainViewImpl extends AbstractView<MainView, MainPresenter>
 	private void confirmLogout() {
 		final HorizontalLayout layout = new HorizontalLayout();
 		layout.setSpacing(true);
-		layout.setMargin(true);
-		layout.setStyleName(STYLE_MAIN_VIEW_CONFIRM_BAR);
 		
 		final Label messageLabel = new Label(getI18n().getMessage("mainView.menu.logout.confirm")); 
 		layout.addComponent(messageLabel);		
@@ -224,18 +215,19 @@ public final class MainViewImpl extends AbstractView<MainView, MainPresenter>
 		layout.setComponentAlignment(proceedButton, Alignment.MIDDLE_RIGHT);
 		proceedButton.setStyleName(FenixTheme.BUTTON_SMALL);
 		
+		final Message[] messages = new Message[1];
 		final Button cancelButton = new Button(getI18n().getMessage("mainView.menu.logout.cancel"), new Button.ClickListener() {
 			
 			@Override
 			public void buttonClick(ClickEvent event) {
-				confirmationArea.removeComponent(layout);
+				messages[0].hide();
 			}
 		});	
 		layout.addComponent(cancelButton);
 		layout.setComponentAlignment(cancelButton, Alignment.MIDDLE_RIGHT);
 		cancelButton.setStyleName(FenixTheme.BUTTON_SMALL);
 		
-		confirmationArea.addComponent(layout);//, viewLayout.getComponentIndex(header)+1);
+		messages[0] = notifications.add(null, layout, Notifique.Styles.MAGIC_GRAY, false);
 	}
 	
 	
