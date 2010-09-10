@@ -21,6 +21,7 @@ import net.pkhsolutions.fenix.i18n.I18N;
 import net.pkhsolutions.fenix.ui.FenixTheme;
 import net.pkhsolutions.fenix.ui.mvp.AbstractView;
 import net.pkhsolutions.fenix.ui.mvp.VaadinView;
+import net.pkhsolutions.fenix.ui.mvp.ViewController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -66,7 +67,11 @@ public final class MainViewImpl extends AbstractView<MainView, MainPresenter>
 	private Label userLabel;
 	
 	private Notifique notifications;
+	
+	private BreadcrumbPanel breadcrumbs;
 
+	private ViewController viewController;
+	
 	@Autowired
 	public MainViewImpl(MainPresenter presenter) {
 		super(presenter);
@@ -107,6 +112,10 @@ public final class MainViewImpl extends AbstractView<MainView, MainPresenter>
 		notifications = new Notifique(false);
 		notifications.setWidth("100%");
 		viewLayout.addComponent(notifications);
+		
+		breadcrumbs = new BreadcrumbPanel();
+		breadcrumbs.setWidth("100%");
+		viewLayout.addComponent(breadcrumbs);
 
 		updateLabels();
 	}
