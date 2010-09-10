@@ -5,6 +5,19 @@
 		<class>net.pkhsolutions.fenix.auditlog.AuditLogRecord</class>
 		<class>net.pkhsolutions.fenix.auditlog.EntityAuditLogRecord</class>
 		<class>net.pkhsolutions.fenix.auditlog.UserAuditLogRecord</class>
+
+		<class>net.pkhsolutions.fenix.domain.AbstractEntity</class>
+		<class>net.pkhsolutions.fenix.domain.ConsumerFD</class>
+		<class>net.pkhsolutions.fenix.domain.Contract</class>
+		<class>net.pkhsolutions.fenix.domain.LocalizedString</class>
+		<class>net.pkhsolutions.fenix.domain.ProducerFD</class>
+		<class>net.pkhsolutions.fenix.domain.ProducerFDMember</class>
+		<class>net.pkhsolutions.fenix.domain.Report</class>
+		<class>net.pkhsolutions.fenix.domain.ReportParticipant</class>
+		<class>net.pkhsolutions.fenix.domain.ReportStateChangeEntry</class>
+		<class>net.pkhsolutions.fenix.domain.ReportType</class>
+		<class>net.pkhsolutions.fenix.domain.TemporalEntity</class>
+		<class>net.pkhsolutions.fenix.domain.User</class>
 		<exclude-unlisted-classes/>
 	</persistence-unit>
 </persistence>
