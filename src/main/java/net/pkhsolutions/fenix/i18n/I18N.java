@@ -15,6 +15,7 @@
  */
 package net.pkhsolutions.fenix.i18n;
 
+import java.io.Serializable;
 import java.util.Locale;
 import java.util.Set;
 
@@ -25,7 +26,7 @@ import java.util.Set;
  * 
  * @author Petter Holmström
  */
-public interface I18N {
+public interface I18N extends Serializable {
 	/**
 	 * Tries to resolve the message using the locale returned by
 	 * {@link #getLocale()}. If the message cannot be found, a standard
