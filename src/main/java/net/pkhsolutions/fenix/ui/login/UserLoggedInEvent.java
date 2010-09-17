@@ -15,27 +15,41 @@
  */
 package net.pkhsolutions.fenix.ui.login;
 
-import org.springframework.context.ApplicationEvent;
+import net.pkhsolutions.fenix.ui.mvp.ViewEvent;
+
 import org.springframework.security.core.Authentication;
 
 /**
- * TODO Document me!
+ * View event that is fired by a {@link LoginView} when the user has logged in
+ * successfully.
  * 
- * @author petter
- *
+ * @author Petter Holmström
  */
-public class UserLoggedInEvent extends ApplicationEvent {
+public class UserLoggedInEvent extends ViewEvent {
+
+	private static final long serialVersionUID = -2819159232773687159L;
+
+	private final Authentication authentication;
 
 	/**
+	 * Creates a new <code>UserLoggedInEvent</code>.
 	 * 
+	 * @param source
+	 *            the view that fired the event.
+	 * @param authentication
+	 *            the authentication credentials of the user.
 	 */
-	private static final long serialVersionUID = -2819159232773687159L;	
-	
-	public UserLoggedInEvent(Authentication source) {
+	public UserLoggedInEvent(LoginView source, Authentication authentication) {
 		super(source);
+		this.authentication = authentication;
 	}
 
+	/**
+	 * Gets the authentication credentials of the user.
+	 * 
+	 * @return the credentials.
+	 */
 	public Authentication getAuthentication() {
-		return (Authentication) getSource();
+		return authentication;
 	}
 }

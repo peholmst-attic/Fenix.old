@@ -29,12 +29,6 @@ import net.pkhsolutions.fenix.ui.mvp.View;
 public interface LoginView extends View {
 
 	/**
-	 * The name of the Login View bean when configured inside a Spring
-	 * application context.
-	 */
-	String BEAN_NAME = "loginViewBean";
-
-	/**
 	 * Informs the user that the credentials were bad.
 	 */
 	void showBadCredentials();

@@ -22,9 +22,6 @@ import net.pkhsolutions.fenix.ui.FenixTheme;
 import net.pkhsolutions.fenix.ui.mvp.AbstractView;
 import net.pkhsolutions.fenix.ui.mvp.VaadinView;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -39,17 +36,24 @@ import com.vaadin.ui.Window.Notification;
 
 /**
  * This is a Vaadin implementation of the {@link LoginView} interface. Please
- * note the use of the {@link Component @Component} annotation and the
- * {@link LoginView#BEAN_NAME} constant. Also note that this view, in addition
- * to the {@link LoginView} interface, also implements the {@link VaadinView}
- * interface.
+ * note that this view, in addition to the {@link LoginView} interface, also
+ * implements the {@link VaadinView} interface.
  * 
  * @author Petter Holmström
  */
-@Component(LoginView.BEAN_NAME)
 public final class LoginViewImpl extends
 		AbstractView<LoginView, LoginPresenter> implements LoginView,
 		VaadinView {
+
+	/**
+	 * Creates a new <code>LoginViewImpl</code>.
+	 * 
+	 * @param i18n
+	 *            the I18N instance to use.
+	 */
+	public LoginViewImpl(I18N i18n) {
+		super(i18n);
+	}
 
 	private static final long serialVersionUID = -8071814016264582837L;
 
@@ -59,11 +63,9 @@ public final class LoginViewImpl extends
 	private Button loginButton;
 	private Panel loginPanel;
 
-	// Remember to autowire the constructor, otherwise Spring won't be able
-	// to create new instances of this class!
-	@Autowired
-	public LoginViewImpl(LoginPresenter presenter) {
-		super(presenter);
+	@Override
+	protected LoginPresenter createPresenter() {
+		return new LoginPresenter(this, getI18n());
 	}
 
 	@Override
@@ -123,7 +125,7 @@ public final class LoginViewImpl extends
 		Label logo = new Label();
 		logo.setIcon(new ThemeResource("icons/logo.png"));
 		loginPanel.addComponent(logo);
-		
+
 		username = new TextField();
 		username.setWidth("100%");
 		loginPanel.addComponent(username);

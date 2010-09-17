@@ -27,7 +27,6 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
 
 /**
  * This class implements the Login Presenter. It receives a username/password
@@ -41,8 +40,20 @@ import org.springframework.stereotype.Component;
  * @see LoginView
  * @author Petter Holmström
  */
-@Component
 public final class LoginPresenter extends Presenter<LoginView> {
+
+	/**
+	 * Creates a new <code>LoginPresenter</code>.
+	 * 
+	 * @param view
+	 *            the view to use.
+	 * @param i18n
+	 *            the I18N instance to use for changing the locale.
+	 */
+	public LoginPresenter(LoginView view, I18N i18n) {
+		super(view);
+		this.i18n = i18n;
+	}
 
 	private static final long serialVersionUID = 200565293225998622L;
 
@@ -51,27 +62,17 @@ public final class LoginPresenter extends Presenter<LoginView> {
 	 * authentication.
 	 */
 	@Autowired
-	private AuthenticationManager authenticationManager;
+	private transient AuthenticationManager authenticationManager;
 
 	/**
 	 * The I18N instance that will be used to change the locale.
 	 */
-	@Autowired
 	private I18N i18n;
 
 	/**
 	 * Attempts to login using the specified username and password. If login
-	 * succeeds, the authentication manager will publish a
-	 * {@link org.springframework.security.authentication.event.AuthenticationSuccessEvent
-	 * AuthenticationSuccessEvent} to the Spring application context. In
-	 * addition, the presenter will publish a {@link UserLoggedInEvent} to its
-	 * application context, which may be useful if the authentication manager
-	 * and the presenter are defined in separate contexts. If login fails, the
-	 * user is notified and a corresponding <code>AuthenticationFailure*</code>
-	 * (e.g.
-	 * {@link org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent
-	 * AuthenticationFailureBadCredentialsEvent}) event is published by the
-	 * authentication manager.
+	 * succeeds, the presenter will publish a {@link UserLoggedInEvent} to the
+	 * view. If login fails, the user is notified.
 	 * 
 	 * @param username
 	 *            the username.
@@ -92,7 +93,7 @@ public final class LoginPresenter extends Presenter<LoginView> {
 				logger.debug("Authentication of user '" + auth.getName()
 						+ "' succeeded");
 			}
-			getApplicationContext().publishEvent(new UserLoggedInEvent(result));
+			getView().fireViewEvent(new UserLoggedInEvent(getView(), result));
 		} catch (BadCredentialsException e) {
 			if (logger.isDebugEnabled()) {
 				logger.debug("Bad credentials for user '" + auth.getName()
