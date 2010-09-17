@@ -118,7 +118,7 @@ public class ViewControllerImpl implements ViewController {
 		} else {
 			// Push the view onto the stack
 			viewStack.push(view);
-			view.showView(userData);
+			view.showView(this, userData);
 			fireCurrentViewChanged(oldView, view, Direction.FORWARD);
 		}
 		return true;

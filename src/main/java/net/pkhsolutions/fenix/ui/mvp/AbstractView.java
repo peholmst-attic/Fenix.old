@@ -23,36 +23,42 @@ import javax.annotation.PreDestroy;
 
 import net.pkhsolutions.fenix.i18n.I18N;
 import net.pkhsolutions.fenix.i18n.I18NListener;
+import net.pkhsolutions.fenix.util.VisitableList;
+import net.pkhsolutions.fenix.util.VisitableList.Visitor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.util.Assert;
 
 /**
  * This is an abstract base class for {@link View}-implementations and is to be
  * used together with concrete {@link Presenter}-implementations.
  * <p>
- * This view base class is designed to be configured inside a Spring application
- * context. By autowiring the {@link #AbstractView(Presenter) constructor} of
- * the concrete subclass, the corresponding Presenter can be automatically
- * injected. Please see the {@link Presenter} javadocs for an example of how the
- * view and the presenter could be configured.
+ * This view base class is designed to be configured by a Spring application
+ * context using the {@link Configurable @Configurable} AspectJ aspect. In order
+ * for this to work, either compile-time weaving or runtime weaving must be
+ * enabled. Please see the Spring reference guide for more information on this.
+ * It is possible to use the view as-is, but then {@link #init()} and
+ * {@link #destroy()} must be called manually.
  * <p>
- * As a convenience, a {@link I18N} instance is also automatically injected,
- * making it easy to create localized view implementations. When the current
- * locale is changed, the view is informed (see
- * {@link #localeChanged(I18N, Locale, Locale)}), allowing it to update labels
- * and other visible text in the UI.
+ * When a view is created, an {@link I18N} instance is always specified as a
+ * constructor parameter, making it easy to create localized view
+ * implementations. When the current locale is changed, the view is informed
+ * (see {@link #localeChanged(I18N, Locale, Locale)}), allowing it to update
+ * labels and other visible text in the UI.
+ * 
+ * @see <a
+ *      href="http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/aop.html#aop-atconfigurable">Spring Reference</a>
  * 
  * @author Petter Holmström
- * 
+ *
  * @param <V>
  *            the type of the View.
  * @param <P>
  *            the type of the Presenter.
  */
+@Configurable
 public abstract class AbstractView<V extends View, P extends Presenter<V>>
 		implements View, I18NListener {
 
@@ -64,62 +70,37 @@ public abstract class AbstractView<V extends View, P extends Presenter<V>>
 	protected static final Logger logger = LoggerFactory
 			.getLogger(AbstractView.class);
 
-	/*
-	 * We cannot autowire the presenter, as Spring autowiring does not play well
-	 * with generic types. In this case, it would look for a type of class
-	 * Presenter instead of P. If our application had only one presenter, it
-	 * would work, otherwise Spring would not know which presenter to inject and
-	 * throw an exception.
-	 */
 	private P presenter;
 
-	/**
-	 * The I18N instance is injected by autowiring. If the application context
-	 * does not contain one and only one instance of type I18N, this will fail.
-	 */
-	@Autowired
+	private VisitableList<ViewListener> listenerList = new VisitableList<ViewListener>();
+
 	private I18N i18n;
 
 	/**
-	 * Creates a new <code>AbstractView</code>, with the specified presenter.
-	 * <p>
-	 * If class path scanning is used in the Spring application context,
-	 * subclasses should make this method public and autowire it, e.g. like
-	 * this:
+	 * Creates a new <code>AbstractView</code>, with the specified I18N
+	 * instance. Once the I18N has been set, {@link #createPresenter()} is
+	 * called to create the presenter.
 	 * 
-	 * <code>
-	 * <pre>
-	 * {@link Component @Component}
-	 * public class MyViewImpl extends {@link AbstractView}&lt;MyView, MyPresenter&gt; 
-	 *     implements MyView {
-	 *     
-	 *     {@link Autowired @Autowired}
-	 *     public MyViewImpl(MyPresenter presenter) {
-	 *         super(presenter);
-	 *     }
-	 *     
-	 *     ...
-	 * }
-	 * </code> </pre>
-	 * 
-	 * Otherwise, the constructor parameter has to be manually specified in the
-	 * Spring application context.
-	 * 
-	 * 
-	 * @param presenter
-	 *            the presenter to use (must not be <code>null</code>).
+	 * @param i18n
+	 *            the I18N instance to use (must not be <code>null</code>).
 	 */
-	protected AbstractView(P presenter) {
-		Assert.notNull(presenter, "presenter must not be null");
-		this.presenter = presenter;
+	public AbstractView(I18N i18n) {
+		Assert.notNull(i18n, "i18n must not be null");
+		this.i18n = i18n;
+		this.presenter = createPresenter();
 	}
 
 	/**
+	 * This method is called by the constructor to create the presenter. The
+	 * presenter will be initialized by the {@link #init()} method.
+	 * 
+	 * @return a new presenter instance (never <code>null</code>).
+	 */
+	protected abstract P createPresenter();
+
+	/**
 	 * Gets the <code>I18N</code> instance that can be used to retrieve
-	 * localized messages, etc. It will be automatically injected by the Spring
-	 * application context using autowiring. Thus, at least when {@link #init()}
-	 * is called (and after that), this method will return a non-
-	 * <code>null</code> instance.
+	 * localized messages, etc.
 	 * 
 	 * @return the I18N instance.
 	 */
@@ -132,7 +113,7 @@ public abstract class AbstractView<V extends View, P extends Presenter<V>>
 	 * 
 	 * @return the presenter instance (never <code>null</code>).
 	 */
-	protected final P getPresenter() {
+	public final P getPresenter() {
 		return presenter;
 	}
 
@@ -153,7 +134,6 @@ public abstract class AbstractView<V extends View, P extends Presenter<V>>
 	 * @see #getI18n()
 	 * @see #getPresenter()
 	 */
-	@SuppressWarnings("unchecked")
 	@PostConstruct
 	@Override
 	public void init() {
@@ -164,7 +144,7 @@ public abstract class AbstractView<V extends View, P extends Presenter<V>>
 		if (logger.isDebugEnabled()) {
 			logger.debug("Initializing presenter [" + presenter + "]");
 		}
-		getPresenter().init((V) this);
+		getPresenter().init();
 		if (logger.isDebugEnabled()) {
 			logger.debug("View and presenter initialized");
 			logger.debug("Registering I18NListener with [" + getI18n() + "]");
@@ -228,6 +208,30 @@ public abstract class AbstractView<V extends View, P extends Presenter<V>>
 	 * This implementation does nothing. Subclasses may override.
 	 */
 	@Override
-	public void showView(Map<String, Object> userData) {
+	public void showView(ViewController viewController,
+			Map<String, Object> userData) {
+	}
+
+	@Override
+	public void addListener(ViewListener listener) {
+		listenerList.add(listener);
+	}
+
+	@Override
+	public void removeListener(ViewListener listener) {
+		listenerList.remove(listener);
+	}
+
+	@Override
+	public void fireViewEvent(final ViewEvent event) {
+		if (logger.isDebugEnabled()) {
+			logger.debug("Firing event [" + event + "]");
+		}
+		listenerList.visitList(new Visitor<ViewListener>() {
+			@Override
+			public void visit(ViewListener item) {
+				item.onViewEvent(event);
+			}
+		});
 	}
 }

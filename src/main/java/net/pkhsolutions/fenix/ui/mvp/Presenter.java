@@ -19,10 +19,7 @@ import java.io.Serializable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.util.Assert;
 
 /**
@@ -43,37 +40,6 @@ import org.springframework.util.Assert;
  * <li>It makes it easy to rewrite the GUI using another framework, as only the
  * views need to be reimplemented (well, at least in a perfect world).</li>
  * </ol>
- * <p>
- * This presenter base class is designed to be configured inside a Spring
- * application context. If <a href=
- * "http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/beans.html#beans-classpath-scanning"
- * >classpath scanning</a> is used to find beans for the application context,
- * the presenter and view classes could look something like this:
- * 
- * <code>
- * <pre>
- * {@link Component @Component}
- * public class MyPresenter extends Presenter&lt;MyView&gt; {
- *     ...
- * }
- * 
- * public interface MyView extends {@link View} {
- *     ...
- * }
- * 
- * {@link Component @Component}
- * public class MyViewImpl extends {@link AbstractView}&lt;MyView, MyPresenter&gt; 
- *     implements MyView {
- *     
- *     {@link Autowired @Autowired}
- *     public MyViewImpl(MyPresenter presenter) {
- *         super(presenter);
- *     }
- *     
- *     ...
- * }
- * </pre>
- * </code>
  * 
  * @see AbstractView
  * @author Petter Holmström
@@ -81,6 +47,7 @@ import org.springframework.util.Assert;
  * @param <V>
  *            the type of the View.
  */
+@Configurable
 public abstract class Presenter<V extends View> implements Serializable {
 
 	private static final long serialVersionUID = 2534637487948598474L;
@@ -90,38 +57,25 @@ public abstract class Presenter<V extends View> implements Serializable {
 	 */
 	protected static final Logger logger = LoggerFactory
 			.getLogger(Presenter.class);
-	/*
-	 * We cannot autowire the view, as Spring autowiring does not play well with
-	 * generic types. In this case, it would look for a type of class View
-	 * instead of V. If our application had only one view, it would work,
-	 * otherwise Spring would not know which view to inject and throw an
-	 * exception.
-	 */
+
 	private V view;
 
-	@Autowired
-	private ApplicationContext applicationContext;
-
 	/**
-	 * Gets the Spring application context that this presenter has been
-	 * configured in.
-	 * <p>
-	 * If the application context is an instance of
-	 * {@link ConfigurableApplicationContext}, the presenter may close the
-	 * application by invoking {@link ConfigurableApplicationContext#close()}.
+	 * Creates a new <code>Presenter</code> with the specified view. The
+	 * presenter is initialized in the {@link #init()} method.
 	 * 
-	 * @return the application context.
+	 * @param view
+	 *            the view to use (must not be <code>null</code>).
 	 */
-	protected final ApplicationContext getApplicationContext() {
-		return applicationContext;
+	public Presenter(V view) {
+		Assert.notNull(view, "view must not be null");
+		this.view = view;
 	}
 
 	/**
-	 * Gets the view for this presenter. The view instance will be set by the
-	 * {@link #init(View)} method.
+	 * Gets the view for this presenter.
 	 * 
-	 * @return the view instance (never <code>null</code> once the presenter has
-	 *         been initialized).
+	 * @return the view instance (never <code>null</code>).
 	 */
 	protected final V getView() {
 		return view;
@@ -132,21 +86,9 @@ public abstract class Presenter<V extends View> implements Serializable {
 	 * presenter. When this method is called, the view will already have been
 	 * initialized.
 	 * <p>
-	 * Apart from setting the <code>view</code> property, this method does
-	 * nothing. Subclasses may override, but must remember to start by calling
-	 * <code>super.init(view)</code>.
-	 * 
-	 * @see #getView()
-	 * @param view
-	 *            the view instance, never <code>null</code>.
+	 * This implementation does nothing, subclasses may override.
 	 */
-	public void init(V view) {
-		Assert.notNull(view, "view must not be null");
-		if (logger.isDebugEnabled()) {
-			logger.debug("Initializing presenter [" + this
-					+ "], setting view to [" + view + "]");
-		}
-		this.view = view;
+	public void init() {
 	}
 
 }
