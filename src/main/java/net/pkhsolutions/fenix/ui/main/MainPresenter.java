@@ -17,29 +17,26 @@ package net.pkhsolutions.fenix.ui.main;
 
 import net.pkhsolutions.fenix.ui.mvp.Presenter;
 
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.stereotype.Component;
-
 /**
- * 
+ * TODO Document me! 
  * @author petter
  *
  */
-@Component
 public class MainPresenter extends Presenter<MainView> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6885390700438953159L;
+
+	public MainPresenter(MainView view) {
+		super(view);
+	}
 
 	/**
 	 * 
 	 */
 	public void logout() {
 		if (logger.isDebugEnabled()) {
-			logger.debug("Logging out the user by closing the application context");
+			logger.debug("Logging out the user");
 		}
-		((ConfigurableApplicationContext) getApplicationContext()).close();
+		getView().fireViewEvent(new UserLoggedOutEvent(getView()));
 	}
 }

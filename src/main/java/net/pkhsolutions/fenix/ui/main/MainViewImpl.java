@@ -23,9 +23,7 @@ import net.pkhsolutions.fenix.ui.mvp.AbstractView;
 import net.pkhsolutions.fenix.ui.mvp.VaadinView;
 import net.pkhsolutions.fenix.ui.mvp.ViewController;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
 import org.vaadin.notifique.Notifique;
 import org.vaadin.notifique.Notifique.Message;
 
@@ -45,13 +43,16 @@ import com.vaadin.ui.VerticalLayout;
  * @author petter
  * 
  */
-@Component(MainView.BEAN_NAME)
 public final class MainViewImpl extends AbstractView<MainView, MainPresenter>
 		implements MainView, VaadinView {
 
+	public MainViewImpl(I18N i18n, Application application) {
+		super(i18n);
+		this.application = application;
+	}
+
 	private static final long serialVersionUID = 2659284453464649349L;
 
-	@Autowired
 	private Application application;
 
 	private VerticalLayout viewLayout;
@@ -72,11 +73,6 @@ public final class MainViewImpl extends AbstractView<MainView, MainPresenter>
 
 	private ViewController viewController;
 	
-	@Autowired
-	public MainViewImpl(MainPresenter presenter) {
-		super(presenter);
-	}
-
 	@Override
 	public String getDisplayName() {
 		return getI18n().getMessage("mainView.displayName",
@@ -237,6 +233,11 @@ public final class MainViewImpl extends AbstractView<MainView, MainPresenter>
 		cancelButton.setStyleName(FenixTheme.BUTTON_SMALL);
 		
 		messages[0] = notifications.add(null, layout, Notifique.Styles.MAGIC_GRAY, false);
+	}
+
+	@Override
+	protected MainPresenter createPresenter() {
+		return new MainPresenter(this);
 	}
 	
 	

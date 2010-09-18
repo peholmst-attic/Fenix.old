@@ -15,13 +15,20 @@
  */
 package net.pkhsolutions.fenix.ui.main;
 
-import net.pkhsolutions.fenix.ui.mvp.View;
+import net.pkhsolutions.fenix.ui.mvp.ViewEvent;
 
 /**
- * 
+ * TODO Document me!
  * @author petter
  *
  */
-public interface MainView extends View {
-	
+public class UserLoggedOutEvent extends ViewEvent {
+
+	private static final long serialVersionUID = -2185267844048695329L;
+
+	public UserLoggedOutEvent(MainView source) {
+		super(source);
+		// TODO Auto-generated constructor stub
+	}
+
 }

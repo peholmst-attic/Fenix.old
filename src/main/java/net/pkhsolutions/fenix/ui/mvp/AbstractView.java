@@ -49,10 +49,11 @@ import org.springframework.util.Assert;
  * labels and other visible text in the UI.
  * 
  * @see <a
- *      href="http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/aop.html#aop-atconfigurable">Spring Reference</a>
+ *      href="http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/aop.html#aop-atconfigurable">Spring
+ *      Reference</a>
  * 
  * @author Petter Holmström
- *
+ * 
  * @param <V>
  *            the type of the View.
  * @param <P>
@@ -157,11 +158,6 @@ public abstract class AbstractView<V extends View, P extends Presenter<V>>
 	 * Subclasses that need to do any other cleaning operations before being
 	 * destroyed may override, but must remember to call
 	 * <code>super.destroy()</code>.
-	 * <p>
-	 * As this method is annotated with {@link PreDestroy @PreDestroy}, the
-	 * Spring application context will automatically invoke this method when the
-	 * application context is closing. Thus, a client normally never has to
-	 * invoke this method manually.
 	 * 
 	 * @see #getI18n()
 	 * @see #init()
