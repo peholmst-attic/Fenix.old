@@ -314,6 +314,6 @@
 	<properties>
 		<spring.version>3.0.4.RELEASE</spring.version>
 		<spring-security.version>3.0.3.RELEASE</spring-security.version>
-		<vaadin.version>6.4.3</vaadin.version>
+		<vaadin.version>6.4.4</vaadin.version>
 	</properties>
 </project>
