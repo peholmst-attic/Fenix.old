@@ -11,6 +11,9 @@
 	<context:annotation-config />
 	
 	<!-- TODO Document me -->
+	<context:spring-configured />
+	
+	<!-- TODO Document me -->
 	<context:load-time-weaver />
 
 	<!-- This makes it possible to use annotations (@Component, @Repository, 
