@@ -77,7 +77,7 @@ public class ViewControllerImplTest {
 	public void testAddFirstView_NoParameters() {
 		listener.currentViewChanged(controller, null, view, Direction.FORWARD);
 		replay(listener);
-		view.showView(null);
+		view.showView(controller, null);
 		replay(view);
 
 		assertTrue(controller.goToView(view));
@@ -90,7 +90,7 @@ public class ViewControllerImplTest {
 	public void goToFirstViewTwice_NoParameters() {
 		listener.currentViewChanged(controller, null, view, Direction.FORWARD);
 		replay(listener);
-		view.showView(null);
+		view.showView(controller, null);
 		replay(view);
 
 		assertTrue(controller.goToView(view));
@@ -105,9 +105,9 @@ public class ViewControllerImplTest {
 		listener.currentViewChanged(controller, null, view, Direction.FORWARD);
 		listener.currentViewChanged(controller, view, view2, Direction.FORWARD);
 		replay(listener);
-		view.showView(null);
+		view.showView(controller, null);
 		replay(view);
-		view2.showView(null);
+		view2.showView(controller, null);
 		replay(view2);
 
 		assertTrue(controller.goToView(view));
@@ -123,9 +123,9 @@ public class ViewControllerImplTest {
 		listener.currentViewChanged(controller, view, view2, Direction.FORWARD);
 		listener.currentViewChanged(controller, view2, view, Direction.BACKWARD);
 		replay(listener);
-		view.showView(null);
+		view.showView(controller, null);
 		replay(view);
-		view2.showView(null);
+		view2.showView(controller, null);
 		expect(view2.okToClose()).andReturn(true);
 		replay(view2);
 
@@ -143,9 +143,9 @@ public class ViewControllerImplTest {
 		listener.currentViewChanged(controller, view, view2, Direction.FORWARD);
 		listener.currentViewChanged(controller, view2, view, Direction.BACKWARD);
 		replay(listener);
-		view.showView(null);
+		view.showView(controller, null);
 		replay(view);
-		view2.showView(null);
+		view2.showView(controller, null);
 		expect(view2.okToClose()).andReturn(true);
 		replay(view2);
 
@@ -162,9 +162,9 @@ public class ViewControllerImplTest {
 		listener.currentViewChanged(controller, null, view, Direction.FORWARD);
 		listener.currentViewChanged(controller, view, view2, Direction.FORWARD);
 		replay(listener);
-		view.showView(null);
+		view.showView(controller, null);
 		replay(view);
-		view2.showView(null);
+		view2.showView(controller, null);
 		expect(view2.okToClose()).andReturn(false);
 		replay(view2);
 
@@ -184,12 +184,12 @@ public class ViewControllerImplTest {
 		listener.currentViewChanged(controller, view3, view2,
 				Direction.BACKWARD);
 		replay(listener);
-		view.showView(null);
+		view.showView(controller, null);
 		replay(view);
-		view2.showView(null);
+		view2.showView(controller, null);
 		expect(view2.okToClose()).andReturn(false);
 		replay(view2);
-		view3.showView(null);
+		view3.showView(controller, null);
 		expect(view3.okToClose()).andReturn(true);
 		replay(view3);
 
@@ -211,9 +211,9 @@ public class ViewControllerImplTest {
 		listener.currentViewChanged(controller, view, view2, Direction.FORWARD);
 		listener.currentViewChanged(controller, view2, view, Direction.BACKWARD);
 		replay(listener);
-		view.showView(null);
+		view.showView(controller, null);
 		replay(view);
-		view2.showView(null);
+		view2.showView(controller, null);
 		expect(view2.okToClose()).andReturn(true);
 		replay(view2);
 
@@ -230,9 +230,9 @@ public class ViewControllerImplTest {
 		listener.currentViewChanged(controller, null, view, Direction.FORWARD);
 		listener.currentViewChanged(controller, view, view2, Direction.FORWARD);
 		replay(listener);
-		view.showView(null);
+		view.showView(controller, null);
 		replay(view);
-		view2.showView(null);
+		view2.showView(controller, null);
 		expect(view2.okToClose()).andReturn(false);
 		replay(view2);
 
@@ -248,7 +248,7 @@ public class ViewControllerImplTest {
 	public void testGoBack_OnlyOneView() {
 		listener.currentViewChanged(controller, null, view, Direction.FORWARD);
 		replay(listener);
-		view.showView(null);
+		view.showView(controller, null);
 		replay(view);
 
 		assertTrue(controller.goToView(view));
@@ -265,7 +265,7 @@ public class ViewControllerImplTest {
 
 		listener.currentViewChanged(controller, null, view, Direction.FORWARD);
 		replay(listener);
-		view.showView(userMap);
+		view.showView(controller, userMap);
 		replay(view);
 
 		assertTrue(controller.goToView(view, "hello", "world"));
