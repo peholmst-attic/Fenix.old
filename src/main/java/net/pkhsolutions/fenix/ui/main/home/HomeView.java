@@ -13,22 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.pkhsolutions.fenix.ui;
+package net.pkhsolutions.fenix.ui.main.home;
 
-import com.vaadin.ui.themes.Reindeer;
+import net.pkhsolutions.fenix.ui.mvp.View;
 
-/**
- * TODO Document me!
- * 
- * @author petter
- */
-public class FenixTheme extends Reindeer {
+public interface HomeView extends View {
 
-	public static final String THEME_NAME = "Fenix";
-
-	public static String themeName() {
-		return THEME_NAME;
-	}
-	
-	public static final String BREADCRUMB_PANEL = "breadcrumbs";
 }

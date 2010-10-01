@@ -12,9 +12,6 @@
 	
 	<!-- TODO Document me -->
 	<context:spring-configured />
-	
-	<!-- TODO Document me -->
-	<context:load-time-weaver />
 
 	<!-- This makes it possible to use annotations (@Component, @Repository, 
 		etc.) to configure the beans in this application context. -->

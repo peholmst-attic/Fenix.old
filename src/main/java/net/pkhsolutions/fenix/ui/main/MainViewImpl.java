@@ -19,9 +19,13 @@ import java.util.Locale;
 
 import net.pkhsolutions.fenix.i18n.I18N;
 import net.pkhsolutions.fenix.ui.FenixTheme;
+import net.pkhsolutions.fenix.ui.main.home.HomeViewImpl;
 import net.pkhsolutions.fenix.ui.mvp.AbstractView;
 import net.pkhsolutions.fenix.ui.mvp.VaadinView;
+import net.pkhsolutions.fenix.ui.mvp.View;
 import net.pkhsolutions.fenix.ui.mvp.ViewController;
+import net.pkhsolutions.fenix.ui.mvp.ViewControllerImpl;
+import net.pkhsolutions.fenix.ui.mvp.ViewControllerListener;
 
 import org.springframework.security.core.Authentication;
 import org.vaadin.notifique.Notifique;
@@ -32,6 +36,7 @@ import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -104,22 +109,40 @@ public final class MainViewImpl extends AbstractView<MainView, MainPresenter>
 		viewLayout = new VerticalLayout();
 		viewLayout.setSizeFull();
 		viewLayout.addComponent(header);
-		
+
 		notifications = new Notifique(false);
 		notifications.setWidth("100%");
-		viewLayout.addComponent(notifications);
+		viewLayout.addComponent(notifications);	
+		
+		viewController = new ViewControllerImpl();
+		viewController.addListener(new ViewControllerListener() {
+
+			@Override
+			public void currentViewChanged(ViewController source, View oldView,
+					View newView, Direction direction) {
+				if (oldView != null) {
+					viewLayout.removeComponent(((VaadinView) oldView).getViewComponent());
+				}
+				Component cmp = ((VaadinView) newView).getViewComponent();
+				viewLayout.addComponent(cmp);
+				viewLayout.setExpandRatio(cmp, 1.0f);
+			}});
 		
 		breadcrumbs = new BreadcrumbPanel();
 		breadcrumbs.setWidth("100%");
-		viewLayout.addComponent(breadcrumbs);
-
+		breadcrumbs.setViewController(viewController);
+		viewLayout.addComponent(breadcrumbs);	
+		
 		updateLabels();
+		
+		// Set the Home view as the first view of the view controller
+		viewController.goToView(new HomeViewImpl(getI18n()));
 	}
 
 	@SuppressWarnings("serial")
 	private ComponentContainer createHeader() {
 		final HorizontalLayout layout = new HorizontalLayout();
-		layout.setMargin(false);
+		layout.setMargin(false, true, false, false);
 		layout.setWidth("100%");
 
 		final Label title = new Label();
@@ -201,6 +224,7 @@ public final class MainViewImpl extends AbstractView<MainView, MainPresenter>
 		}
 	}
 
+	@SuppressWarnings("serial")
 	private void confirmLogout() {
 		final HorizontalLayout layout = new HorizontalLayout();
 		layout.setSpacing(true);

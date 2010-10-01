@@ -15,12 +15,17 @@
  */
 package net.pkhsolutions.fenix.ui.main;
 
+import net.pkhsolutions.fenix.ui.FenixTheme;
 import net.pkhsolutions.fenix.ui.mvp.View;
 import net.pkhsolutions.fenix.ui.mvp.ViewController;
 import net.pkhsolutions.fenix.ui.mvp.ViewControllerListener;
 
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.VerticalLayout;
 
 /**
  * TODO Document me!
@@ -28,17 +33,25 @@ import com.vaadin.ui.Label;
  * @author petter
  *
  */
-public class BreadcrumbPanel extends HorizontalLayout implements ViewControllerListener {
+public class BreadcrumbPanel extends VerticalLayout implements ViewControllerListener {
 
 	private static final long serialVersionUID = -792768199294588050L;
 	
 	private ViewController viewController;
 	
+	// TODO This is ugly, there has to be a way to achieve this without having one layout inside of another
+	private HorizontalLayout buttonsBar;
+	
 	public BreadcrumbPanel() {
 		setSpacing(true);
-		setMargin(true);
-		Label lbl = new Label("You are currently here:");
-		addComponent(lbl);
+		setMargin(false, true, false, true);
+		addStyleName(FenixTheme.BREADCRUMB_PANEL);
+//		buttonsBar = new HorizontalLayout();
+//		Label lbl = new Label("You are currently here:");
+//		buttonsBar.addComponent(lbl);
+	//	buttonsBar.setSpacing(true);
+	//	buttonsBar.setComponentAlignment(lbl, Alignment.MIDDLE_LEFT);
+	//	addComponent(buttonsBar);
 	}
 	
 	public ViewController getViewController() {
@@ -55,11 +68,30 @@ public class BreadcrumbPanel extends HorizontalLayout implements ViewControllerL
 		}
 	}
 	
+	@SuppressWarnings("serial")
 	@Override
-	public void currentViewChanged(ViewController source, View oldView,
-			View newView, Direction direction) {
-		// TODO Auto-generated method stub
-		
+	public void currentViewChanged(final ViewController source, final View oldView,
+			final View newView, final Direction direction) {
+		if (direction.equals(Direction.FORWARD)) {
+			// TODO i18n changes!
+			Button btn = new Button(newView.getDisplayName());
+			btn.setDescription(newView.getDescription());
+			btn.setStyleName(FenixTheme.BUTTON_LINK);
+			btn.setSizeUndefined();
+			btn.addListener(new Button.ClickListener() {
+				
+				@Override
+				public void buttonClick(ClickEvent event) {
+					source.goToView(newView);
+				}
+			});
+			if (source.getTrail().size() > 1) {
+				addComponent(new Label("»"));
+			}
+			addComponent(btn);
+			setComponentAlignment(btn, Alignment.MIDDLE_LEFT);
+		}
+		// TODO Add support for backwards navigation
 	}
 
 }
