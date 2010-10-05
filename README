@@ -3,22 +3,35 @@ Fenix README
 
 TODO Add a description of this application
 
+
 USING ECLIPSE
 
 If you want to open this project using Eclipse, you will need the following:
 - The JEE version of Eclipse version 3.5 or newer (this project was created using Eclipse 3.6)
 - M2Eclipse and M2Eclipse Maven Integration for WTP (http://m2eclipse.sonatype.org/installing-m2eclipse.html)
+- AspectJ Development Tools (http://www.eclipse.org/ajdt/)
 - Optionally: Spring IDE (http://www.springsource.org) 
               OR
               SpringSource Tool Suite (http://www.springsource.com/developer/sts)		
 - Optionally: Eclemma (http://www.eclemma.org) in order to view unit test coverage
 
+When you have your IDE setup, execute the following command to have Maven automatically generate the necessary Eclipse project files:
+
+	$ mvn eclipse:eclipse
+
+After this, you can open the project in Eclipse.
+
+Please note, that you *cannot* open the project directly using M2Eclipse. This is because M2Eclipse and AJDT do not currently integrate very well and Fenix requires AspectJ compile-time weaving in order to function properly.
+
+
+USING NETBEANS
+
+As Fenix is a pure Maven-project, and NetBeans has excellent Maven support, you can open the project directly without installing any additional plugins. NetBeans 6.9.1 has been successfully tested.
+
 
 CONFIGURING THE DATABASE
 
-To keep deployment as simple as possible, Fenix handles the database connection itself. Although Fenix can use most of 
-the popular RDBMs currently on the market (both open source and commercial), it has been configured to use 
-MySQL (http://www.mysql.com) by default.
+To keep deployment as simple as possible, Fenix handles the database connection itself. Although Fenix can use most of the popular RDBMs currently on the market (both open source and commercial), it has been configured to use MySQL (http://www.mysql.com) by default.
 
 The default connection parameters are the following:
 - Host:           localhost
@@ -29,29 +42,7 @@ The default connection parameters are the following:
 
 If these differ from your environment, you can edit them in the src/main/resources/database.properties file.
 
-If you want to use another RDBMs, add the JDBC driver to the classpath and update the database.properties file
-accordingly.
+If you want to use another RDBMs, add the JDBC driver to the classpath and update the database.properties file accordingly.
 
 	TODO Add info about JNDI/JTA configuration 
-
-
-DEPLOYMENT ON TOMCAT
-
-Although Fenix can be deployed on many different Servlet 2.5 compliant application servers, it has been configured
-to be deployed on Tomcat 6 (http://tomcat.apache.org) by default. However, due to the use of AspectJ load-time weaving, 
-some additional tweaking of the Tomcat server installation itself must be performed before Fenix can be successfully 
-deployed. 
-
-Locate the file 'org.springframework.instrument.tomcat-XXX.jar' (it should be in your local Maven repository, as it
-has been included as a dependency in the Fenix POM) and copy it into $CATALINA_HOME/lib, where $CATALINA_HOME 
-represents the root of the Tomcat installation.
-
-Then package Fenix into a WAR (e.g. by issuing the 'mvn package' command) and deploy it as you would deploy any
-other web application.
-
-
-DEPLOYMENT ON OTHER WEB SERVERS
-
-The Spring reference documentation contains information about how to setup some other web servers for load-time
-weaving: http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/aop.html#aop-aj-ltw-environments
 
