@@ -44,45 +44,58 @@ public class Report extends AbstractEntity {
 
 	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	private ProducerFD producerFD;
+	public static final String PROP_PRODUCER_FD = "producerFD";
 
 	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	private ReportType reportType;
+	public static final String PROP_REPORT_TYPE = "reportType";
 
 	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
 	private Date eventStartDate;
+	public static final String PROP_EVENT_START_DATE = "eventStartDate";
 
 	@Temporal(TemporalType.TIME)
 	@Column(nullable = false)
 	private Date eventStartTime;
+	public static final String PROP_EVENT_START_TIME = "eventStartTime";
 
 	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
 	private Date eventEndDate;
+	public static final String PROP_EVENT_END_DATE = "eventEndDate";
 
 	@Temporal(TemporalType.TIME)
 	@Column(nullable = false)
 	private Date eventEndTime;
+	public static final String PROP_EVENT_END_TIME = "eventEndTime";
 
 	@Column(nullable = false)
 	private String subject;
+	public static final String PROP_SUBJECT = "subject";
 
 	@Column(nullable = false)
 	private String summary;
-
+	public static final String PROP_SUMMARY = "summary";
+	
 	// TODO Add person (or persons) in charge??
 
+	// TODO Add location
+	
 	// TODO Add attachments (e.g. additional reports)
 
 	@Enumerated(EnumType.ORDINAL)
 	@Column(nullable = false)
 	private ReportState state = ReportState.INCOMPLETE;
+	public static final String PROP_STATE = "state";
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "report", orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<ReportStateChangeEntry> stateChangeEntries = new HashSet<ReportStateChangeEntry>();
-
+	public static final String PROP_STATE_CHANGE_ENTRIES = "stateChangeEntries";
+	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "report", orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<ReportParticipant> participants = new HashSet<ReportParticipant>();
+	public static final String PROP_PARTICIPANTS = "participants";
 
 	public ProducerFD getProducerFD() {
 		return producerFD;

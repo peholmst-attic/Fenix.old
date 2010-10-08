@@ -77,6 +77,8 @@ public abstract class AbstractView<V extends View, P extends Presenter<V>>
 
 	private I18N i18n;
 
+	private ViewController viewController;
+
 	/**
 	 * Creates a new <code>AbstractView</code>, with the specified I18N
 	 * instance. Once the I18N has been set, {@link #createPresenter()} is
@@ -201,11 +203,27 @@ public abstract class AbstractView<V extends View, P extends Presenter<V>>
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * This implementation does nothing. Subclasses may override.
+	 * This implementation updates the {@link #getViewController()
+	 * viewController} property and calls
+	 * {@link Presenter#viewShown(ViewController, Map)} on the presenter.
+	 * Subclasses may override, but must start by calling
+	 * <code>super.showView(..)</code>.
 	 */
 	@Override
 	public void showView(ViewController viewController,
 			Map<String, Object> userData) {
+		this.viewController = viewController;
+		getPresenter().viewShown(viewController, userData);
+	}
+
+	/**
+	 * Gets the view controller that manages this view, if any.
+	 * 
+	 * @return the view controller, or <code>null</code> if this view is not
+	 *         managed by a view controller.
+	 */
+	public ViewController getViewController() {
+		return viewController;
 	}
 
 	@Override

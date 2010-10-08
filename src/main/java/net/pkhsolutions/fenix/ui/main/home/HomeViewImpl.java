@@ -15,10 +15,21 @@
  */
 package net.pkhsolutions.fenix.ui.main.home;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import net.pkhsolutions.fenix.domain.ProducerFD;
+import net.pkhsolutions.fenix.domain.Report;
+import net.pkhsolutions.fenix.domain.ReportType;
 import net.pkhsolutions.fenix.i18n.I18N;
+import net.pkhsolutions.fenix.ui.main.reports.ReportFormView;
+import net.pkhsolutions.fenix.ui.main.reports.ReportFormViewImpl;
 import net.pkhsolutions.fenix.ui.mvp.AbstractView;
 import net.pkhsolutions.fenix.ui.mvp.VaadinView;
 
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
@@ -33,7 +44,7 @@ public class HomeViewImpl extends AbstractView<HomeView, HomePresenter>
 	private static final long serialVersionUID = 2314588940522545090L;
 
 	private VerticalLayout viewLayout;
-	
+		
 	@Override
 	public String getDisplayName() {
 		return "Home"; // TODO localize
@@ -58,6 +69,22 @@ public class HomeViewImpl extends AbstractView<HomeView, HomePresenter>
 		viewLayout.setSizeFull();
 		viewLayout.setMargin(true);
 		viewLayout.addComponent(new Label("Home screen"));
+		
+		viewLayout.addComponent(new Button("Go to Report Browser"));
+		viewLayout.addComponent(new Button("Go to Report Form", new Button.ClickListener() {
+			
+			@Override
+			public void buttonClick(ClickEvent event) {
+				Locale sv = new Locale("sv");
+				
+				Report report = new Report();
+				report.setProducerFD(new ProducerFD());
+				report.getProducerFD().getName().setValue(sv, "Pargas Frivilliga Brandkår");
+				report.getProducerFD().getName().setDefaultLanguage(sv);
+				
+				getViewController().goToView(new ReportFormViewImpl(getI18n()), ReportFormView.REPORT_USER_DATA_KEY, report);
+			}
+		}));
 	}
 
 	@Override
@@ -69,4 +96,5 @@ public class HomeViewImpl extends AbstractView<HomeView, HomePresenter>
 	protected void initView() {
 		// Do nothing, components will be created lazily
 	}
+	
 }

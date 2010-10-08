@@ -16,6 +16,7 @@
 package net.pkhsolutions.fenix.ui.mvp;
 
 import java.io.Serializable;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,6 +90,19 @@ public abstract class Presenter<V extends View> implements Serializable {
 	 * This implementation does nothing, subclasses may override.
 	 */
 	public void init() {
+	}
+
+	/**
+	 * Called by {@link AbstractView#showView(ViewController, Map)}. This
+	 * implementation does nothing, subclasses may override.
+	 * 
+	 * @param viewController
+	 *            the view controller (never <code>null</code>).
+	 * @param userData
+	 *            a map of user-definable parameters (may be <code>null</code>).
+	 */
+	protected void viewShown(ViewController viewController,
+			Map<String, Object> userData) {
 	}
 
 }

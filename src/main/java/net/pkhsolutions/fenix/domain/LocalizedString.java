@@ -39,21 +39,62 @@ public class LocalizedString extends AbstractEntity {
 	@ElementCollection
 	private Map<String, String> valueMap = new HashMap<String, String>();
 
+	private String defaultLanguage;
+	
 	/**
 	 * 
 	 * @param locale
 	 * @return
 	 */
 	public String getValue(Locale locale) {
+		if (locale == null) {
+			return null;
+		}
 		return valueMap.get(locale.getISO3Language());
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	public Locale getDefaultLanguage() {
+		return defaultLanguage == null ? null : new Locale(defaultLanguage);
+	}
+	
+	/**
+	 * 
+	 * @param defaultLanguage
+	 */
+	public void setDefaultLanguage(Locale defaultLanguage) {
+		this.defaultLanguage = defaultLanguage == null ? null : defaultLanguage.getISO3Language();
+	}
+	
+	/**
+	 * 
+	 * @param locale
+	 * @return
+	 */
+	public String getValueRevertToDefault(Locale locale) {
+		String result = getValue(locale);
+		if (result == null) {
+			result = getValue(getDefaultLanguage());
+		}
+		return result;
+	}
+	
 	/**
 	 * 
 	 * @param locale
 	 * @param value
 	 */
 	public void setValue(Locale locale, String value) {
-		valueMap.put(locale.getISO3Language(), value);
+		if (locale == null) {
+			return;
+		}
+		if (value == null) {
+			valueMap.remove(locale.getISO3Language());
+		} else {
+			valueMap.put(locale.getISO3Language(), value);
+		}
 	}
 }
