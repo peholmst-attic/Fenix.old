@@ -77,12 +77,16 @@ public class Report extends AbstractEntity {
 	@Column(nullable = false)
 	private String summary;
 	public static final String PROP_SUMMARY = "summary";
-	
-	// TODO Add person (or persons) in charge??
 
-	// TODO Add location
-	
-	// TODO Add attachments (e.g. additional reports)
+	@Column(nullable = false)
+	private String location;
+	public static final String PROP_LOCATION = "location";
+
+	@Column(nullable = false)
+	private String supervisors;
+	public static final String PROP_SUPERVISORS = "supervisors";
+
+	// TODO Add attachments (e.g. additional reports
 
 	@Enumerated(EnumType.ORDINAL)
 	@Column(nullable = false)
@@ -92,7 +96,7 @@ public class Report extends AbstractEntity {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "report", orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<ReportStateChangeEntry> stateChangeEntries = new HashSet<ReportStateChangeEntry>();
 	public static final String PROP_STATE_CHANGE_ENTRIES = "stateChangeEntries";
-	
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "report", orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<ReportParticipant> participants = new HashSet<ReportParticipant>();
 	public static final String PROP_PARTICIPANTS = "participants";
@@ -175,6 +179,22 @@ public class Report extends AbstractEntity {
 
 	public Collection<ReportParticipant> getParticipants() {
 		return participants;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getSupervisors() {
+		return supervisors;
+	}
+
+	public void setSupervisors(String supervisors) {
+		this.supervisors = supervisors;
 	}
 
 }

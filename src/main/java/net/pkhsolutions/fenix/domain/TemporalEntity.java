@@ -31,31 +31,31 @@ import javax.persistence.TemporalType;
 public abstract class TemporalEntity extends AbstractEntity {
 
 	private static final long serialVersionUID = -3641387323891467287L;
-
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable=false)
+	@Column(nullable = false)
 	private Date validFrom;
-	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable=true)
+	@Column(nullable = true)
 	private Date validTo;
-	
+
 	public Date getValidFrom() {
-		return validFrom;
+		// Date is mutable, so we return a clone of it instead of the actual reference
+		return validFrom != null ? (Date) validFrom.clone() : null;
 	}
-	
+
 	public void setValidFrom(Date validFrom) {
-		this.validFrom = validFrom;
+		this.validFrom = validFrom != null ? (Date) validFrom.clone() : null;
 	}
-	
+
 	public Date getValidTo() {
-		return validTo;
+		// Date is mutable, so we return a clone of it instead of the actual reference
+		return validTo != null ? (Date) validTo.clone() : null;
 	}
-	
+
 	public void setValidTo(Date validTo) {
-		this.validTo = validTo;
+		this.validTo = validTo != null ? (Date) validTo.clone() : null;
 	}
-	
+
 	public boolean isValidNow() {
 		Date now = new Date();
 		if (validFrom == null) {

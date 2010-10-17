@@ -7,7 +7,7 @@ TODO Add a description of this application
 USING ECLIPSE
 
 If you want to open this project using Eclipse, you will need the following:
-- The JEE version of Eclipse version 3.5 or newer (this project was created using Eclipse 3.6)
+- The JEE version of Eclipse version 3.5 or newer (this project was tested using Eclipse 3.6)
 - M2Eclipse and M2Eclipse Maven Integration for WTP (http://m2eclipse.sonatype.org/installing-m2eclipse.html)
 - AspectJ Development Tools (http://www.eclipse.org/ajdt/)
 - Optionally: Spring IDE (http://www.springsource.org) 
@@ -28,6 +28,19 @@ USING NETBEANS
 
 As Fenix is a pure Maven-project, and NetBeans has excellent Maven support, you can open the project directly without installing any additional plugins. NetBeans 6.9.1 has been successfully tested.
 
+
+CHECKING CODE COVERAGE
+
+In order to view unit test code coverage, you have to run the following Maven goal:
+
+	$ mvn emma:emma
+
+Then, open target/site/emma/index.html to view the coverage report.
+
+
+PERFORMING STATICAL ANALYSIS
+
+Fenix uses Findbugs for performing statical analysis of the source code.
 
 CONFIGURING THE DATABASE
 

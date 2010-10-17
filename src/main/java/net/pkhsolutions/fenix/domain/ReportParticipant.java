@@ -33,44 +33,52 @@ import javax.persistence.TemporalType;
 @Entity
 public class ReportParticipant extends AbstractEntity {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8863852496467831327L;
 
 	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	private Report report;
+	public static final String PROP_REPORT = "report";
 
 	@ManyToOne(optional = true, fetch = FetchType.EAGER)
 	private ProducerFDMember fdMember;
-
+	public static final String PROP_FD_MEMBER = "fdMember";
+	
 	@Column(nullable = false)
 	private String firstName;
+	public static final String PROP_FIRST_NAME = "firstName";
 
 	@Column(nullable = false)
 	private String lastName;
+	public static final String PROP_LAST_NAME = "lastName";
 
 	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
 	private Date participationBeganDate;
+	public static final String PROP_PARTICIPATION_BEGAN_DATE = "participationBeganDate";
 
 	@Temporal(TemporalType.TIME)
 	@Column(nullable = false)
 	private Date participationBeganTime;
+	public static final String PROP_PARTICIPATION_BEGAN_TIME = "participationBeganTime";
 
 	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
 	private Date participationEndedDate;
+	public static final String PROP_PARTICIPATION_ENDED_DATE = "participationEndedDate";
 
 	@Temporal(TemporalType.TIME)
 	@Column(nullable = false)
 	private Date participationEndedTime;
+	public static final String PROP_PARTICIPATION_ENDED_TIME = "participationEndedTime";
 
 	// TODO Add unit
 
 	private boolean supervisor = false;
+	public static final String PROP_SUPERVISOR = "supervisor";
 
+	@Column(nullable = false)
 	private String comment;
+	public static final String PROP_COMMENT = "comment";
 
 	public Report getReport() {
 		return report;

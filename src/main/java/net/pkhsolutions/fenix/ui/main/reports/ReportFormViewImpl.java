@@ -17,18 +17,26 @@ package net.pkhsolutions.fenix.ui.main.reports;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Configurable;
+
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.ComponentContainer;
+import com.vaadin.ui.DateField;
 import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.Form;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.PopupDateField;
+import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
@@ -51,6 +59,8 @@ public class ReportFormViewImpl extends
 
 	private ReportForm reportForm;
 
+	private Table participationTable;
+	
 	private Label producerFDLabel;
 
 	private ComboBox reportTypeCombo;
@@ -80,19 +90,113 @@ public class ReportFormViewImpl extends
 
 	@Override
 	protected void initView() {
+		if (logger.isDebugEnabled()) {
+			logger.debug("Initializing ReportFormView");
+		}
 		viewLayout = new VerticalLayout();
 		viewLayout.setSizeFull();
 		viewLayout.setMargin(true);
+		viewLayout.setSpacing(true);
 
 		header = new Label();
 		header.setCaption("Report Form"); // TODO Localize
 		header.setStyleName(FenixTheme.LABEL_H1);
+		header.setSizeUndefined();
 		viewLayout.addComponent(header);
+		
+		HorizontalLayout topBar = new HorizontalLayout();
+		topBar.setSpacing(true);
+		viewLayout.addComponent(topBar);
+		
+		reportTypeCombo = new ComboBox();
+		reportTypeCombo.setCaption("Report Type"); // TODO Localize!
+		reportTypeCombo.setInputPrompt("Please select a report type"); // TODO Localize!
+		if (reportTypes != null) {
+			reportTypeCombo.setContainerDataSource(new IndexedContainer(
+					reportTypes)); // TODO Create a container that supports
+									// localized strings!
+		}
+		topBar.addComponent(reportTypeCombo);
 
+		PopupDateField beginDate = new PopupDateField("Start date");
+		beginDate.setResolution(DateField.RESOLUTION_DAY);
+		topBar.addComponent(beginDate);
+
+		TextField beginTime = new TextField("Start time");
+		beginTime.setWidth("70px");
+		topBar.addComponent(beginTime);
+		
+		PopupDateField endDate = new PopupDateField("End date");
+		endDate.setResolution(DateField.RESOLUTION_DAY);
+		topBar.addComponent(endDate);
+
+		TextField endTime = new TextField("End time");
+		endTime.setWidth("70px");
+		topBar.addComponent(endTime);
+		
+		TextField duration = new TextField("Duration");
+		duration.setWidth("70px");
+		topBar.addComponent(duration);
+		
+		TabSheet tabSheet = new TabSheet();
+		tabSheet.setSizeFull();
+		//tabSheet.setStyleName(FenixTheme.TABSHEET_MINIMAL);
+		viewLayout.addComponent(tabSheet);
+		viewLayout.setExpandRatio(tabSheet, 1);
+		VerticalLayout generalLayout = new VerticalLayout();
+		generalLayout.setSizeFull();
+		generalLayout.setSpacing(true);
+		generalLayout.setMargin(true);
+		tabSheet.addTab(generalLayout, "General", null);
+		{
+			TextField subject = new TextField("Subject");
+			subject.setWidth("100%");
+			generalLayout.addComponent(subject);
+			
+			TextField supervisors = new TextField("Supervisors");
+			supervisors.setWidth("100%");
+			generalLayout.addComponent(supervisors);
+			
+			TextField summary = new TextField("Summary");
+			summary.setSizeFull();
+			generalLayout.addComponent(summary);
+			generalLayout.setExpandRatio(summary, 1);
+			
+			TextField location = new TextField("Location");
+			location.setWidth("100%");
+			generalLayout.addComponent(location);			
+		}
+		tabSheet.addTab(new Label("blah"), "Participants", null);
+		tabSheet.addTab(new Label("blah"), "Attachements", null);
+		tabSheet.addTab(new Label("blah"), "History", null);
+		
+		/*
+		HorizontalLayout innerLayout = new HorizontalLayout();
+		innerLayout.setSizeFull();
+		innerLayout.setSpacing(true);
+		viewLayout.addComponent(innerLayout);
+		viewLayout.setExpandRatio(innerLayout, 1);
+		
 		reportForm = new ReportForm();
-		viewLayout.addComponent(reportForm);
-		viewLayout.setComponentAlignment(reportForm, Alignment.TOP_LEFT);
-
+		reportForm.setWidth("400px");
+		innerLayout.addComponent(reportForm);
+		
+		participationTable = new Table();
+		participationTable.setSizeFull();
+		participationTable.setCaption("Participants");
+		innerLayout.addComponent(participationTable);
+		innerLayout.setExpandRatio(participationTable, 1);
+*/
+		HorizontalLayout buttons = new HorizontalLayout();
+		buttons.setSpacing(true);
+		viewLayout.addComponent(buttons);
+		buttons.addComponent(new Button("Save Draft"));
+		buttons.addComponent(new Button("Save Complete Report"));
+		buttons.addComponent(new Button("Approve"));
+		buttons.addComponent(new Button("Deny"));
+		buttons.addComponent(new Button("Request Complements"));
+		buttons.addComponent(new Button("Go Back"));
+		
 		// TODO fire department
 		// TODO stateChangeEntries
 		// TODO participants
@@ -107,7 +211,7 @@ public class ReportFormViewImpl extends
 	@Override
 	public void setReport(Report report) {
 		this.report = report;
-		reportForm.setReportItem(new BeanItem<Report>(report));
+		//reportForm.setReportItem(new BeanItem<Report>(report));
 	}
 
 	@Override
@@ -147,17 +251,19 @@ public class ReportFormViewImpl extends
 				if (propertyId.equals(Report.PROP_EVENT_START_DATE)) {
 					f = super.createField(item, propertyId, uiContext);
 					f.setCaption("Start date");
+					f.setWidth("100%");
 				} else if (propertyId.equals(Report.PROP_EVENT_START_TIME)) {
 					f = new TextField();
 					f.setCaption("Start time");
-					f.setWidth("70px");
+					f.setWidth("100%");
 				} else if (propertyId.equals(Report.PROP_EVENT_END_DATE)) {
 					f = super.createField(item, propertyId, uiContext);
 					f.setCaption("End date");
+					f.setWidth("100%");
 				} else if (propertyId.equals(Report.PROP_EVENT_END_TIME)) {
 					f = new TextField();
 					f.setCaption("End time");
-					f.setWidth("70px");
+					f.setWidth("100%");
 				} else if (propertyId.equals(Report.PROP_SUBJECT)) {
 					f = super.createField(item, propertyId, uiContext);
 					f.setCaption("Subject");
@@ -169,6 +275,14 @@ public class ReportFormViewImpl extends
 					f.setWidth("100%");
 					((TextField) f).setRows(10);
 					((TextField) f).setInputPrompt("Please enter a summary of the event"); // TODO figure out something better and localize it
+				} else if (propertyId.equals(Report.PROP_SUPERVISORS)) {
+					f = super.createField(item, propertyId, uiContext);
+					f.setCaption("Supervisors");
+					f.setWidth("100%");
+				} else if (propertyId.equals(Report.PROP_LOCATION)) {
+					f = super.createField(item, propertyId, uiContext);
+					f.setCaption("Location");
+					f.setWidth("100%");					
 				}
 				if (f instanceof TextField) {
 					((TextField) f).setNullRepresentation("");					
@@ -185,10 +299,10 @@ public class ReportFormViewImpl extends
 		private GridLayout layout;
 
 		public ReportForm() {
-			layout = new GridLayout(4, 4);
-			// layout.setMargin(true, false, false, true);
+			layout = new GridLayout(4, 6);
 			layout.setSpacing(true);
-
+			layout.setWidth("100%");
+			
 			setLayout(layout);
 
 			setWriteThrough(false);
@@ -197,7 +311,7 @@ public class ReportFormViewImpl extends
 			setVisibleItemProperties(new String[] { Report.PROP_REPORT_TYPE,
 					Report.PROP_EVENT_START_DATE, Report.PROP_EVENT_START_TIME,
 					Report.PROP_EVENT_END_DATE, Report.PROP_EVENT_END_TIME,
-					Report.PROP_SUBJECT, Report.PROP_SUMMARY });
+					Report.PROP_SUBJECT, Report.PROP_SUPERVISORS, Report.PROP_SUMMARY, Report.PROP_LOCATION });
 		}
 
 		public void setReportItem(BeanItem<Report> reportItem) {
@@ -218,8 +332,12 @@ public class ReportFormViewImpl extends
 				layout.addComponent(field, 3, 1);
 			} else if (propertyId.equals(Report.PROP_SUBJECT)) {
 				layout.addComponent(field, 0, 2, 3, 2);
-			} else if (propertyId.equals(Report.PROP_SUMMARY)) {
+			} else if (propertyId.equals(Report.PROP_SUPERVISORS)) {
 				layout.addComponent(field, 0, 3, 3, 3);
+			} else if (propertyId.equals(Report.PROP_SUMMARY)) {
+				layout.addComponent(field, 0, 4, 3, 4);
+			} else if (propertyId.equals(Report.PROP_LOCATION)) {
+				layout.addComponent(field, 0, 5, 3, 5);
 			}
 		}
 	}

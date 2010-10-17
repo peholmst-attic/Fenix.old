@@ -15,13 +15,6 @@
  */
 package net.pkhsolutions.fenix.domain;
 
-/**
- * TODO Document me!
- * 
- * @author petter
- *
- */
-public enum ReportState {
+public class Attachment {
 
-	INCOMPLETE, COMPLETE_NO_APPROVAL_REQUIRED, AWAITING_APPROVAL, APPROVED, COMPLEMENTS_REQUIRED, DENIED 
 }
