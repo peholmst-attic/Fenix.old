@@ -152,6 +152,18 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
 				<version>1.3-SNAPSHOT</version>
+				<dependencies>
+					<dependency>
+						<groupId>com.google.gwt</groupId>
+						<artifactId>gwt-user</artifactId>
+						<version>2.0.4</version>
+					</dependency>
+					<dependency>
+						<groupId>com.google.gwt</groupId>
+						<artifactId>gwt-dev</artifactId>
+						<version>2.0.4</version>
+					</dependency>
+				</dependencies>
 				<configuration>
 					<!-- if you don't specify any modules, the plugin will find them -->
 					<!--modules> .. </modules -->
@@ -326,18 +338,6 @@
 			<groupId>org.vaadin.addons</groupId>
 			<artifactId>animator</artifactId>
 			<version>1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-user</artifactId>
-			<version>2.0.4</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-dev</artifactId>
-			<version>2.0.4</version>
-			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	<repositories>
