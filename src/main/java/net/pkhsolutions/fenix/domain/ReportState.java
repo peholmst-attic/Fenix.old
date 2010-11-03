@@ -16,12 +16,48 @@
 package net.pkhsolutions.fenix.domain;
 
 /**
- * TODO Document me!
+ * This enumeration defines the different states that a {@link Report} may be in.
+ * Depending on the current state of a report, only certain state transitions
+ * are allowed. The business logic should make sure that these rules are not
+ * broken.
  * 
- * @author petter
- *
+ * @author Petter Holmström
  */
 public enum ReportState {
 
-	INCOMPLETE, COMPLETE_NO_APPROVAL_REQUIRED, AWAITING_APPROVAL, APPROVED, COMPLEMENTS_REQUIRED, DENIED 
+	/**
+	 * This state indicates that the report has been approved. No more
+	 * modifications may be made to the report.
+	 */
+	APPROVED,
+
+	/**
+	 * This state indicates that the report has been denied. No more
+	 * modifications may be made to the report.
+	 */
+	DENIED,
+
+	/**
+	 * This state indicates that the report must be complemented with additional
+	 * information before it can be approved. The next state must be {@link #AWAITING_APPROVAL}.
+	 */
+	COMPLEMENTS_REQUIRED,
+
+	/**
+	 * This state indicates that the report is complete and does not require any
+	 * approval. No more modifications may be made to the report.
+	 */
+	COMPLETE_NO_APPROVAL_REQUIRED,
+
+	/**
+	 * This state indicates that the report is complete and awaits approval. No modifications may be
+	 * made to the report in this state. The next state must be one of the following: {@link #APPROVED}, {@link #COMPLEMENTS_REQUIRED} or {@link #DENIED}.
+	 */
+	AWAITING_APPROVAL,
+
+	/**
+	 * This state indicates that the report is incomplete. The next state must be either {@link #AWAITING_APPROVAL} or {@link #COMPLETE_NO_APPROVAL_REQUIRED}.
+	 */
+	INCOMPLETE
+	
 }

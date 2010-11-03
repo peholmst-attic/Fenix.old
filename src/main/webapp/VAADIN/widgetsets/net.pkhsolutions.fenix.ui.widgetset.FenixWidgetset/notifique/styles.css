@@ -115,6 +115,37 @@
 	background-repeat: no-repeat;
 }
 
+.queue .ff3 .v-csslayout-margin {
+	color: #000000;
+	margin: 0;
+	padding: 0;
+	padding-left: 6px;
+	border: 1px solid #FFE970;
+	border-bottom: 1px solid #BF8A01;
+	border-right: 1px solid #BF8A01;
+		background-color: #FFE13E;
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#FFE13E),
+		to(#FFC703) );
+	background: -moz-linear-gradient(center top, #FFE13E, #FFC703) repeat
+		scroll 0 0 transparent;
+	filter: progid :     DXImageTransform.Microsoft.gradient (    
+		startColorStr =  
+		  #FFE13EFF, endColorStr = #FFC703FF, GradientType = 1 );
+	-ms-filter:
+		"progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFC703FF, endColorstr=#FFC703FF)"
+		;
+	
+}
+
+.queue .ff3 .close {
+	margin: 4px;
+	width: 22px;
+	height: 22px;
+	background-image: url("close-ff3.png");
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
 .queue .ie .v-csslayout-margin {
 	color: #000000;
 	background-color: #FFFFE4;
@@ -140,10 +171,17 @@
 	margin: 0;
 	padding: 0;
 	padding-left: 6px;
+	background-color: #FBE69E;
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#FBE69E),
 		to(#FBE69E) );
 	background: -moz-linear-gradient(center top, #FFF0BD, #FBE69E) repeat
 		scroll 0 0 transparent;
+	filter: progid :     DXImageTransform.Microsoft.gradient (    
+		startColorStr =  
+		  #FFF0BDFF, endColorStr =     #FBE69EFF, GradientType =     1 );
+	-ms-filter:
+		"progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFF0BDFF, endColorstr=#FBE69EFF)"
+		;
 	border: 1px solid #CCCCCC;
 }
 
@@ -163,37 +201,61 @@
 
 /** Gradients + rounded corners =  More cool. */
 .queue .magic-black .v-csslayout-margin {
+	background-color: #666666;
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#666),
 		to(#000) );
 	background: -moz-linear-gradient(center top, #666666, #000000) repeat
 		scroll 0 0 transparent;
+	filter: progid :                   DXImageTransform.Microsoft.gradient (
+		  
+		       
+		       startColorstr =         
+		         #666666, endColorstr =                   #000000 );
+	-ms-filter:
+		"progid:DXImageTransform.Microsoft.gradient(startColorstr=#666666, endColorstr=#000000)"
+		;
 	color: #D7D7D7;
 	border: 1px solid #333333;
-	background-color: #EEEEEE;
 	-moz-border-radius: 7px;
 	border-radius: 7px;
 }
 
 .queue .magic-gray .v-csslayout-margin {
+	background-color: #808080;
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#888),
 		to(#575757) );
 	background: -moz-linear-gradient(center top, #888, #575757) repeat
 		scroll 0 0 transparent;
+	filter: progid :                   DXImageTransform.Microsoft.gradient (
+		  
+		       
+		       startColorstr =         
+		         #808080, endColorstr =                   #575757 );
+	-ms-filter:
+		"progid:DXImageTransform.Microsoft.gradient(startColorstr=#808080, endColorstr=#575757)"
+		;
+	color: #D7D7D7;
 	color: #D7D7D7;
 	border: 1px solid #333333;
-	background-color: #EEEEEE;
 	-moz-border-radius: 7px;
 	border-radius: 7px;
 }
 
 .queue .magic-white .v-csslayout-margin {
+	background-color: #ffffff;
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff),
 		to(#EDEDED) );
 	background: -moz-linear-gradient(center top, #FFFFFF, #EDEDED) repeat
 		scroll 0 0 transparent;
-	color: #606060;
+	filter: " progid :         DXImageTransform.Microsoft.gradient (
+		          
+		       startColorstr =         #FFFFFF, endColorstr =       #EDEDED) "
+		;
+	-ms-filter:
+		"progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFFFF, endColorstr=#EDEDED)"
+		;
+	color: #FFFF;
 	border: 1px solid #B7B7B7;
-	background-color: #EEEEEE;
 	-moz-border-radius: 7px;
 	border-radius: 7px;
 }

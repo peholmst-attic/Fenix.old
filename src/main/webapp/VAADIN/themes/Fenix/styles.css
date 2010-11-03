@@ -4,6 +4,7 @@
 	text-align: center;
 	padding: 5px;
 	background: -moz-linear-gradient(top, #fff, #ccc);
+    background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ccc));	
 	border-top: 1px solid #ccc;
 	border-left: 1px solid #ccc;
 	border-right: 1px solid #ccc;
@@ -18,4 +19,15 @@
 	border-bottom: 1px solid #999;
     background: -moz-linear-gradient(top, #fff, #ccc);	
     background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ccc));	
+}
+
+/*.v-ff3 .v-tabsheet-content-minimal, .v-sa .v-tabsheet-content-minimal {
+	border-style: none solid none solid;
+	border-width: medium 1px medium 1px;
+	border-color: #BFBFBF;
+}
+*/
+.v-ff3 .v-tabsheet-deco-minimal, .v-sa .v-tabsheet-deco-minimal {
+	border-top: 1px solid #BFBFBF;
+	height: 1px;	
 }
