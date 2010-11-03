@@ -3,6 +3,6 @@
 <module>
 	<inherits name="com.vaadin.terminal.gwt.DefaultWidgetSet" />
 	<inherits name="org.vaadin.notifique.widgetset.NotifiqueWidgetset" />
-
+	<inherits name="com.vaadin.addon.treetable.TreetableWidgetset" />
     <inherits name="org.vaadin.jouni.animator.AnimatorWidgetset" />
 </module>
