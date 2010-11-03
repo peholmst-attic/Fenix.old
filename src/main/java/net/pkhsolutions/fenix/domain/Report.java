@@ -90,12 +90,8 @@ public class Report extends AbstractEntity {
 
 	@Enumerated(EnumType.ORDINAL)
 	@Column(nullable = false)
-	private ReportState state = ReportState.INCOMPLETE;
+	private ReportState reportState = ReportState.INCOMPLETE;
 	public static final String PROP_STATE = "state";
-
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "report", orphanRemoval = true, fetch = FetchType.EAGER)
-	private Set<ReportStateChangeEntry> stateChangeEntries = new HashSet<ReportStateChangeEntry>();
-	public static final String PROP_STATE_CHANGE_ENTRIES = "stateChangeEntries";
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "report", orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<ReportParticipant> participants = new HashSet<ReportParticipant>();
@@ -165,16 +161,12 @@ public class Report extends AbstractEntity {
 		this.summary = summary;
 	}
 
-	public ReportState getState() {
-		return state;
+	public ReportState getReportState() {
+		return reportState;
 	}
 
-	public void setState(ReportState state) {
-		this.state = state;
-	}
-
-	public Collection<ReportStateChangeEntry> getStateChangeEntries() {
-		return stateChangeEntries;
+	public void setReportState(ReportState state) {
+		this.reportState = state;
 	}
 
 	public Collection<ReportParticipant> getParticipants() {
