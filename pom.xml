@@ -113,10 +113,15 @@
 					<useProjectReferences>false</useProjectReferences>
 				</configuration>
 			</plugin>
-			<!-- TODO Make it possible to launch the application on Jetty from Maven 
-				<plugin> <groupId>org.mortbay.jetty</groupId> <artifactId>maven-jetty-plugin</artifactId> 
-				<version>6.1.25</version> <configuration> <scanIntervalSeconds>10</scanIntervalSeconds> 
-				<contextPath>${pom.artifactId}</contextPath> </configuration> </plugin> -->
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty-plugin</artifactId>
+				<version>6.1.26RC0</version>
+				<configuration>
+					<scanIntervalSeconds>10</scanIntervalSeconds>
+					<contextPath>${pom.artifactId}</contextPath>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
