@@ -26,7 +26,7 @@ import java.util.Map;
  * 
  * @author Petter Holmström
  */
-public class CloneUtil {
+public final class CloneUtil {
 
 	private CloneUtil() {
 	}
