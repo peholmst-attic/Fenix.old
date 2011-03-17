@@ -19,6 +19,8 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * This annotation is used to annotate fields that should be cloned when their
