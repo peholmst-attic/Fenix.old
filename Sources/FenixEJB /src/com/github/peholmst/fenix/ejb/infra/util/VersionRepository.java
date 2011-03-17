@@ -36,10 +36,10 @@ public interface VersionRepository<ENTITY extends VersionedEntity> {
 
     /**
      * Saves a copy of the specified entity (the new version), increases the
-     * version number of the entity and saves it. If the entity has no version
-     * group, a new version group will be assigned. If there are multiple
-     * versions in the version group, the specified entity must be the newest
-     * one, otherwise this method will fail.
+     * version number of the entity and saves it. If the entity is transient, a
+     * new version group will be assigned. If there are multiple versions in the
+     * version group, the specified entity must be the newest one, otherwise
+     * this method will fail.
      * 
      * @param entity
      *            the entity to save.
@@ -50,10 +50,10 @@ public interface VersionRepository<ENTITY extends VersionedEntity> {
     ENTITY saveAndCreateNewVersion(ENTITY entity) throws ReadOnlyException;
 
     /**
-     * Saves the specified entity. If the entity has no version group, a new
-     * version group will be assigned. If there are multiple versions in the
-     * version group, the specified entity must be the newest one, otherwise
-     * this method will fail.
+     * Saves the specified entity. If the entity is transient, a new version
+     * group will be assigned. If there are multiple versions in the version
+     * group, the specified entity must be the newest one, otherwise this method
+     * will fail.
      * 
      * @param entity
      *            the entity to save.
