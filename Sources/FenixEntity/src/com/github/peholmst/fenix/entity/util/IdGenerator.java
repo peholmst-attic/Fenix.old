@@ -23,6 +23,8 @@ import com.github.peholmst.fenix.common.SystemConstants;
  * generate Entity identifiers early (i.e. when they are created as opposed to
  * when they are persisted) without having to use UUIDs.
  * <p>
+ * The sequences are stored in a {@link ThreadLocal}.
+ * <p>
  * By default, a {@link JndiDataSourceSequence} is used and configured using
  * {@link SystemConstants#ENTITY_IDENTIFIER_SEQUENCE_NAME} and
  * {@link SystemConstants#JDBC_DATASOURCE_JNDI_NAME}.
@@ -31,11 +33,20 @@ import com.github.peholmst.fenix.common.SystemConstants;
  */
 public class IdGenerator {
 
-    private static Sequence sequence = new JndiDataSourceSequence(
-            SystemConstants.ENTITY_IDENTIFIER_SEQUENCE_NAME,
-            SystemConstants.JDBC_DATASOURCE_JNDI_NAME);
+    private static final ThreadLocal<Sequence> sequence = new ThreadLocal<Sequence>() {
+        @Override
+        protected Sequence initialValue() {
+            return createDefaultSequence();
+        };
+    };
 
     private IdGenerator() {
+    }
+
+    private static Sequence createDefaultSequence() {
+        return new JndiDataSourceSequence(
+                SystemConstants.ENTITY_IDENTIFIER_SEQUENCE_NAME,
+                SystemConstants.JDBC_DATASOURCE_JNDI_NAME);
     }
 
     /**
@@ -50,22 +61,23 @@ public class IdGenerator {
     }
 
     /**
-     * Set the sequence to use for generating ID values.
+     * Set the sequence to use for generating ID values in the current thread.
      * 
      * @param sequence
      *            the sequence (must not be <code>null</code>).
      */
     public static synchronized void setSequence(Sequence sequence) {
         assert sequence != null : "sequence must not be null";
-        IdGenerator.sequence = sequence;
+        IdGenerator.sequence.set(sequence);
     }
 
     /**
-     * Gets the sequence that is used for generating ID values.
+     * Gets the sequence that is used for generating ID values in the current
+     * thread.
      * 
      * @return the sequence (never <code>null</code>).
      */
     public static synchronized Sequence getSequence() {
-        return IdGenerator.sequence;
+        return IdGenerator.sequence.get();
     }
 }
