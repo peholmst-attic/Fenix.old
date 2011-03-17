@@ -23,57 +23,57 @@ package com.github.peholmst.fenix.common.util;
  */
 public final class OrderInstruction implements java.io.Serializable {
 
-	private static final long serialVersionUID = 5991285022478824416L;
+    private static final long serialVersionUID = 5991285022478824416L;
 
-	private final boolean ascending;
+    private final boolean ascending;
 
-	private final String propertyName;
+    private final String propertyName;
 
-	private OrderInstruction(String propertyName, boolean ascending) {
-		assert propertyName != null : "propertyName must not be null";
-		this.propertyName = propertyName;
-		this.ascending = ascending;
-	}
+    private OrderInstruction(String propertyName, boolean ascending) {
+        assert propertyName != null : "propertyName must not be null";
+        this.propertyName = propertyName;
+        this.ascending = ascending;
+    }
 
-	/**
-	 * Gets the name of the property to order by.
-	 * 
-	 * @return the property name.
-	 */
-	public String getPropertyName() {
-		return propertyName;
-	}
+    /**
+     * Gets the name of the property to order by.
+     * 
+     * @return the property name.
+     */
+    public String getPropertyName() {
+        return propertyName;
+    }
 
-	/**
-	 * Returns whether the ordering should be ascending or descending.
-	 * 
-	 * @return true for ascending order, false for descending order.
-	 */
-	public boolean isAscending() {
-		return ascending;
-	}
+    /**
+     * Returns whether the ordering should be ascending or descending.
+     * 
+     * @return true for ascending order, false for descending order.
+     */
+    public boolean isAscending() {
+        return ascending;
+    }
 
-	/**
-	 * Creates a new <code>OrderInstruction</code> for the given property name,
-	 * using ascending order.
-	 * 
-	 * @param propertyName
-	 *            the property name to order by.
-	 * @return the order instruction.
-	 */
-	public static OrderInstruction ascending(String propertyName) {
-		return new OrderInstruction(propertyName, true);
-	}
+    /**
+     * Creates a new <code>OrderInstruction</code> for the given property name,
+     * using ascending order.
+     * 
+     * @param propertyName
+     *            the property name to order by.
+     * @return the order instruction.
+     */
+    public static OrderInstruction ascending(String propertyName) {
+        return new OrderInstruction(propertyName, true);
+    }
 
-	/**
-	 * Creates a new <code>OrderInstruction</code> for the given property name,
-	 * using descending order.
-	 * 
-	 * @param propertyName
-	 *            the property name to order by.
-	 * @return the order instruction.
-	 */
-	public static OrderInstruction descending(String propertyName) {
-		return new OrderInstruction(propertyName, false);
-	}
+    /**
+     * Creates a new <code>OrderInstruction</code> for the given property name,
+     * using descending order.
+     * 
+     * @param propertyName
+     *            the property name to order by.
+     * @return the order instruction.
+     */
+    public static OrderInstruction descending(String propertyName) {
+        return new OrderInstruction(propertyName, false);
+    }
 }

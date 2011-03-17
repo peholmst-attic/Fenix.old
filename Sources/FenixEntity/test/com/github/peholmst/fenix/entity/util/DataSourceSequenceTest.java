@@ -33,47 +33,47 @@ import org.junit.Test;
  */
 public class DataSourceSequenceTest {
 
-	private static JdbcDataSource dataSource;
+    private static JdbcDataSource dataSource;
 
-	@BeforeClass
-	public static void setUpDataSource() throws Exception {
-		dataSource = new JdbcDataSource();
-		dataSource.setURL("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1");
-		Connection connection = dataSource.getConnection();
-		Statement statement = connection.createStatement();
-		statement
-				.execute("CREATE SEQUENCE mySequence START WITH 1 INCREMENT BY 10");
-		statement.close();
-		connection.close();
-	}
+    @BeforeClass
+    public static void setUpDataSource() throws Exception {
+        dataSource = new JdbcDataSource();
+        dataSource.setURL("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1");
+        Connection connection = dataSource.getConnection();
+        Statement statement = connection.createStatement();
+        statement
+                .execute("CREATE SEQUENCE mySequence START WITH 1 INCREMENT BY 10");
+        statement.close();
+        connection.close();
+    }
 
-	static class SequenceUnderTest extends DataSourceSequence {
+    static class SequenceUnderTest extends DataSourceSequence {
 
-		public SequenceUnderTest() {
-			super("mySequence");
-		}
+        public SequenceUnderTest() {
+            super("mySequence");
+        }
 
-		@Override
-		protected DataSource lookupDataSource() {
-			return dataSource;
-		}
-	}
+        @Override
+        protected DataSource lookupDataSource() {
+            return dataSource;
+        }
+    }
 
-	@Test
-	public void initialReservationByConstructor() {
-		SequenceUnderTest seq = new SequenceUnderTest();
-		assertEquals(1L, seq.getNextValue());
-	}
+    @Test
+    public void initialReservationByConstructor() {
+        SequenceUnderTest seq = new SequenceUnderTest();
+        assertEquals(1L, seq.getNextValue());
+    }
 
-	@Test
-	public void loopThroughNextValuesUntilRangeRunsOut() {
-		SequenceUnderTest seq = new SequenceUnderTest();
-		long oldValue = seq.getNextValue();
-		for (int i = 0; i < 10; ++i) {
-			long newValue = seq.getNextValue();
-			assertEquals(oldValue + 1, newValue);
-			oldValue = newValue;
-		}
-	}
+    @Test
+    public void loopThroughNextValuesUntilRangeRunsOut() {
+        SequenceUnderTest seq = new SequenceUnderTest();
+        long oldValue = seq.getNextValue();
+        for (int i = 0; i < 10; ++i) {
+            long newValue = seq.getNextValue();
+            assertEquals(oldValue + 1, newValue);
+            oldValue = newValue;
+        }
+    }
 
 }

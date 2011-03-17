@@ -28,89 +28,89 @@ import org.junit.Test;
  */
 public class IntervalTest {
 
-	@Test
-	public void createClosedInterval() {
-		Interval<Integer> interval = Interval.createClosedInterval(1, 10);
-		assertEquals(1, interval.getStartPoint().intValue());
-		assertTrue(interval.isStartPointIncluded());
-		assertEquals(10, interval.getEndPoint().intValue());
-		assertTrue(interval.isEndPointIncluded());
-	}
+    @Test
+    public void createClosedInterval() {
+        Interval<Integer> interval = Interval.createClosedInterval(1, 10);
+        assertEquals(1, interval.getStartPoint().intValue());
+        assertTrue(interval.isStartPointIncluded());
+        assertEquals(10, interval.getEndPoint().intValue());
+        assertTrue(interval.isEndPointIncluded());
+    }
 
-	@Test
-	public void createOpenInterval() {
-		Interval<Integer> interval = Interval.createOpenInterval(1, 10);
-		assertEquals(1, interval.getStartPoint().intValue());
-		assertFalse(interval.isStartPointIncluded());
-		assertEquals(10, interval.getEndPoint().intValue());
-		assertFalse(interval.isEndPointIncluded());
-	}
+    @Test
+    public void createOpenInterval() {
+        Interval<Integer> interval = Interval.createOpenInterval(1, 10);
+        assertEquals(1, interval.getStartPoint().intValue());
+        assertFalse(interval.isStartPointIncluded());
+        assertEquals(10, interval.getEndPoint().intValue());
+        assertFalse(interval.isEndPointIncluded());
+    }
 
-	@Test
-	public void createHalfClosedIntervalEndPointExcluded() {
-		Interval<Integer> interval = Interval
-				.createHalfClosedIntervalEndPointExcluded(1, 10);
-		assertEquals(1, interval.getStartPoint().intValue());
-		assertTrue(interval.isStartPointIncluded());
-		assertEquals(10, interval.getEndPoint().intValue());
-		assertFalse(interval.isEndPointIncluded());
-	}
+    @Test
+    public void createHalfClosedIntervalEndPointExcluded() {
+        Interval<Integer> interval = Interval
+                .createHalfClosedIntervalEndPointExcluded(1, 10);
+        assertEquals(1, interval.getStartPoint().intValue());
+        assertTrue(interval.isStartPointIncluded());
+        assertEquals(10, interval.getEndPoint().intValue());
+        assertFalse(interval.isEndPointIncluded());
+    }
 
-	@Test
-	public void createHalfClosedIntervalStartPointExcluded() {
-		Interval<Integer> interval = Interval
-				.createHalfClosedIntervalStartPointExcluded(1, 10);
-		assertEquals(1, interval.getStartPoint().intValue());
-		assertFalse(interval.isStartPointIncluded());
-		assertEquals(10, interval.getEndPoint().intValue());
-		assertTrue(interval.isEndPointIncluded());
-	}
+    @Test
+    public void createHalfClosedIntervalStartPointExcluded() {
+        Interval<Integer> interval = Interval
+                .createHalfClosedIntervalStartPointExcluded(1, 10);
+        assertEquals(1, interval.getStartPoint().intValue());
+        assertFalse(interval.isStartPointIncluded());
+        assertEquals(10, interval.getEndPoint().intValue());
+        assertTrue(interval.isEndPointIncluded());
+    }
 
-	@Test
-	public void getIncludedStartPoint() {
-		Interval<Integer> interval = Interval.createClosedInterval(1, 10);
-		assertEquals(1, interval.getIncludedStartPoint().intValue());
-	}
+    @Test
+    public void getIncludedStartPoint() {
+        Interval<Integer> interval = Interval.createClosedInterval(1, 10);
+        assertEquals(1, interval.getIncludedStartPoint().intValue());
+    }
 
-	@Test(expected = IllegalStateException.class)
-	public void getIncludedStartPointWhenExcluded() {
-		Interval<Integer> interval = Interval.createOpenInterval(1, 10);
-		interval.getIncludedStartPoint();
-	}
+    @Test(expected = IllegalStateException.class)
+    public void getIncludedStartPointWhenExcluded() {
+        Interval<Integer> interval = Interval.createOpenInterval(1, 10);
+        interval.getIncludedStartPoint();
+    }
 
-	@Test
-	public void getIncludedEndPoint() {
-		Interval<Integer> interval = Interval.createClosedInterval(1, 10);
-		assertEquals(10, interval.getIncludedEndPoint().intValue());
-	}
+    @Test
+    public void getIncludedEndPoint() {
+        Interval<Integer> interval = Interval.createClosedInterval(1, 10);
+        assertEquals(10, interval.getIncludedEndPoint().intValue());
+    }
 
-	@Test(expected = IllegalStateException.class)
-	public void getIncludedEndPointWhenExcluded() {
-		Interval<Integer> interval = Interval.createOpenInterval(1, 10);
-		interval.getIncludedEndPoint();
-	}
+    @Test(expected = IllegalStateException.class)
+    public void getIncludedEndPointWhenExcluded() {
+        Interval<Integer> interval = Interval.createOpenInterval(1, 10);
+        interval.getIncludedEndPoint();
+    }
 
-	@Test
-	public void getExcludedStartPoint() {
-		Interval<Integer> interval = Interval.createOpenInterval(1, 10);
-		assertEquals(1, interval.getExcludedStartPoint().intValue());
-	}
+    @Test
+    public void getExcludedStartPoint() {
+        Interval<Integer> interval = Interval.createOpenInterval(1, 10);
+        assertEquals(1, interval.getExcludedStartPoint().intValue());
+    }
 
-	@Test(expected = IllegalStateException.class)
-	public void getExcludedStartPointWhenIncluded() {
-		Interval<Integer> interval = Interval.createClosedInterval(1, 10);
-		interval.getExcludedStartPoint();
-	}
+    @Test(expected = IllegalStateException.class)
+    public void getExcludedStartPointWhenIncluded() {
+        Interval<Integer> interval = Interval.createClosedInterval(1, 10);
+        interval.getExcludedStartPoint();
+    }
 
-	@Test
-	public void getExcludedEndPoint() {
-		Interval<Integer> interval = Interval.createOpenInterval(1, 10);
-		assertEquals(10, interval.getExcludedEndPoint().intValue());
-	}
+    @Test
+    public void getExcludedEndPoint() {
+        Interval<Integer> interval = Interval.createOpenInterval(1, 10);
+        assertEquals(10, interval.getExcludedEndPoint().intValue());
+    }
 
-	@Test(expected = IllegalStateException.class)
-	public void getExcludedEndPointWhenIncluded() {
-		Interval<Integer> interval = Interval.createClosedInterval(1, 10);
-		interval.getExcludedEndPoint();
-	}
+    @Test(expected = IllegalStateException.class)
+    public void getExcludedEndPointWhenIncluded() {
+        Interval<Integer> interval = Interval.createClosedInterval(1, 10);
+        interval.getExcludedEndPoint();
+    }
 }

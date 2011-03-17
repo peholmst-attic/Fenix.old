@@ -30,40 +30,40 @@ import com.github.peholmst.fenix.common.util.Interval;
  */
 public abstract class Sequence {
 
-	private long maxValue = 0L;
+    private long maxValue = 0L;
 
-	private long currentValue = 0L;
+    private long currentValue = 0L;
 
-	/**
-	 * Creates a new <code>Sequence</code> instance.
-	 */
-	public Sequence() {
-	}
+    /**
+     * Creates a new <code>Sequence</code> instance.
+     */
+    public Sequence() {
+    }
 
-	private void reserveValues() {
-		Interval<Long> reservedInterval = reserveSequenceValues();
-		currentValue = reservedInterval.getIncludedStartPoint();
-		maxValue = reservedInterval.getIncludedEndPoint();
-	}
+    private void reserveValues() {
+        Interval<Long> reservedInterval = reserveSequenceValues();
+        currentValue = reservedInterval.getIncludedStartPoint();
+        maxValue = reservedInterval.getIncludedEndPoint();
+    }
 
-	/**
-	 * Reserves a closed interval of sequence values.
-	 * 
-	 * @return the reserved interval.
-	 */
-	protected abstract Interval<Long> reserveSequenceValues();
+    /**
+     * Reserves a closed interval of sequence values.
+     * 
+     * @return the reserved interval.
+     */
+    protected abstract Interval<Long> reserveSequenceValues();
 
-	/**
-	 * Gets the next value of the sequence.
-	 * 
-	 * @return the next value.
-	 */
-	public final synchronized long getNextValue() {
-		if (currentValue == maxValue) {
-			reserveValues();
-		} else {
-			++currentValue;
-		}
-		return currentValue;
-	}
+    /**
+     * Gets the next value of the sequence.
+     * 
+     * @return the next value.
+     */
+    public final synchronized long getNextValue() {
+        if (currentValue == maxValue) {
+            reserveValues();
+        } else {
+            ++currentValue;
+        }
+        return currentValue;
+    }
 }

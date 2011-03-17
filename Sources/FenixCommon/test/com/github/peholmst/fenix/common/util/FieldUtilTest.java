@@ -32,57 +32,57 @@ import com.github.peholmst.fenix.common.util.FieldUtil.FieldVisitor;
  */
 public class FieldUtilTest {
 
-	static class Superclass {
-		@SuppressWarnings("unused")
-		private String superclassField;
-	}
+    static class Superclass {
+        @SuppressWarnings("unused")
+        private String superclassField;
+    }
 
-	static class Subclass extends Superclass {
-		private String subclassField;
-	}
+    static class Subclass extends Superclass {
+        private String subclassField;
+    }
 
-	@Test
-	public void findDeclaredFieldInSameClass() throws Exception {
-		FieldUtil.findDeclaredField(Subclass.class, "subclassField");
-		// If no exception is thrown, the method succeeded
-	}
+    @Test
+    public void findDeclaredFieldInSameClass() throws Exception {
+        FieldUtil.findDeclaredField(Subclass.class, "subclassField");
+        // If no exception is thrown, the method succeeded
+    }
 
-	@Test
-	public void findDeclaredFieldInSuperclass() throws Exception {
-		FieldUtil.findDeclaredField(Subclass.class, "superclassField");
-		// If no exception is thrown, the method succeeded
-	}
+    @Test
+    public void findDeclaredFieldInSuperclass() throws Exception {
+        FieldUtil.findDeclaredField(Subclass.class, "superclassField");
+        // If no exception is thrown, the method succeeded
+    }
 
-	@Test(expected = NoSuchFieldException.class)
-	public void findDeclaredFieldThatDoesNotExist() throws Exception {
-		FieldUtil.findDeclaredField(Subclass.class, "nonExistent");
-	}
+    @Test(expected = NoSuchFieldException.class)
+    public void findDeclaredFieldThatDoesNotExist() throws Exception {
+        FieldUtil.findDeclaredField(Subclass.class, "nonExistent");
+    }
 
-	@Test
-	public void setFieldValue() throws Exception {
-		Subclass owner = new Subclass();
-		FieldUtil.setFieldValue(owner, "subclassField", "hello");
-		assertEquals("hello", owner.subclassField);
-	}
+    @Test
+    public void setFieldValue() throws Exception {
+        Subclass owner = new Subclass();
+        FieldUtil.setFieldValue(owner, "subclassField", "hello");
+        assertEquals("hello", owner.subclassField);
+    }
 
-	@Test
-	public void getFieldValue() throws Exception {
-		Subclass owner = new Subclass();
-		owner.subclassField = "hello";
-		assertEquals("hello", FieldUtil.getFieldValue(owner, "subclassField"));
-	}
+    @Test
+    public void getFieldValue() throws Exception {
+        Subclass owner = new Subclass();
+        owner.subclassField = "hello";
+        assertEquals("hello", FieldUtil.getFieldValue(owner, "subclassField"));
+    }
 
-	@Test
-	public void visitAllDeclaredFields() throws Exception {
-		final HashSet<String> visitedFields = new HashSet<String>();
-		FieldUtil.visitAllDeclaredFields(Subclass.class, new FieldVisitor() {
+    @Test
+    public void visitAllDeclaredFields() throws Exception {
+        final HashSet<String> visitedFields = new HashSet<String>();
+        FieldUtil.visitAllDeclaredFields(Subclass.class, new FieldVisitor() {
 
-			@Override
-			public void visitField(Field field) throws Exception {
-				visitedFields.add(field.getName());
-			}
-		});
-		assertTrue(visitedFields.contains("subclassField"));
-		assertTrue(visitedFields.contains("superclassField"));
-	}
+            @Override
+            public void visitField(Field field) throws Exception {
+                visitedFields.add(field.getName());
+            }
+        });
+        assertTrue(visitedFields.contains("subclassField"));
+        assertTrue(visitedFields.contains("superclassField"));
+    }
 }

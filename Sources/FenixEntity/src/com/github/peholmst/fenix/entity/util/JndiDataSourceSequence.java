@@ -30,42 +30,42 @@ import org.slf4j.LoggerFactory;
  */
 public class JndiDataSourceSequence extends DataSourceSequence {
 
-	private final Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
-	private final String jndiName;
+    private final String jndiName;
 
-	/**
-	 * Creates a new <code>JndiDataSourceSequence</code>.
-	 * 
-	 * @param sequenceName
-	 *            the name of the database sequence.
-	 * @param jndiName
-	 *            the JNDI name of the data source.
-	 */
-	public JndiDataSourceSequence(String sequenceName, String jndiName) {
-		super(sequenceName);
-		assert jndiName != null && !jndiName.isEmpty() : "jndiName must not be null nor empty";
-		this.jndiName = jndiName;
-	}
+    /**
+     * Creates a new <code>JndiDataSourceSequence</code>.
+     * 
+     * @param sequenceName
+     *            the name of the database sequence.
+     * @param jndiName
+     *            the JNDI name of the data source.
+     */
+    public JndiDataSourceSequence(String sequenceName, String jndiName) {
+        super(sequenceName);
+        assert jndiName != null && !jndiName.isEmpty() : "jndiName must not be null nor empty";
+        this.jndiName = jndiName;
+    }
 
-	@Override
-	protected DataSource lookupDataSource() {
-		log.info("Looking up data source with JNDI name {}", getJndiName());
-		try {
-			return (DataSource) new InitialContext().lookup(getJndiName());
-		} catch (NamingException e) {
-			log.error("Could not find data source", e);
-			throw new IllegalStateException("Could not find data source", e);
-		}
-	}
+    @Override
+    protected DataSource lookupDataSource() {
+        log.info("Looking up data source with JNDI name {}", getJndiName());
+        try {
+            return (DataSource) new InitialContext().lookup(getJndiName());
+        } catch (NamingException e) {
+            log.error("Could not find data source", e);
+            throw new IllegalStateException("Could not find data source", e);
+        }
+    }
 
-	/**
-	 * Gets the JNDI name of the data source.
-	 * 
-	 * @return the JNDI name.
-	 */
-	public final String getJndiName() {
-		return jndiName;
-	}
+    /**
+     * Gets the JNDI name of the data source.
+     * 
+     * @return the JNDI name.
+     */
+    public final String getJndiName() {
+        return jndiName;
+    }
 
 }

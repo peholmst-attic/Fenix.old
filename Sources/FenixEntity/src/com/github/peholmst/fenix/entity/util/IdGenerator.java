@@ -31,41 +31,41 @@ import com.github.peholmst.fenix.common.SystemConstants;
  */
 public class IdGenerator {
 
-	private static Sequence sequence = new JndiDataSourceSequence(
-			SystemConstants.ENTITY_IDENTIFIER_SEQUENCE_NAME,
-			SystemConstants.JDBC_DATASOURCE_JNDI_NAME);
+    private static Sequence sequence = new JndiDataSourceSequence(
+            SystemConstants.ENTITY_IDENTIFIER_SEQUENCE_NAME,
+            SystemConstants.JDBC_DATASOURCE_JNDI_NAME);
 
-	private IdGenerator() {
-	}
+    private IdGenerator() {
+    }
 
-	/**
-	 * Gets the next available ID value. As long as the underlying sequence
-	 * remains the same, subsequent calls to this method will never return the
-	 * same value.
-	 * 
-	 * @return the ID value.
-	 */
-	public static long getNextValue() {
-		return getSequence().getNextValue();
-	}
+    /**
+     * Gets the next available ID value. As long as the underlying sequence
+     * remains the same, subsequent calls to this method will never return the
+     * same value.
+     * 
+     * @return the ID value.
+     */
+    public static long getNextValue() {
+        return getSequence().getNextValue();
+    }
 
-	/**
-	 * Set the sequence to use for generating ID values.
-	 * 
-	 * @param sequence
-	 *            the sequence (must not be <code>null</code>).
-	 */
-	public static synchronized void setSequence(Sequence sequence) {
-		assert sequence != null : "sequence must not be null";
-		IdGenerator.sequence = sequence;
-	}
+    /**
+     * Set the sequence to use for generating ID values.
+     * 
+     * @param sequence
+     *            the sequence (must not be <code>null</code>).
+     */
+    public static synchronized void setSequence(Sequence sequence) {
+        assert sequence != null : "sequence must not be null";
+        IdGenerator.sequence = sequence;
+    }
 
-	/**
-	 * Gets the sequence that is used for generating ID values.
-	 * 
-	 * @return the sequence (never <code>null</code>).
-	 */
-	public static synchronized Sequence getSequence() {
-		return IdGenerator.sequence;
-	}
+    /**
+     * Gets the sequence that is used for generating ID values.
+     * 
+     * @return the sequence (never <code>null</code>).
+     */
+    public static synchronized Sequence getSequence() {
+        return IdGenerator.sequence;
+    }
 }

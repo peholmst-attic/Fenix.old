@@ -26,25 +26,27 @@ import org.junit.Test;
  */
 public class InMemorySequenceTest {
 
-	@Test
-	public void initialReservationByConstructor() {
-		InMemorySequence seq = new InMemorySequence();
-		assertEquals(1L, seq.getNextValue());
-		assertEquals(InMemorySequence.DEFAULT_INCREMENT + 1, seq.getSequenceValue());
-		assertEquals(InMemorySequence.DEFAULT_INCREMENT, seq.getIncrement());
-	}
-	@Test
-	public void loopThroughNextValuesUntilRangeRunsOut() {
-		InMemorySequence seq = new InMemorySequence();
-		long oldValue = 0L;
-		for (int i = 0; i < InMemorySequence.DEFAULT_INCREMENT; ++i) {
-			long newValue = seq.getNextValue();
-			assertEquals(oldValue +1, newValue);
-			oldValue = newValue;
-		}
-		seq.setSequenceValue(200L);
-		assertEquals(200L, seq.getNextValue());
-		assertEquals(250L, seq.getSequenceValue());
-	}
+    @Test
+    public void initialReservationByConstructor() {
+        InMemorySequence seq = new InMemorySequence();
+        assertEquals(1L, seq.getNextValue());
+        assertEquals(InMemorySequence.DEFAULT_INCREMENT + 1,
+                seq.getSequenceValue());
+        assertEquals(InMemorySequence.DEFAULT_INCREMENT, seq.getIncrement());
+    }
+
+    @Test
+    public void loopThroughNextValuesUntilRangeRunsOut() {
+        InMemorySequence seq = new InMemorySequence();
+        long oldValue = 0L;
+        for (int i = 0; i < InMemorySequence.DEFAULT_INCREMENT; ++i) {
+            long newValue = seq.getNextValue();
+            assertEquals(oldValue + 1, newValue);
+            oldValue = newValue;
+        }
+        seq.setSequenceValue(200L);
+        assertEquals(200L, seq.getNextValue());
+        assertEquals(250L, seq.getSequenceValue());
+    }
 
 }

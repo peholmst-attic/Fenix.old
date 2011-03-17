@@ -32,15 +32,15 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface CloneThis {
 
-	/**
-	 * This attribute applies to {@link Collection}s, {@link Map}s and arrays
-	 * only and is ignored if set on fields of other types. This attribute
-	 * specifies whether the fields should be deeply cloned (i.e. the
-	 * collection/map/array items are also cloned) or shallowly cloned (i.e. the
-	 * collection/map/array instance is cloned, but the items are not).
-	 * 
-	 * @return true if the field should be deeply cloned, false if it should be
-	 *         shallowly cloned.
-	 */
-	boolean deepClone() default false;
+    /**
+     * This attribute applies to {@link Collection}s, {@link Map}s and arrays
+     * only and is ignored if set on fields of other types. This attribute
+     * specifies whether the fields should be deeply cloned (i.e. the
+     * collection/map/array items are also cloned) or shallowly cloned (i.e. the
+     * collection/map/array instance is cloned, but the items are not).
+     * 
+     * @return true if the field should be deeply cloned, false if it should be
+     *         shallowly cloned.
+     */
+    boolean deepClone() default false;
 }

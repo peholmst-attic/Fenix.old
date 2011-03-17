@@ -29,20 +29,20 @@ import com.github.peholmst.fenix.common.SystemConstants;
  */
 public class IdGeneratorTest {
 
-	@Test
-	public void defaults() {
-		assertTrue(IdGenerator.getSequence() instanceof JndiDataSourceSequence);
-		JndiDataSourceSequence seq = (JndiDataSourceSequence) IdGenerator
-				.getSequence();
-		assertEquals(SystemConstants.ENTITY_IDENTIFIER_SEQUENCE_NAME,
-				seq.getSequenceName());
-		assertEquals(SystemConstants.JDBC_DATASOURCE_JNDI_NAME,
-				seq.getJndiName());
-	}
+    @Test
+    public void defaults() {
+        assertTrue(IdGenerator.getSequence() instanceof JndiDataSourceSequence);
+        JndiDataSourceSequence seq = (JndiDataSourceSequence) IdGenerator
+                .getSequence();
+        assertEquals(SystemConstants.ENTITY_IDENTIFIER_SEQUENCE_NAME,
+                seq.getSequenceName());
+        assertEquals(SystemConstants.JDBC_DATASOURCE_JNDI_NAME,
+                seq.getJndiName());
+    }
 
-	@Test
-	public void getNextValue() {
-		IdGenerator.setSequence(new InMemorySequence());
-		assertEquals(1L, IdGenerator.getNextValue());
-	}
+    @Test
+    public void getNextValue() {
+        IdGenerator.setSequence(new InMemorySequence());
+        assertEquals(1L, IdGenerator.getNextValue());
+    }
 }

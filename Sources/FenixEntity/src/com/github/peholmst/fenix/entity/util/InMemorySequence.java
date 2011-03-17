@@ -25,78 +25,78 @@ import com.github.peholmst.fenix.common.util.Interval;
  */
 public class InMemorySequence extends Sequence {
 
-	public static final long DEFAULT_INCREMENT = 50;
+    public static final long DEFAULT_INCREMENT = 50;
 
-	private long sequenceValue;
-	private long increment;
+    private long sequenceValue;
+    private long increment;
 
-	/**
-	 * Creates a new <code>InMemorySequence</code> that starts from 1 and uses
-	 * the default increment.
-	 */
-	public InMemorySequence() {
-		this(1L);
-	}
+    /**
+     * Creates a new <code>InMemorySequence</code> that starts from 1 and uses
+     * the default increment.
+     */
+    public InMemorySequence() {
+        this(1L);
+    }
 
-	/**
-	 * Creates a new <code>InMemorySequence</code> that starts from the
-	 * specified value and uses the default increment.
-	 * 
-	 * @param startWith
-	 *            the value from which the sequence should start.
-	 */
-	public InMemorySequence(long startWith) {
-		this(startWith, DEFAULT_INCREMENT);
-	}
+    /**
+     * Creates a new <code>InMemorySequence</code> that starts from the
+     * specified value and uses the default increment.
+     * 
+     * @param startWith
+     *            the value from which the sequence should start.
+     */
+    public InMemorySequence(long startWith) {
+        this(startWith, DEFAULT_INCREMENT);
+    }
 
-	/**
-	 * Creates a new <code>InMemorySequence</code> that starts from the
-	 * specified value and uses the specified increment.
-	 * 
-	 * @param startWith
-	 *            the value from which the sequence should start.
-	 * @param increment
-	 *            the size of the increment.
-	 */
-	public InMemorySequence(long startWith, long increment) {
-		this.sequenceValue = startWith;
-		this.increment = increment;
-	}
+    /**
+     * Creates a new <code>InMemorySequence</code> that starts from the
+     * specified value and uses the specified increment.
+     * 
+     * @param startWith
+     *            the value from which the sequence should start.
+     * @param increment
+     *            the size of the increment.
+     */
+    public InMemorySequence(long startWith, long increment) {
+        this.sequenceValue = startWith;
+        this.increment = increment;
+    }
 
-	@Override
-	protected synchronized Interval<Long> reserveSequenceValues() {
-		Interval<Long> interval = Interval.createClosedInterval(sequenceValue,
-				sequenceValue + increment - 1);
-		sequenceValue += increment;
-		return interval;
-	}
+    @Override
+    protected synchronized Interval<Long> reserveSequenceValues() {
+        Interval<Long> interval = Interval.createClosedInterval(sequenceValue,
+                sequenceValue + increment - 1);
+        sequenceValue += increment;
+        return interval;
+    }
 
-	/**
-	 * Gets the current sequence value.
-	 * 
-	 * @return the sequence value.
-	 */
-	public synchronized long getSequenceValue() {
-		return sequenceValue;
-	}
+    /**
+     * Gets the current sequence value.
+     * 
+     * @return the sequence value.
+     */
+    public synchronized long getSequenceValue() {
+        return sequenceValue;
+    }
 
-	/**
-	 * Sets the current sequence value.
-	 * 
-	 * @param sequenceValue
-	 *            the sequence value.
-	 */
-	public synchronized void setSequenceValue(long sequenceValue) {
-		this.sequenceValue = sequenceValue;
-	}
+    /**
+     * Sets the current sequence value.
+     * 
+     * @param sequenceValue
+     *            the sequence value.
+     */
+    public synchronized void setSequenceValue(long sequenceValue) {
+        this.sequenceValue = sequenceValue;
+    }
 
-	/**
-	 * Gets the increment.
-	 * 
-	 * @return the increment.
-	 */
-	public synchronized long getIncrement() {
-		return increment;
-	}
+    /**
+     * Gets the increment.
+     * 
+     * @return the increment.
+     */
+    public synchronized long getIncrement() {
+        return increment;
+    }
 
 }

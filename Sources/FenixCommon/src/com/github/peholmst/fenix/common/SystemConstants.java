@@ -23,14 +23,14 @@ package com.github.peholmst.fenix.common;
  */
 public interface SystemConstants {
 
-	/**
-	 * The JNDI name of the JDBC data source.
-	 */
-	public static final String JDBC_DATASOURCE_JNDI_NAME = "jdbc/fenixDatasource";
-	
-	/**
-	 * The name of the database sequence that is used for generating
-	 * entity identifiers.
-	 */
-	public static final String ENTITY_IDENTIFIER_SEQUENCE_NAME = "seqIdentifier";
+    /**
+     * The JNDI name of the JDBC data source.
+     */
+    public static final String JDBC_DATASOURCE_JNDI_NAME = "jdbc/fenixDatasource";
+
+    /**
+     * The name of the database sequence that is used for generating entity
+     * identifiers.
+     */
+    public static final String ENTITY_IDENTIFIER_SEQUENCE_NAME = "seqIdentifier";
 }

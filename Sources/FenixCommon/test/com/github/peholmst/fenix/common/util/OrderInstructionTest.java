@@ -28,17 +28,17 @@ import org.junit.Test;
  */
 public class OrderInstructionTest {
 
-	@Test
-	public void ascendingFactoryMethod() {
-		OrderInstruction order = OrderInstruction.ascending("propertyName");
-		assertEquals("propertyName", order.getPropertyName());
-		assertTrue(order.isAscending());
-	}
+    @Test
+    public void ascendingFactoryMethod() {
+        OrderInstruction order = OrderInstruction.ascending("propertyName");
+        assertEquals("propertyName", order.getPropertyName());
+        assertTrue(order.isAscending());
+    }
 
-	@Test
-	public void descendingFactoryMethod() {
-		OrderInstruction order = OrderInstruction.descending("propertyName");
-		assertEquals("propertyName", order.getPropertyName());
-		assertFalse(order.isAscending());
-	}
+    @Test
+    public void descendingFactoryMethod() {
+        OrderInstruction order = OrderInstruction.descending("propertyName");
+        assertEquals("propertyName", order.getPropertyName());
+        assertFalse(order.isAscending());
+    }
 }
