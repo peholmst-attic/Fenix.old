@@ -52,7 +52,6 @@ public abstract class DataSourceSequence extends Sequence {
 	 */
 	public DataSourceSequence(String sequenceName) {
 		assert sequenceName != null && !sequenceName.isEmpty() : "sequenceName must not be null nor empty";
-		log.info("Using sequence name {}", sequenceName);
 		this.sequenceName = sequenceName;
 	}
 
@@ -77,6 +76,7 @@ public abstract class DataSourceSequence extends Sequence {
 	@Override
 	protected Interval<Long> reserveSequenceValues() {
 		log.debug("Reserving sequence values");
+		log.debug("Using sequence name {}", sequenceName);
 		DataSource dataSource = lookupDataSource();
 		try {
 			Connection connection = dataSource.getConnection();
