@@ -30,8 +30,8 @@ import org.slf4j.LoggerFactory;
  */
 public class JndiDataSourceSequence extends DataSourceSequence {
 
-	private final Logger log = LoggerFactory.getLogger(getClass());	
-	
+	private final Logger log = LoggerFactory.getLogger(getClass());
+
 	private final String jndiName;
 
 	/**
@@ -50,13 +50,22 @@ public class JndiDataSourceSequence extends DataSourceSequence {
 
 	@Override
 	protected DataSource lookupDataSource() {
-		log.info("Looking up data source with JNDI name {}", jndiName);
+		log.info("Looking up data source with JNDI name {}", getJndiName());
 		try {
-			return (DataSource) new InitialContext().lookup(jndiName);
+			return (DataSource) new InitialContext().lookup(getJndiName());
 		} catch (NamingException e) {
 			log.error("Could not find data source", e);
 			throw new IllegalStateException("Could not find data source", e);
 		}
+	}
+
+	/**
+	 * Gets the JNDI name of the data source.
+	 * 
+	 * @return the JNDI name.
+	 */
+	public final String getJndiName() {
+		return jndiName;
 	}
 
 }

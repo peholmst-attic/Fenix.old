@@ -61,7 +61,7 @@ public abstract class DataSourceSequence extends Sequence {
 	 * 
 	 * @return the name (never <code>null</code>).
 	 */
-	protected final String getSequenceName() {
+	public final String getSequenceName() {
 		return sequenceName;
 	}
 
