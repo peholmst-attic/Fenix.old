@@ -86,16 +86,6 @@ public abstract class VersionedEntity extends EntityBase {
     }
 
     /**
-     * Marks or unmarks this entity as deleted.
-     * 
-     * @param deleted
-     *            true to mark the entity as deleted, false to unmark it.
-     */
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    /**
      * Checks whether this entity is the newest version. There can only be one
      * entity in the same version group with this property set to true.
      * 
