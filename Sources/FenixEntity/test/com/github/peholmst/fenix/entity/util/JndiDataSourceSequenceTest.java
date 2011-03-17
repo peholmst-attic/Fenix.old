@@ -64,6 +64,7 @@ public class JndiDataSourceSequenceTest {
         // Create sequence
         Connection connection = dataSource.getConnection();
         Statement statement = connection.createStatement();
+        statement.execute("DROP SEQUENCE IF EXISTS " + SEQUENCE_NAME);
         statement.execute("CREATE SEQUENCE " + SEQUENCE_NAME
                 + " START WITH 1 INCREMENT BY 10");
         statement.close();

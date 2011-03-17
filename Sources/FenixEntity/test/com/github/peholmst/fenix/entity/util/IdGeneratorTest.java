@@ -16,11 +16,8 @@
 package com.github.peholmst.fenix.entity.util;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-
-import com.github.peholmst.fenix.common.SystemConstants;
 
 /**
  * Test case for {@link IdGenerator}.
@@ -28,17 +25,6 @@ import com.github.peholmst.fenix.common.SystemConstants;
  * @author Petter Holmström
  */
 public class IdGeneratorTest {
-
-    @Test
-    public void defaults() {
-        assertTrue(IdGenerator.getSequence() instanceof JndiDataSourceSequence);
-        JndiDataSourceSequence seq = (JndiDataSourceSequence) IdGenerator
-                .getSequence();
-        assertEquals(SystemConstants.ENTITY_IDENTIFIER_SEQUENCE_NAME,
-                seq.getSequenceName());
-        assertEquals(SystemConstants.JDBC_DATASOURCE_JNDI_NAME,
-                seq.getJndiName());
-    }
 
     @Test
     public void getNextValue() {

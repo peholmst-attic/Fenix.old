@@ -35,14 +35,17 @@ public class DataSourceSequenceTest {
 
     private static JdbcDataSource dataSource;
 
+    static final String SEQUENCE_NAME = "mySequence";
+
     @BeforeClass
     public static void setUpDataSource() throws Exception {
         dataSource = new JdbcDataSource();
         dataSource.setURL("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1");
         Connection connection = dataSource.getConnection();
         Statement statement = connection.createStatement();
-        statement
-                .execute("CREATE SEQUENCE mySequence START WITH 1 INCREMENT BY 10");
+        statement.execute("DROP SEQUENCE IF EXISTS " + SEQUENCE_NAME);
+        statement.execute("CREATE SEQUENCE " + SEQUENCE_NAME
+                + " START WITH 1 INCREMENT BY 10");
         statement.close();
         connection.close();
     }
