@@ -19,48 +19,32 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.github.peholmst.fenix.common.util.Interval;
-
 /**
- * Test case for {@link Sequence}.
+ * Test case for {@link InMemorySequence}.
  * 
  * @author Petter Holmström
  */
-public class SequenceTest {
+public class InMemorySequenceTest {
 
-	static class SequenceUnderTest extends Sequence {
-
-		static final long INCREMENT = 50;
-		
-		long sequenceValue = 1L;
-		
-		@Override
-		protected Interval<Long> reserveSequenceValues() {
-			 Interval<Long> interval = Interval.createClosedInterval(sequenceValue, sequenceValue + INCREMENT -1);
-			 sequenceValue += INCREMENT;
-			 return interval;
-		}		
-	}
-	
 	@Test
 	public void initialReservationByConstructor() {
-		SequenceUnderTest seq = new SequenceUnderTest();
+		InMemorySequence seq = new InMemorySequence();
 		assertEquals(1L, seq.getNextValue());
-		assertEquals(51L, seq.sequenceValue);
+		assertEquals(InMemorySequence.DEFAULT_INCREMENT + 1, seq.getSequenceValue());
+		assertEquals(InMemorySequence.DEFAULT_INCREMENT, seq.getIncrement());
 	}
-
 	@Test
 	public void loopThroughNextValuesUntilRangeRunsOut() {
-		SequenceUnderTest seq = new SequenceUnderTest();
+		InMemorySequence seq = new InMemorySequence();
 		long oldValue = 0L;
-		for (int i = 0; i < SequenceUnderTest.INCREMENT; ++i) {
+		for (int i = 0; i < InMemorySequence.DEFAULT_INCREMENT; ++i) {
 			long newValue = seq.getNextValue();
 			assertEquals(oldValue +1, newValue);
 			oldValue = newValue;
 		}
-		seq.sequenceValue = 200L;
+		seq.setSequenceValue(200L);
 		assertEquals(200L, seq.getNextValue());
-		assertEquals(250L, seq.sequenceValue);
+		assertEquals(250L, seq.getSequenceValue());
 	}
 
 }
