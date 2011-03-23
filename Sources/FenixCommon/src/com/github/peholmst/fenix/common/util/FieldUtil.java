@@ -22,7 +22,7 @@ import java.lang.reflect.Field;
  * 
  * @author Petter Holmström
  */
-public class FieldUtil {
+public final class FieldUtil {
 
     private FieldUtil() {
     }
