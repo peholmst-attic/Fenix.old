@@ -72,9 +72,7 @@ public class InMemorySequence extends Sequence {
     }
 
     /**
-     * Gets the current sequence value.
-     * 
-     * @return the sequence value.
+     * Returns the current sequence value.
      */
     public synchronized long getSequenceValue() {
         return sequenceValue;
@@ -82,18 +80,13 @@ public class InMemorySequence extends Sequence {
 
     /**
      * Sets the current sequence value.
-     * 
-     * @param sequenceValue
-     *            the sequence value.
      */
     public synchronized void setSequenceValue(long sequenceValue) {
         this.sequenceValue = sequenceValue;
     }
 
     /**
-     * Gets the increment.
-     * 
-     * @return the increment.
+     * Returns the increment.
      */
     public synchronized long getIncrement() {
         return increment;

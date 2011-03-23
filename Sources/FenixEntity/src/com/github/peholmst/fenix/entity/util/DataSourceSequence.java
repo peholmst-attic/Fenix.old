@@ -45,10 +45,8 @@ public abstract class DataSourceSequence extends Sequence {
     private final static String QUERY_CURRENT_VALUE = "SELECT CURRVAL('%s')";
 
     /**
-     * Creates a new <code>DataSourceSequence</code>.
-     * 
-     * @param sequenceName
-     *            the name of the sequence to use.
+     * Creates a new <code>DataSourceSequence</code> that uses the specified
+     * database sequence.
      */
     public DataSourceSequence(String sequenceName) {
         assert sequenceName != null && !sequenceName.isEmpty() : "sequenceName must not be null nor empty";
@@ -56,9 +54,7 @@ public abstract class DataSourceSequence extends Sequence {
     }
 
     /**
-     * Gets the name of the sequence.
-     * 
-     * @return the name (never <code>null</code>).
+     * Returns the name of the sequence (never <code>null</code>).
      */
     public final String getSequenceName() {
         return sequenceName;
@@ -68,8 +64,6 @@ public abstract class DataSourceSequence extends Sequence {
      * Looks up the JDBC data source that is to be used for accessing the
      * sequence. If the data source cannot be found, an unchecked exception is
      * thrown.
-     * 
-     * @return the data source (never <code>null</code>).
      */
     protected abstract DataSource lookupDataSource();
 

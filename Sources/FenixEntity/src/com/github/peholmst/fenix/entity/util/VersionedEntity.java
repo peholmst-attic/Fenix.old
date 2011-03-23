@@ -78,8 +78,6 @@ public abstract class VersionedEntity extends EntityBase {
     /**
      * Checks whether this entity is marked as deleted, meaning it should not
      * show up in normal listings, etc.
-     * 
-     * @return true if the entity is deleted, false if not.
      */
     public boolean isDeleted() {
         return deleted;
@@ -88,28 +86,22 @@ public abstract class VersionedEntity extends EntityBase {
     /**
      * Checks whether this entity is the newest version. There can only be one
      * entity in the same version group with this property set to true.
-     * 
-     * @return true if the entity is the newest version, false if not.
      */
     public boolean isNewestVersion() {
         return newestVersion;
     }
 
     /**
-     * Gets the version number of this entity.
-     * 
-     * @return the version number, or <code>null</code> if no version has been
-     *         assigned yet.
+     * Returns the version number of this entity, or <code>null</code> if no
+     * version has been assigned yet.
      */
     public Long getVersion() {
         return version;
     }
 
     /**
-     * Gets the version group for this entity.
-     * 
-     * @return the version group, or <code>null</code> if none has been assigned
-     *         yet.
+     * Returns the version group for this entity, or <code>null</code> if none
+     * has been assigned yet..
      */
     public VersionGroup getVersionGroup() {
         return versionGroup;
@@ -117,9 +109,6 @@ public abstract class VersionedEntity extends EntityBase {
 
     /**
      * Sets the version group for this entity.
-     * 
-     * @param versionGroup
-     *            the version group to set.
      */
     public void setVersionGroup(VersionGroup versionGroup) {
         this.versionGroup = versionGroup;

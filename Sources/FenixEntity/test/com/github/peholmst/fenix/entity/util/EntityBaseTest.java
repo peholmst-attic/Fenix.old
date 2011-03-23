@@ -85,7 +85,7 @@ public class EntityBaseTest {
     public void createEntityWithExistingId() {
         EntityUnderTest entity = EntityBase.createEntityWithExistingId(
                 EntityUnderTest.class, 123L);
-        assertEquals(123L, entity.getIdentifier());
+        assertEquals(123L, entity.getIdentifier().longValue());
     }
 
     @Test

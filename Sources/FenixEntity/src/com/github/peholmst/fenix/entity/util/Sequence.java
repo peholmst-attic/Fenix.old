@@ -34,12 +34,6 @@ public abstract class Sequence {
 
     private long currentValue = 0L;
 
-    /**
-     * Creates a new <code>Sequence</code> instance.
-     */
-    public Sequence() {
-    }
-
     private void reserveValues() {
         Interval<Long> reservedInterval = reserveSequenceValues();
         currentValue = reservedInterval.getIncludedStartPoint();
@@ -48,15 +42,11 @@ public abstract class Sequence {
 
     /**
      * Reserves a closed interval of sequence values.
-     * 
-     * @return the reserved interval.
      */
     protected abstract Interval<Long> reserveSequenceValues();
 
     /**
-     * Gets the next value of the sequence.
-     * 
-     * @return the next value.
+     * Returns the next value of the sequence.
      */
     public final synchronized long getNextValue() {
         if (currentValue == maxValue) {

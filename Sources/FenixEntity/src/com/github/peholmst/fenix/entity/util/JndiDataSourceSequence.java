@@ -60,9 +60,7 @@ public class JndiDataSourceSequence extends DataSourceSequence {
     }
 
     /**
-     * Gets the JNDI name of the data source.
-     * 
-     * @return the JNDI name.
+     * Returns the JNDI name of the data source.
      */
     public final String getJndiName() {
         return jndiName;

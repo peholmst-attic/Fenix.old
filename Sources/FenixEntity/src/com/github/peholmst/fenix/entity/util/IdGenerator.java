@@ -50,21 +50,17 @@ public class IdGenerator {
     }
 
     /**
-     * Gets the next available ID value. As long as the underlying sequence
+     * Returns the next available ID value. As long as the underlying sequence
      * remains the same, subsequent calls to this method will never return the
      * same value.
-     * 
-     * @return the ID value.
      */
     public static long getNextValue() {
         return getSequence().getNextValue();
     }
 
     /**
-     * Set the sequence to use for generating ID values in the current thread.
-     * 
-     * @param sequence
-     *            the sequence (must not be <code>null</code>).
+     * Sets the sequence to use for generating ID values in the current thread
+     * (must not be <code>null</code>).
      */
     public static synchronized void setSequence(Sequence sequence) {
         assert sequence != null : "sequence must not be null";
@@ -72,10 +68,8 @@ public class IdGenerator {
     }
 
     /**
-     * Gets the sequence that is used for generating ID values in the current
-     * thread.
-     * 
-     * @return the sequence (never <code>null</code>).
+     * Returns the sequence that is used for generating ID values in the current
+     * thread (never <code>null</code>).
      */
     public static synchronized Sequence getSequence() {
         return IdGenerator.sequence.get();

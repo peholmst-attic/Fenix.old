@@ -52,7 +52,7 @@ public abstract class EntityBase implements java.io.Serializable, Cloneable {
     private static final long serialVersionUID = 9158596445082221718L;
 
     @Id
-    private long identifier = 0L;
+    private Long identifier;
 
     public static final String PROP_IDENTIFIER = "identifier";
 
@@ -216,29 +216,16 @@ public abstract class EntityBase implements java.io.Serializable, Cloneable {
         }
     }
 
-    /**
-     * Gets the identifier of this entity.
-     * 
-     * @return the identifier.
-     */
-    public long getIdentifier() {
+    public Long getIdentifier() {
         return identifier;
     }
 
-    /**
-     * Gets the version number that is used for optimistic locking.
-     * 
-     * @return the optimistic locking version number or <code>null</code> if the
-     *         entity is transient.
-     */
     public Long getOptLockVersion() {
         return optLockVersion;
     }
 
     /**
      * Checks if the entity is persistent or transient.
-     * 
-     * @return true if it is persistent, false if it is transient.
      */
     public boolean isPersistent() {
         return getOptLockVersion() != null;
