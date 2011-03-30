@@ -24,6 +24,8 @@ import java.lang.reflect.Field;
  */
 public final class FieldUtil {
 
+    // TODO Add support for using nested fields (e.g. aa.bb.cc)
+
     private FieldUtil() {
     }
 
