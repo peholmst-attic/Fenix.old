@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="FenixEAR">
+        <wb-resource deploy-path="/" source-path="/EarContent"/>
+        <dependent-module archiveName="FenixEntity.jar" deploy-path="/lib" handle="module:/resource/FenixEntity/FenixEntity">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="FenixAPI.jar" deploy-path="/lib" handle="module:/resource/FenixAPI/FenixAPI">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="FenixEJB.jar" deploy-path="/" handle="module:/resource/FenixEJB/FenixEJB">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="FenixUI.war" deploy-path="/" handle="module:/resource/FenixUI/FenixUI">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="FenixCommon.jar" deploy-path="/lib" handle="module:/resource/FenixCommon/FenixCommon">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+    </wb-module>
+</project-modules>
