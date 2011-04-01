@@ -3,9 +3,7 @@
 	<name>FenixEAR</name>
 	<comment></comment>
 	<projects>
-		<project>FenixEntity</project>
 		<project>FenixAPI</project>
-		<project>FenixEJB</project>
 		<project>FenixUI</project>
 		<project>FenixCommon</project>
 	</projects>
