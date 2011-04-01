@@ -15,6 +15,8 @@
  */
 package com.github.peholmst.fenix.common;
 
+import java.util.Locale;
+
 /**
  * This interface contains system wide constants that are used by different
  * modules.
@@ -33,4 +35,27 @@ public interface SystemConstants {
      * identifiers.
      */
     public static final String ENTITY_IDENTIFIER_SEQUENCE_NAME = "seqIdentifier";
+
+    /**
+     * The supported locales. The UI can be viewed in any of these languages.
+     * Localized data can also be stored in all of these languages.
+     */
+    public static final Locale[] SUPPORTED_LOCALES = { Locale.ENGLISH,
+            new Locale("sv"), new Locale("fi") };
+
+    /**
+     * User readable names of the locales in {@link #SUPPORTED_LOCALES}.
+     */
+    public static final String[] SUPPORTED_LOCALE_DISPLAY_NAMES = { "English",
+            "Svenska", "Suomi" };
+
+    /**
+     * The default locale used by all new application instances.
+     */
+    public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
+
+    /**
+     * The name of the application usable in all languages.
+     */
+    public static final String APPLICATION_TITLE = "Fenix";
 }
