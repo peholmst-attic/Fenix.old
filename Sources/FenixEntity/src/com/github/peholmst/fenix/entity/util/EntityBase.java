@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Petter Holmström
+ * Copyright (c) 2011 The original developers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,9 +23,9 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
-import com.github.peholmst.fenix.common.util.CloneThis;
-import com.github.peholmst.fenix.common.util.CloneUtil;
 import com.github.peholmst.fenix.common.util.FieldUtil;
+import com.github.peholmst.stuff4vaadin.clone.CloneThis;
+import com.github.peholmst.stuff4vaadin.clone.CloneUtil;
 
 /**
  * This is a base class for all entities. It includes an identifier and a
@@ -54,12 +54,8 @@ public abstract class EntityBase implements java.io.Serializable, Cloneable {
     @Id
     private Long identifier;
 
-    public static final String PROP_IDENTIFIER = "identifier";
-
     @Version
     private Long optLockVersion;
-
-    public static final String PROP_OPT_LOCK_VERSION = "optLockVersion";
 
     /**
      * Protected constructor to prevent clients from using it to create new

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Petter Holmström
+ * Copyright (c) 2011 The original developers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,27 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.peholmst.fenix.entity.util;
+package com.github.peholmst.fenix.entity.types;
 
-import javax.persistence.Entity;
+import com.github.peholmst.fenix.entity.PhoneNumber;
 
 /**
- * A version group is used to group entities that form different versions of the
- * same logical entity.
+ * Enumeration of different phone number types.
  * 
- * @see VersionedEntity
+ * @see PhoneNumber
  * 
  * @author Petter Holmström
  */
-@Entity
-public class VersionGroup extends EntityBase {
-
-    private static final long serialVersionUID = -8080075864259900900L;
-
-    /**
-     * Protected constructor, use the factory methods.
-     */
-    protected VersionGroup() {
-    }
-
+public enum PhoneNumberType {
+    WORK, HOME, WORK_MOBILE, PRIVATE_MOBILE, FAX
 }
