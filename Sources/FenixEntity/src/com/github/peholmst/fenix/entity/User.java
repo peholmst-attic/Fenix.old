@@ -15,6 +15,8 @@
  */
 package com.github.peholmst.fenix.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,6 +24,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * TODO Document me!
@@ -54,7 +58,19 @@ public abstract class User implements java.io.Serializable {
     private boolean active;
 
     @Column(nullable = false)
-    private boolean blocked;
+    private boolean locked;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastFailedLoginAttempt;
+
+    @Column(nullable = false)
+    private int numberOfFailedLoginAttempts;
+
+    @Column(nullable = false)
+    private boolean forcePasswordChangeOnNextLogin;
+
+    @Temporal(TemporalType.DATE)
+    private Date expirationDate;
 
     public long getUserId() {
         return userId;
@@ -104,11 +120,45 @@ public abstract class User implements java.io.Serializable {
         this.active = active;
     }
 
-    public boolean isBlocked() {
-        return blocked;
+    public boolean isLocked() {
+        return locked;
     }
 
-    public void setBlocked(boolean blocked) {
-        this.blocked = blocked;
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
+
+    public Date getLastFailedLoginAttempt() {
+        return lastFailedLoginAttempt;
+    }
+
+    public void setLastFailedLoginAttempt(Date lastFailedLoginAttempt) {
+        this.lastFailedLoginAttempt = lastFailedLoginAttempt;
+    }
+
+    public int getNumberOfFailedLoginAttempts() {
+        return numberOfFailedLoginAttempts;
+    }
+
+    public void setNumberOfFailedLoginAttempts(int numberOfFailedLoginAttempts) {
+        this.numberOfFailedLoginAttempts = numberOfFailedLoginAttempts;
+    }
+
+    public boolean isForcePasswordChangeOnNextLogin() {
+        return forcePasswordChangeOnNextLogin;
+    }
+
+    public void setForcePasswordChangeOnNextLogin(
+            boolean forcePasswordChangeOnNextLogin) {
+        this.forcePasswordChangeOnNextLogin = forcePasswordChangeOnNextLogin;
+    }
+
+    public Date getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(Date expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
 }
