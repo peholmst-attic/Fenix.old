@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Petter Holmström
+ * Copyright (c) 2011 The original developers
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,8 +28,8 @@ import java.util.Map;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.github.peholmst.fenix.common.util.CloneThis;
 import com.github.peholmst.fenix.common.util.FieldUtil;
+import com.github.peholmst.stuff4vaadin.clone.CloneThis;
 
 /**
  * Test case for {@link EntityBase}.
@@ -91,7 +91,7 @@ public class EntityBaseTest {
     @Test
     public void isPersistent() throws Exception {
         EntityUnderTest entity = EntityBase.createEntity(EntityUnderTest.class);
-        FieldUtil.setFieldValue(entity, EntityBase.PROP_OPT_LOCK_VERSION, 1L);
+        FieldUtil.setFieldValue(entity, "optLockVersion", 1L);
         assertTrue(entity.isPersistent());
     }
 
@@ -138,8 +138,7 @@ public class EntityBaseTest {
     public void createFromExistingEntity() throws Exception {
         EntityUnderTest existingEntity = EntityBase
                 .createEntity(EntityUnderTest.class);
-        FieldUtil.setFieldValue(existingEntity,
-                EntityBase.PROP_OPT_LOCK_VERSION, 123L);
+        FieldUtil.setFieldValue(existingEntity, "optLockVersion", 123L);
 
         EntityUnderTest newEntity = EntityBase
                 .createFromExistingEntity(existingEntity);
