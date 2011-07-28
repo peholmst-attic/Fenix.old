@@ -19,30 +19,26 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Map;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
-import com.github.peholmst.fenix.common.util.FieldUtil;
 import com.github.peholmst.stuff4vaadin.clone.CloneThis;
 import com.github.peholmst.stuff4vaadin.clone.CloneUtil;
+import com.github.peholmst.stuff4vaadin.common.FieldUtil;
 
 /**
  * This is a base class for all entities. It includes an identifier and a
  * version number for optimistic locking. Equality and hash code is based on the
- * identifier alone and therefore it is assigned already when the entity
- * instance is created. Please see the factory methods for more information.
+ * identifier. If none is set, an entity is only equal to itself.
  * <p>
  * Cloning is handled by {@link CloneUtil#deepClone(Cloneable)}, which means
  * that subclasses can use the {@link CloneThis} annotation if they want to.
  * Please note, that the <code>clone()</code> method will make an exact clone of
- * the entity graph, including the identifiers. If you want a copy of the entity
- * graph but with different identifiers, you should use
- * {@link #createFromExistingEntity(EntityBase)}.
- * 
- * @see #createEntity(Class)
- * @see #createEntityWithExistingId(Class, long)
- * @see #createFromExistingEntity(EntityBase)
+ * the entity graph, including the identifiers.
  * 
  * @author Petter Holmström
  */
@@ -52,43 +48,44 @@ public abstract class EntityBase implements java.io.Serializable, Cloneable {
     private static final long serialVersionUID = 9158596445082221718L;
 
     @Id
-    private Long identifier;
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    protected Long identifier;
 
     @Version
-    private Long optLockVersion;
+    @Column(name = "OPTLOCKVER")
+    protected Long optLockVersion;
 
     /**
-     * Protected constructor to prevent clients from using it to create new
-     * entity instances. They should use the factory methods instead.
-     * 
-     * @see #createEntity(Class)
-     * @see #createEntityWithExistingId(Class, long)
+     * Returns the identifier of this entity, or <code>null</code> if it has not
+     * been persisted yet.
      */
-    protected EntityBase() {
+    public Long getIdentifier() {
+        return identifier;
     }
 
     /**
-     * Creates a new instance of the specified entity class and assigns an
-     * identifier to it using {@link IdGenerator}.
-     * 
-     * @param <T>
-     *            the type of entity to create.
-     * @param entityClass
-     *            the entity class.
-     * @return a new entity instance.
+     * Returns the optimistic locking version number of the entity, or
+     * <code>null</code> if it has not been persisted yet.
      */
-    public static <T extends EntityBase> T createEntity(Class<T> entityClass) {
-        return createEntityWithExistingId(entityClass,
-                IdGenerator.getNextValue());
+    public Long getOptLockVersion() {
+        return optLockVersion;
+    }
+
+    /**
+     * Checks if the entity is persistent or transient.
+     */
+    public boolean isPersistent() {
+        return getIdentifier() != null;
     }
 
     /**
      * Creates a new transient entity instance that is a copy of the specified
-     * entity. This means that all entity identifiers have been regenerated and
-     * the optimistic locking versions set to <code>null</code>. All fields
-     * annotated with {@link CloneThis} have also been made transient
-     * recursively. Maps, arrays and Collections are made transient if
-     * {@link CloneThis#deepClone()} is true.
+     * entity. This means that all entity identifiers and the optimistic locking
+     * versions have been set to <code>null</code>. All fields annotated with
+     * {@link CloneThis} have also been made transient recursively. Maps, arrays
+     * and Collections are made transient if {@link CloneThis#deepClone()} is
+     * true.
      * 
      * @param <T>
      *            the type of the entity to create.
@@ -110,7 +107,20 @@ public abstract class EntityBase implements java.io.Serializable, Cloneable {
         return newEntity;
     }
 
-    private void makeTransient() throws Exception {
+    /**
+     * Makes this entity transient (i.e. sets the identifier and optimistic
+     * locking version to <code>null</code>).All fields annotated with
+     * {@link CloneThis} have also been made transient recursively. Maps, arrays
+     * and Collections are made transient if {@link CloneThis#deepClone()} is
+     * true.
+     * <p>
+     * Note, that this has nothing to do with Java serialization and the
+     * <code>transient</code> keyword!
+     * 
+     * @throws Exception
+     *             if something went wrong.
+     */
+    public void makeTransient() throws Exception {
         makeObjectTransient(this);
     }
 
@@ -120,7 +130,7 @@ public abstract class EntityBase implements java.io.Serializable, Cloneable {
             return;
         }
         if (object instanceof EntityBase) {
-            ((EntityBase) object).identifier = IdGenerator.getNextValue();
+            ((EntityBase) object).identifier = null;
             ((EntityBase) object).optLockVersion = null;
         }
         FieldUtil.visitAllDeclaredFields(object.getClass(),
@@ -187,46 +197,6 @@ public abstract class EntityBase implements java.io.Serializable, Cloneable {
         }
     }
 
-    /**
-     * Creates a new instance of the specified entity class with the specified
-     * identifier.
-     * 
-     * @param <T>
-     *            the type of the entity to create.
-     * @param entityClass
-     *            the entity class.
-     * @param entityId
-     *            the entity identifier.
-     * @return a new entity instance with the given identifier.
-     */
-    public static <T extends EntityBase> T createEntityWithExistingId(
-            Class<T> entityClass, long entityId) {
-        assert entityClass != null : "entityClass must not be null";
-        try {
-            T entity = entityClass.newInstance();
-            entity.identifier = entityId;
-            return entity;
-        } catch (Exception e) {
-            throw new IllegalArgumentException(
-                    "Could not create an instance of class " + entityClass, e);
-        }
-    }
-
-    public Long getIdentifier() {
-        return identifier;
-    }
-
-    public Long getOptLockVersion() {
-        return optLockVersion;
-    }
-
-    /**
-     * Checks if the entity is persistent or transient.
-     */
-    public boolean isPersistent() {
-        return getOptLockVersion() != null;
-    }
-
     @Override
     public int hashCode() {
         return (int) (identifier ^ (identifier >>> 32));
@@ -240,10 +210,8 @@ public abstract class EntityBase implements java.io.Serializable, Cloneable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        EntityBase other = (EntityBase) obj;
-        if (identifier != other.identifier)
-            return false;
-        return true;
+        final EntityBase other = (EntityBase) obj;
+        return identifier != null && identifier.equals(other.identifier);
     }
 
     @Override
