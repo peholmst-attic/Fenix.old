@@ -1,11 +1,11 @@
-package com.github.peholmst.fenix.entity;
+package com.github.peholmst.fenix.entity.util;
 
 import java.util.Date;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="Dali", date="2011-07-26T22:56:25.953+0300")
+@Generated(value="Dali", date="2011-07-28T22:02:26.557+0300")
 @StaticMetamodel(User.class)
 public class User_ {
 	public static volatile SingularAttribute<User, Long> userId;
