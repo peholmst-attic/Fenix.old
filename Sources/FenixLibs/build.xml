@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="FenixLibs" default="default" xmlns:artifact="urn:maven-artifact-ant">
+
+	<property name="lib.test.dir" value="${basedir}/lib/test" />
+	<property name="lib.compile.dir" value="${basedir}/lib/compile" />
+	<property name="lib.runtime.dir" value="${basedir}/lib/runtime" />
+
+	<path id="maven-ant-tasks.classpath" path="${basedir}/ant/maven-ant-tasks-2.1.3.jar" />
+	<typedef resource="org/apache/maven/artifact/ant/antlib.xml" uri="urn:maven-artifact-ant" classpathref="maven-ant-tasks.classpath" />
+
+	
+	<artifact:dependencies filesetId="dependencies.test.fileset" useScope="test" versionsId="dependencies.test.versions">
+		<remoteRepository id="glassfish" url="http://download.java.net/maven/glassfish"/>
+		<dependency groupId="org.glassfish.extras" artifactId="glassfish-embedded-all" version="3.1.1"/>
+	</artifact:dependencies>
+
+	<artifact:dependencies filesetId="dependencies.compile.fileset" useScope="compile">
+	</artifact:dependencies>
+
+	<artifact:dependencies filesetId="dependencies.runtime.fileset" useScope="runtime">
+	</artifact:dependencies>
+
+	<target name="downloadTestDependencies">
+		<mkdir dir="${lib.test.dir}" />
+		<copy todir="${lib.test.dir}">
+			<fileset refid="dependencies.test.fileset" />
+			<mapper classpathref="maven-ant-tasks.classpath" classname="org.apache.maven.artifact.ant.VersionMapper" from="${dependencies.test.versions}" to="flatten" />
+		</copy>
+	</target>
+
+	<target name="default" depends="downloadTestDependencies">
+
+	</target>
+
+</project>
