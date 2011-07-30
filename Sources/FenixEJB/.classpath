@@ -12,7 +12,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/FenixCommon"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/FenixEntity"/>
 	<classpathentry kind="output" path="build/classes"/>
