@@ -21,6 +21,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 import com.github.peholmst.fenix.entity.types.SystemWideUserRole;
+import com.github.peholmst.fenix.entity.util.User;
 
 /**
  * TODO Document me!

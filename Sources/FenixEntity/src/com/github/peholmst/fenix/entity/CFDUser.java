@@ -18,12 +18,17 @@ package com.github.peholmst.fenix.entity;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapKeyJoinColumn;
 
 import com.github.peholmst.fenix.entity.types.CFDUserRole;
+import com.github.peholmst.fenix.entity.util.User;
 
 /**
  * TODO Document me!
@@ -37,6 +42,10 @@ public class CFDUser extends User {
 
     @ElementCollection
     @Enumerated(EnumType.STRING)
+    @MapKeyJoinColumn(name = "CFD_ID")
+    @Column(name = "ROLE")
+    @CollectionTable(name = "CFDUSER_ROLES",
+            joinColumns = @JoinColumn(name = "CFDUSER_ID"))
     private Map<CFD, CFDUserRole> roles = new HashMap<CFD, CFDUserRole>();
 
     public Map<CFD, CFDUserRole> getRoles() {

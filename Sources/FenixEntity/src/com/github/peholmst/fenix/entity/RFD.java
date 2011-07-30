@@ -15,9 +15,13 @@
  */
 package com.github.peholmst.fenix.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
 import com.github.peholmst.fenix.entity.util.HistoricalEntityBase;
+import com.github.peholmst.fenix.entity.util.MultilingualString;
+import com.github.peholmst.stuff4vaadin.clone.CloneThis;
 
 /**
  * TODO Document me!
@@ -30,4 +34,17 @@ public class RFD extends HistoricalEntityBase {
     private static final long serialVersionUID = 7681818001684807952L;
 
     // TODO Define RFD entity class
+
+    @OneToOne(cascade = CascadeType.ALL, optional = false, orphanRemoval = true)
+    @CloneThis
+    private MultilingualString name;
+
+    public MultilingualString getName() {
+        return name;
+    }
+
+    public void setName(MultilingualString name) {
+        this.name = name;
+    }
+
 }

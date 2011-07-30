@@ -19,9 +19,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.github.peholmst.fenix.entity.types.RFDUserRole;
+import com.github.peholmst.fenix.entity.util.User;
 
 /**
  * TODO Document me!
@@ -34,6 +36,7 @@ public class RFDUser extends User {
     private static final long serialVersionUID = 7600605271005048549L;
 
     @ManyToOne(optional = false)
+    @JoinColumn(name = "RFD")
     private RFD regionalFireDepartment;
 
     @Enumerated(EnumType.STRING)
