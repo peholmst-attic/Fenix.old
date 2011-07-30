@@ -40,18 +40,21 @@ public interface SystemConstants {
      * The supported locales. The UI can be viewed in any of these languages.
      * Localized data can also be stored in all of these languages.
      */
+    @Deprecated
     public static final Locale[] SUPPORTED_LOCALES = { Locale.ENGLISH,
             new Locale("sv"), new Locale("fi") };
 
     /**
      * User readable names of the locales in {@link #SUPPORTED_LOCALES}.
      */
+    @Deprecated
     public static final String[] SUPPORTED_LOCALE_DISPLAY_NAMES = { "English",
             "Svenska", "Suomi" };
 
     /**
      * The default locale used by all new application instances.
      */
+    @Deprecated
     public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
 
     /**

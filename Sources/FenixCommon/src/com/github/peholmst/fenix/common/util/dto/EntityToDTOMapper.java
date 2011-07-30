@@ -17,7 +17,7 @@ package com.github.peholmst.fenix.common.util.dto;
 
 import java.lang.reflect.Field;
 
-import com.github.peholmst.fenix.common.util.FieldUtil;
+import com.github.peholmst.stuff4vaadin.common.FieldUtil;
 
 /**
  * TODO Document me!
