@@ -46,6 +46,7 @@
   <resources>
     <jdbc-resource pool-name="__TimerPool" jndi-name="jdbc/__TimerPool" object-type="system-admin" />
     <jdbc-resource pool-name="DerbyPool" jndi-name="jdbc/__default" />
+    <jdbc-resource pool-name="FenixPool" jndi-name="jdbc/FenixDataSource"/>
     <jdbc-connection-pool name="__TimerPool" datasource-classname="org.apache.derby.jdbc.EmbeddedXADataSource" res-type="javax.sql.XADataSource">
       <property value="${com.sun.aas.instanceRoot}/lib/databases/ejbtimer" name="databaseName" />
       <property value=";create=true" name="connectionAttributes" />
@@ -57,6 +58,11 @@
       <property value="localhost" name="serverName" />
       <property value="sun-appserv-samples" name="DatabaseName" />
       <property value=";create=true" name="connectionAttributes" />
+    </jdbc-connection-pool>
+    <jdbc-connection-pool name="FenixPool" datasource-classname="org.h2.jdbcx.JdbcDataSource" res-type="javax.sql.DataSource">
+    	<property name="password" value=""/>
+    	<property name="user" value="sa" />
+    	<property name="url" value="jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"/>
     </jdbc-connection-pool>
   </resources>
   <servers>
