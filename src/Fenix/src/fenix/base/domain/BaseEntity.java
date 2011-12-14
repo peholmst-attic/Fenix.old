@@ -1,3 +1,20 @@
+/*
+ * Fenix
+ * Copyright (C) 2011 Petter Holmström
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package fenix.base.domain;
 
 import java.util.Date;
@@ -6,11 +23,17 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
+/**
+ * Base class for all entity classes.
+ * 
+ * @author Petter Holmström
+ */
 @MappedSuperclass
 public abstract class BaseEntity implements java.io.Serializable {
 
@@ -27,19 +50,24 @@ public abstract class BaseEntity implements java.io.Serializable {
 	@Column(nullable = false)
 	protected Date created;
 
-	@Column(nullable = false)
-	protected String creator;
+	@ManyToOne(optional = false)
+	protected User creator;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	protected Date updated;
 
-	protected String updater;
+	@ManyToOne
+	protected User updater;
 
 	public Long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	/**
+	 * INTERNAL: This method is for internal use only and should never be
+	 * invoked by clients.
+	 */
+	protected void setId(Long id) {
 		this.id = id;
 	}
 
@@ -47,7 +75,11 @@ public abstract class BaseEntity implements java.io.Serializable {
 		return version;
 	}
 
-	public void setVersion(Long version) {
+	/**
+	 * INTERNAL: This method is for internal use only and should never be
+	 * invoked by clients.
+	 */
+	protected void setVersion(Long version) {
 		this.version = version;
 	}
 
@@ -59,11 +91,11 @@ public abstract class BaseEntity implements java.io.Serializable {
 		this.created = created;
 	}
 
-	public String getCreator() {
+	public User getCreator() {
 		return creator;
 	}
 
-	public void setCreator(String creator) {
+	public void setCreator(User creator) {
 		this.creator = creator;
 	}
 
@@ -75,11 +107,11 @@ public abstract class BaseEntity implements java.io.Serializable {
 		this.updated = updated;
 	}
 
-	public String getUpdater() {
+	public User getUpdater() {
 		return updater;
 	}
 
-	public void setUpdater(String updater) {
+	public void setUpdater(User updater) {
 		this.updater = updater;
 	}
 
