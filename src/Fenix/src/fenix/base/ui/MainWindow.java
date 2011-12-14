@@ -17,24 +17,27 @@
  */
 package fenix.base.ui;
 
-import com.vaadin.ui.Label;
-import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
+import com.github.peholmst.i18n4vaadin.I18N;
+import com.github.peholmst.i18n4vaadin.support.I18NWindow;
 
 /**
  * Main window of the Fenix application.
  * 
  * @author Petter Holmström
  */
-public class MainWindow extends Window {
+public class MainWindow extends I18NWindow {
 
 	private static final long serialVersionUID = 8264172423096635587L;
 	
 	public static final String TABS_STYLE = "main";
 
-	public MainWindow() {
-		super("Fenix");
+	public MainWindow(I18N i18n) {
+		super("Fenix", i18n);
+		
+		LoginViewImpl loginView = new LoginViewImpl();
+		setContent(loginView);
+		
+		/*-
 		VerticalLayout layout = new VerticalLayout();
 		layout.setSizeFull();
 		setContent(layout);		
@@ -51,6 +54,6 @@ public class MainWindow extends Window {
 	 	tabs.addTab(new Label("todo"), "Verksamhetsbokföring", null);
 	 	tabs.addTab(new Label("todo"), "Planering", null);
 	 	tabs.addTab(new Label("todo"), "Ärenden", null);
-	 	tabs.addTab(new Label("todo"), "Egna brandkåren", null);
+	 	tabs.addTab(new Label("todo"), "Egna brandkåren", null);*/
 	}
 }
