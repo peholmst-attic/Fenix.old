@@ -21,6 +21,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
 /**
  * There are different user classes in Fenix. Each user class is represented by
@@ -29,6 +31,7 @@ import javax.persistence.Id;
  * @author Petter Holmström
  */
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class User implements java.io.Serializable {
 
 	private static final long serialVersionUID = -5325589982640657942L;
@@ -86,4 +89,27 @@ public abstract class User implements java.io.Serializable {
 		this.email = email;
 	}
 
+	private static final InheritableThreadLocal<User> currentUser = new InheritableThreadLocal<User>();
+
+	/**
+	 * Returns the User instance bound to the current thread, or null if no user
+	 * has been bound.
+	 * 
+	 * @see #setCurrent(User)
+	 */
+	public static User getCurrent() {
+		return currentUser.get();
+	}
+
+	/**
+	 * Bounds the specified User instance to the current thread. The User can
+	 * also be unbound by passing in null.
+	 */
+	public static void setCurrent(User user) {
+		if (user == null) {
+			currentUser.remove();
+		} else {
+			currentUser.set(user);
+		}
+	}
 }

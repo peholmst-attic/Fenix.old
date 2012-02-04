@@ -24,8 +24,13 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PostLoad;
+import javax.persistence.PostPersist;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 /**
@@ -57,6 +62,36 @@ public abstract class BaseEntity implements java.io.Serializable {
 	@ManyToOne
 	protected User updater;
 
+	@Transient
+	private boolean persistent = false;
+
+	/**
+	 * Default constructor 
+	 */
+	public BaseEntity() {
+	}
+
+	/**
+	 * Copy constructor
+	 */
+	public BaseEntity(BaseEntity source) {
+		uuid = source.uuid;
+		version = source.version;
+		created = (Date) (source.created == null ? null : source.created
+				.clone());
+		creator = source.creator;
+		updated = (Date) (source.updated == null ? null : source.updated
+				.clone());
+		updater = source.updater;
+	}
+
+	/**
+	 * Returns whether this entity is persistent or transient in the JPA sense.
+	 */
+	public boolean isPersistent() {
+		return persistent;
+	}
+
 	public UUID getUUID() {
 		return uuid == null ? null : UUID.fromString(uuid);
 	}
@@ -85,7 +120,11 @@ public abstract class BaseEntity implements java.io.Serializable {
 		return created;
 	}
 
-	public void setCreated(Date created) {
+	/**
+	 * INTERNAL: This method is for internal use only and should never be
+	 * invoked by clients.
+	 */
+	protected void setCreated(Date created) {
 		this.created = created;
 	}
 
@@ -93,7 +132,11 @@ public abstract class BaseEntity implements java.io.Serializable {
 		return creator;
 	}
 
-	public void setCreator(User creator) {
+	/**
+	 * INTERNAL: This method is for internal use only and should never be
+	 * invoked by clients.
+	 */
+	protected void setCreator(User creator) {
 		this.creator = creator;
 	}
 
@@ -101,7 +144,11 @@ public abstract class BaseEntity implements java.io.Serializable {
 		return updated;
 	}
 
-	public void setUpdated(Date updated) {
+	/**
+	 * INTERNAL: This method is for internal use only and should never be
+	 * invoked by clients.
+	 */
+	protected void setUpdated(Date updated) {
 		this.updated = updated;
 	}
 
@@ -109,8 +156,52 @@ public abstract class BaseEntity implements java.io.Serializable {
 		return updater;
 	}
 
-	public void setUpdater(User updater) {
+	/**
+	 * INTERNAL: This method is for internal use only and should never be
+	 * invoked by clients.
+	 */
+	protected void setUpdater(User updater) {
 		this.updater = updater;
+	}
+
+	/**
+	 * INTERNAL: This method is for internal use only and should never be
+	 * invoked by clients.
+	 */
+	@PostLoad
+	protected void postLoad() {
+		persistent = true;
+	}
+
+	/**
+	 * INTERNAL: This method is for internal use only and should never be
+	 * invoked by clients.
+	 */
+	@PrePersist
+	protected void prePersist() {
+		created = new Date();
+		creator = User.getCurrent();
+		assert updater != null : "no user bound to the current thread";
+	}
+
+	/**
+	 * INTERNAL: This method is for internal use only and should never be
+	 * invoked by clients.
+	 */
+	@PostPersist
+	protected void postPersist() {
+		persistent = true;
+	}
+
+	/**
+	 * INTERNAL: This method is for internal use only and should never be
+	 * invoked by clients.
+	 */
+	@PreUpdate
+	protected void preUpdate() {
+		updated = new Date();
+		updater = User.getCurrent();
+		assert updater != null : "no user bound to the current thread";
 	}
 
 	@Override
@@ -135,5 +226,14 @@ public abstract class BaseEntity implements java.io.Serializable {
 		} else {
 			return this.uuid.hashCode();
 		}
+	}
+
+	/**
+	 * Returns a hex string of the identity hash code of this particular object.
+	 * 
+	 * @see System#identityHashCode(Object)
+	 */
+	public String getObjectIdentityHashCode() {
+		return Integer.toHexString(System.identityHashCode(this));
 	}
 }

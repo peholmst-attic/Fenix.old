@@ -18,6 +18,7 @@
 package fenix.base.domain;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -31,6 +32,7 @@ import javax.persistence.Enumerated;
  * @author Petter Holmström
  */
 @Entity
+@DiscriminatorValue("SystemWide")
 public class SystemWideUser extends User {
 
 	private static final long serialVersionUID = 7377215085819278673L;
