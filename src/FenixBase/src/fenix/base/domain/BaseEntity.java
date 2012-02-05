@@ -179,9 +179,13 @@ public abstract class BaseEntity implements java.io.Serializable {
 	 */
 	@PrePersist
 	protected void prePersist() {
-		created = new Date();
-		creator = User.getCurrent();
-		assert updater != null : "no user bound to the current thread";
+		if (created == null) {
+			created = new Date();
+		}
+		if (creator == null) {
+			creator = User.getCurrent();
+			assert creator != null : "no user bound to the current thread";
+		}
 	}
 
 	/**
