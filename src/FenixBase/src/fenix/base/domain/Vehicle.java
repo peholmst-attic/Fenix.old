@@ -64,6 +64,26 @@ public class Vehicle extends BaseEntity implements SoftDeletable,
 	@LicensePlate
 	protected String licensePlate;
 
+	/**
+	 * Default constructor
+	 */
+	public Vehicle() {
+	}
+
+	/**
+	 * Copy constructor
+	 */
+	public Vehicle(Vehicle original) {
+		super(original);
+		this.callsign = original.callsign;
+		this.type = original.type;
+		this.yearModel = original.yearModel;
+		this.fireDepartment = original.fireDepartment;
+		this.ownedByFireDepartment = original.ownedByFireDepartment;
+		this.deleted = original.deleted;
+		this.licensePlate = original.licensePlate;
+	}
+
 	@Override
 	public boolean isDeleted() {
 		return deleted;

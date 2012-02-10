@@ -68,6 +68,25 @@ public class FireDepartmentSection extends BaseEntity implements SoftDeletable,
 	@NotNull(message = "Section has not been assigned to a fire department. This is a bug!")
 	protected FireDepartment fireDepartment;
 
+	/**
+	 * Default constructor
+	 */
+	public FireDepartmentSection() {
+	}
+
+	/**
+	 * Copy constructor
+	 */
+	public FireDepartmentSection(FireDepartmentSection original) {
+		super(original);
+		this.name = LocalizedString.copy(original.name);
+		this.type = original.type;
+		this.address = Address.copy(original.address);
+		this.contactInfo = ContactInfo.copy(original.contactInfo);
+		this.deleted = original.deleted;
+		this.fireDepartment = original.fireDepartment;
+	}
+
 	@Override
 	public FireDepartment getFireDepartment() {
 		return fireDepartment;

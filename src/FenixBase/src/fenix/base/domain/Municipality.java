@@ -45,6 +45,21 @@ public class Municipality extends BaseEntity implements SoftDeletable {
 
 	protected boolean deleted = false;
 
+	/**
+	 * Default constructor
+	 */
+	public Municipality() {
+	}
+
+	/**
+	 * Copy constructor
+	 */
+	public Municipality(Municipality original) {
+		super(original);
+		this.name = LocalizedString.copy(original.name);
+		this.deleted = original.deleted;
+	}
+
 	@Override
 	public boolean isDeleted() {
 		return deleted;
