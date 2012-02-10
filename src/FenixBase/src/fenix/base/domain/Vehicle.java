@@ -22,13 +22,16 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 import fenix.base.domain.annotation.AggregateRoot;
+import fenix.base.domain.validation.LicensePlate;
+import fenix.base.domain.validation.NotEmpty;
 
 /**
  * Entity representing a Vehicle. A vehicle always belong to exactly one fire
- * department. A vehicle can be owned by another organization than the fire
- * department using it.
+ * department and it always has a type (for statistical purposes). A vehicle can
+ * be owned by another organization than the fire department using it.
  * 
  * @author Petter Holmström
  */
@@ -40,21 +43,25 @@ public class Vehicle extends BaseEntity implements SoftDeletable,
 	private static final long serialVersionUID = -1375764385959086395L;
 
 	@Basic(optional = false)
+	@NotEmpty(message = "{Vehicle.constraints.callsign}")
 	protected String callsign;
 
 	@Basic(optional = false)
 	@Enumerated(EnumType.STRING)
+	@NotNull(message = "{Vehicle.constraints.type}")
 	protected VehicleType type;
 
 	protected Integer yearModel;
 
 	@ManyToOne(optional = false)
+	@NotNull(message = "Vehicle has not been assigned to a fire department. This is a bug!")
 	protected FireDepartment fireDepartment;
 
 	protected boolean ownedByFireDepartment;
 
 	protected boolean deleted;
 
+	@LicensePlate
 	protected String licensePlate;
 
 	@Override

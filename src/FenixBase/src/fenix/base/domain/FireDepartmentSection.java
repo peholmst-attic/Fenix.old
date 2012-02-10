@@ -24,11 +24,12 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import fenix.base.domain.annotation.AggregateRoot;
 import fenix.base.domain.annotation.NeverReturnsNull;
 import fenix.base.domain.localization.LocalizedString;
-import fenix.base.domain.validation.LocalizedStringRequired;
+import fenix.base.domain.localization.LocalizedStringRequired;
 
 /**
  * Entity representing a Section of a fire department. A section always belongs
@@ -45,11 +46,12 @@ public class FireDepartmentSection extends BaseEntity implements SoftDeletable,
 	private static final long serialVersionUID = -1642614550657835639L;
 
 	@Embedded
-	@LocalizedStringRequired
+	@LocalizedStringRequired(message = "{FireDepartmentSection.constraints.name}")
 	protected LocalizedString name = LocalizedString.empty();
 
 	@Basic(optional = false)
 	@Enumerated(EnumType.STRING)
+	@NotNull(message = "{FireDepartmentSection.constraints.type}")
 	protected FireDepartmentSectionType type;
 
 	@Embedded
@@ -63,6 +65,7 @@ public class FireDepartmentSection extends BaseEntity implements SoftDeletable,
 	protected boolean deleted;
 
 	@ManyToOne(optional = false)
+	@NotNull(message = "Section has not been assigned to a fire department. This is a bug!")
 	protected FireDepartment fireDepartment;
 
 	@Override
