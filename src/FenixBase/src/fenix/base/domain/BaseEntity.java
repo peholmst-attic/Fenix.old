@@ -100,7 +100,7 @@ public abstract class BaseEntity implements java.io.Serializable {
 	 * INTERNAL: This method is for internal use only and should never be
 	 * invoked by clients.
 	 */
-	public void setUUID(UUID uuid) {
+	protected void setUUID(UUID uuid) {
 		this.uuid = uuid == null ? null : uuid.toString();
 	}
 
