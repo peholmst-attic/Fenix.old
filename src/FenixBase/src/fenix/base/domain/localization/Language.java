@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package fenix.base.domain;
+package fenix.base.domain.localization;
 
 import java.util.Locale;
 
@@ -26,7 +26,7 @@ import java.util.Locale;
  * 
  * @author Petter Holmström
  */
-public enum Language {
+public enum Language implements Localized {
 
 	FINNISH(new Locale("fi")), SWEDISH(new Locale("sv"));
 
@@ -41,5 +41,11 @@ public enum Language {
 	 */
 	public Locale getLocale() {
 		return locale;
+	}
+
+	@Override
+	public String getMessageKey() {
+		return String.format("%s.%s",
+				Language.class.getSimpleName(), name());
 	}
 }
