@@ -90,6 +90,11 @@ public class Address implements java.io.Serializable {
 		return LocalizedString.copy(postOffice);
 	}
 
+	/**
+	 * Builder for creating new <code>Address</code> instances.
+	 * 
+	 * @author Petter Holmström
+	 */
 	public static final class AddressBuilder {
 
 		private LocalizedString streetAddress;
