@@ -20,7 +20,7 @@ package fenix.base.domain;
 import java.util.Date;
 import java.util.UUID;
 
-import javax.persistence.Column;
+import javax.persistence.Basic;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
@@ -50,7 +50,7 @@ public abstract class BaseEntity implements java.io.Serializable {
 	protected Long version;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable = false)
+	@Basic(optional = false)
 	protected Date created;
 
 	@ManyToOne(optional = false)
