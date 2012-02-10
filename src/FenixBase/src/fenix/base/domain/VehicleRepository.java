@@ -19,6 +19,8 @@ package fenix.base.domain;
 
 import java.util.List;
 
+import fenix.base.domain.annotation.NeverReturnsNull;
+
 /**
  * Repository interface for {@link Vehicle}s.
  * 
@@ -32,6 +34,7 @@ public interface VehicleRepository extends BaseRepository<Vehicle> {
 	 * include vehicles that have been flagged as deleted. If the fire
 	 * department has no vehicles, or does not exist, an empty list is returned.
 	 */
+	@NeverReturnsNull
 	List<Vehicle> findByFireDepartment(FireDepartment fireDepartment,
 			boolean includeDeleted);
 
@@ -40,5 +43,6 @@ public interface VehicleRepository extends BaseRepository<Vehicle> {
 	 * sorted by call sign. If the fire department has no vehicles, or does not
 	 * exist, an empty list is returned.
 	 */
+	@NeverReturnsNull
 	List<Vehicle> findByFireDepartment(FireDepartment fireDepartment);
 }

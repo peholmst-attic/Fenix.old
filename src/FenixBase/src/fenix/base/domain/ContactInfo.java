@@ -19,6 +19,7 @@ package fenix.base.domain;
 
 import javax.persistence.Embeddable;
 
+import fenix.base.domain.annotation.NeverReturnsNull;
 import fenix.base.domain.annotation.ValueObject;
 import fenix.base.domain.validation.Email;
 import fenix.base.domain.validation.PhoneNumber;
@@ -69,6 +70,7 @@ public class ContactInfo implements java.io.Serializable {
 	 * Creates a new <code>ContactInfoBuilder</code> with the initial property
 	 * values set to the values of this <code>ContactInfo</code> object.
 	 */
+	@NeverReturnsNull
 	public ContactInfoBuilder derive() {
 		return new ContactInfoBuilder(this);
 	}
@@ -111,21 +113,25 @@ public class ContactInfo implements java.io.Serializable {
 			this.website = original.website;
 		}
 
+		@NeverReturnsNull
 		public ContactInfoBuilder setPhone(final String phone) {
 			this.phone = phone;
 			return this;
 		}
 
+		@NeverReturnsNull
 		public ContactInfoBuilder setFax(final String fax) {
 			this.fax = fax;
 			return this;
 		}
 
+		@NeverReturnsNull
 		public ContactInfoBuilder setEmail(final String email) {
 			this.email = email;
 			return this;
 		}
 
+		@NeverReturnsNull
 		public ContactInfoBuilder setWebsite(final String website) {
 			this.website = website;
 			return this;
@@ -135,6 +141,7 @@ public class ContactInfo implements java.io.Serializable {
 		 * Creates and returns a new <code>ContactInfo</code> instance with the
 		 * values specified in the builder.
 		 */
+		@NeverReturnsNull
 		public ContactInfo build() {
 			final ContactInfo ci = new ContactInfo();
 			ci.email = email;
@@ -149,6 +156,7 @@ public class ContactInfo implements java.io.Serializable {
 	 * Creates a new <code>ContactInfoBuilder</code> with the initial property
 	 * values set to null.
 	 */
+	@NeverReturnsNull
 	public static ContactInfoBuilder create() {
 		return new ContactInfoBuilder();
 	}
