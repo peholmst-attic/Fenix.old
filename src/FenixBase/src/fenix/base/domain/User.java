@@ -17,12 +17,17 @@
  */
 package fenix.base.domain;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+
+import fenix.base.domain.localization.Language;
 
 /**
  * There are different user classes in Fenix. Each user class is represented by
@@ -41,6 +46,7 @@ public abstract class User implements java.io.Serializable {
 	protected Long userId;
 
 	@Column(nullable = false, unique = true)
+	@Basic(optional = false)
 	protected String username;
 
 	protected String firstName;
@@ -49,6 +55,10 @@ public abstract class User implements java.io.Serializable {
 
 	protected String email;
 
+	@Basic(optional = false)
+	@Enumerated(EnumType.STRING)
+	protected Language preferredLanguage;
+	
 	public Long getUserId() {
 		return userId;
 	}
@@ -89,6 +99,14 @@ public abstract class User implements java.io.Serializable {
 		this.email = email;
 	}
 
+	public Language getPreferredLanguage() {
+		return preferredLanguage;
+	}
+	
+	public void setPreferredLanguage(Language preferredLanguage) {
+		this.preferredLanguage = preferredLanguage;
+	}
+	
 	private static final InheritableThreadLocal<User> currentUser = new InheritableThreadLocal<User>();
 
 	/**
