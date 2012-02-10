@@ -17,17 +17,22 @@
  */
 package fenix.base.domain.annotation;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * Annotation used to mark objects that act as value objects. This annotation is
  * only used to make it easier for developers to see which objects are
- * considered value objects. It has no technical functionality.
+ * considered value objects. It has no technical purpose.
  * 
  * @author Petter Holmström
  */
 @Retention(RetentionPolicy.SOURCE)
+@Target(ElementType.TYPE)
+@Documented
 public @interface ValueObject {
 
 }
