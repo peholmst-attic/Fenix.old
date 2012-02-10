@@ -27,6 +27,11 @@ import fenix.base.domain.validation.PostalCode;
 /**
  * Value object containing a Finnish street address.
  * 
+ * @see #copy(Address)
+ * @see #create()
+ * @see #derive()
+ * @see #empty()
+ * 
  * @author Petter Holmström
  */
 @ValueObject
@@ -35,27 +40,31 @@ public class Address implements java.io.Serializable {
 
 	private static final long serialVersionUID = 5897544331818829256L;
 
-	protected LocalizedString streetAddress = new LocalizedString();
+	protected LocalizedString streetAddress = LocalizedString.empty();
 
 	@PostalCode
 	protected String postalCode;
 
-	protected LocalizedString postOffice = new LocalizedString();
+	protected LocalizedString postOffice = LocalizedString.empty();
 
 	/**
 	 * Default constructor
+	 * 
+	 * @see #empty()
 	 */
-	public Address() {
+	protected Address() {
 	}
 
 	/**
 	 * Copy constructor
+	 * 
+	 * @see #copy(Address)
 	 */
-	public Address(final Address original) {
+	protected Address(final Address original) {
 		assert original != null : "original must not be null";
-		this.streetAddress = new LocalizedString(original.streetAddress);
+		this.streetAddress = LocalizedString.copy(original.streetAddress);
 		this.postalCode = original.postalCode;
-		this.postOffice = new LocalizedString(original.postOffice);
+		this.postOffice = LocalizedString.copy(original.postOffice);
 	}
 
 	/**
@@ -69,7 +78,7 @@ public class Address implements java.io.Serializable {
 
 	@NeverReturnsNull
 	public LocalizedString getStreetAddress() {
-		return new LocalizedString(streetAddress);
+		return LocalizedString.copy(streetAddress);
 	}
 
 	public String getPostalCode() {
@@ -78,7 +87,7 @@ public class Address implements java.io.Serializable {
 
 	@NeverReturnsNull
 	public LocalizedString getPostOffice() {
-		return new LocalizedString(postOffice);
+		return LocalizedString.copy(postOffice);
 	}
 
 	public static final class AddressBuilder {
@@ -91,9 +100,9 @@ public class Address implements java.io.Serializable {
 		}
 
 		private AddressBuilder(final Address original) {
-			this.streetAddress = new LocalizedString(original.streetAddress);
+			this.streetAddress = LocalizedString.copy(original.streetAddress);
 			this.postalCode = original.postalCode;
-			this.postOffice = new LocalizedString(original.postOffice);
+			this.postOffice = LocalizedString.copy(original.postOffice);
 		}
 
 		@NeverReturnsNull
@@ -101,7 +110,7 @@ public class Address implements java.io.Serializable {
 			if (postOffice == null) {
 				this.postOffice = null;
 			} else {
-				this.postOffice = new LocalizedString(postOffice);
+				this.postOffice = LocalizedString.copy(postOffice);
 			}
 			return this;
 		}
@@ -118,7 +127,7 @@ public class Address implements java.io.Serializable {
 			if (streetAddress == null) {
 				this.streetAddress = null;
 			} else {
-				this.streetAddress = new LocalizedString(streetAddress);
+				this.streetAddress = LocalizedString.copy(streetAddress);
 			}
 			return this;
 		}
@@ -130,15 +139,9 @@ public class Address implements java.io.Serializable {
 		@NeverReturnsNull
 		public Address build() {
 			final Address address = new Address();
-
-			if (streetAddress != null) {
-				address.streetAddress = new LocalizedString(streetAddress);
-			}
+			address.streetAddress = LocalizedString.copy(streetAddress);
 			address.postalCode = postalCode;
-			if (postOffice != null) {
-				address.postOffice = new LocalizedString(postOffice);
-			}
-
+			address.postOffice = LocalizedString.copy(postOffice);
 			return address;
 		}
 	}
@@ -150,6 +153,27 @@ public class Address implements java.io.Serializable {
 	@NeverReturnsNull
 	public static AddressBuilder create() {
 		return new AddressBuilder();
+	}
+
+	/**
+	 * Creates and returns an empty <code>Address</code> object.
+	 */
+	@NeverReturnsNull
+	public static Address empty() {
+		return new Address();
+	}
+
+	/**
+	 * Creates and returns a copy of the specified <code>Address</code> object.
+	 * If null is specified, an empty <code>Address</code> object is returned.
+	 */
+	@NeverReturnsNull
+	public static Address copy(Address original) {
+		if (original == null) {
+			return empty();
+		} else {
+			return new Address(original);
+		}
 	}
 
 	@Override

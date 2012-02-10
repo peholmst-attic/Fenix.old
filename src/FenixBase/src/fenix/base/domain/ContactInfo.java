@@ -29,6 +29,11 @@ import fenix.base.domain.validation.Website;
  * Value object containing the most common contact information (phone, fax,
  * e-mail and website).
  * 
+ * @see #copy(ContactInfo)
+ * @see #create()
+ * @see #derive()
+ * @see #empty()
+ * 
  * @author Petter Holmström
  */
 @Embeddable
@@ -51,14 +56,18 @@ public class ContactInfo implements java.io.Serializable {
 
 	/**
 	 * Default constructor
+	 * 
+	 * @see #empty()
 	 */
-	public ContactInfo() {
+	protected ContactInfo() {
 	}
 
 	/**
 	 * Copy constructor
+	 * 
+	 * @see #copy(ContactInfo)
 	 */
-	public ContactInfo(final ContactInfo original) {
+	protected ContactInfo(final ContactInfo original) {
 		assert original != null : "original must not be null";
 		this.phone = original.phone;
 		this.fax = original.fax;
@@ -159,6 +168,26 @@ public class ContactInfo implements java.io.Serializable {
 	@NeverReturnsNull
 	public static ContactInfoBuilder create() {
 		return new ContactInfoBuilder();
+	}
+
+	/**
+	 * Creates and returns an empty <code>ContactInfo</code> object.
+	 */
+	public static ContactInfo empty() {
+		return new ContactInfo();
+	}
+
+	/**
+	 * Creates and returns a copy of the specified <code>ContactInfo</code>
+	 * object. If null is specified, an empty <code>ContactInfo</code> object is
+	 * returned.
+	 */
+	public static ContactInfo copy(ContactInfo original) {
+		if (original == null) {
+			return empty();
+		} else {
+			return new ContactInfo(original);
+		}
 	}
 
 	@Override
