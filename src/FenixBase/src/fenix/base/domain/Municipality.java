@@ -40,8 +40,7 @@ public class Municipality extends BaseEntity implements SoftDeletable {
 	private static final long serialVersionUID = -3893071221875766279L;
 
 	@Embedded
-	@LocalizedStringRequired(requiredLanguages = { Language.SWEDISH,
-			Language.FINNISH })
+	@LocalizedStringRequired({ Language.SWEDISH, Language.FINNISH })
 	protected LocalizedString name = LocalizedString.empty();
 
 	protected boolean deleted = false;
