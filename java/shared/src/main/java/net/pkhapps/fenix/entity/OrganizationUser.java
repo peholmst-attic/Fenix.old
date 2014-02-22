@@ -48,7 +48,7 @@ public class OrganizationUser extends User {
     private Organization organization;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "urole", nullable = false)
+    @Column(name = "urole")
     @NotNull
     private OrganizationUserRole role;
 
