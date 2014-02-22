@@ -19,6 +19,8 @@ package net.pkhapps.fenix.security;
 
 import net.pkhapps.fenix.entity.User;
 import net.pkhapps.fenix.entity.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,6 +28,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Implementation of {@link UserDetailsService} that invokes a
@@ -36,14 +40,23 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserServiceBean implements UserDetailsService {
 
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
     @Autowired
     UserRepository userRepository;
+
+    @PostConstruct
+    void init() {
+        logger.info("Initialized");
+    }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        logger.debug("Loading user by username [{}]", username);
         User user = userRepository.findByUsername(username);
         if (user == null) {
+            logger.warn("No user found with username [{}]", username);
             throw new UsernameNotFoundException("No such user");
         }
         return user;
