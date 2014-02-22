@@ -1,5 +1,9 @@
-/target
+target/
 .DS_Store
-build
-bin
-
+build/
+bin/
+.idea/
+*.iml
+nbactions.xml
+nb-configuration.xml
+	
