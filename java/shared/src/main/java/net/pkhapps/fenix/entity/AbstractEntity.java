@@ -17,12 +17,8 @@
  */
 package net.pkhapps.fenix.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Version;
 
 /**
  * Base class for entities.

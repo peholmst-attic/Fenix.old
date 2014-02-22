@@ -17,21 +17,14 @@
  */
 package net.pkhapps.fenix.entity;
 
+import org.springframework.security.core.GrantedAuthority;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
-import org.springframework.security.core.GrantedAuthority;
 
 /**
  * Entity class for system users that belong to an {@link Organization}.

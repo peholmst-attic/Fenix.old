@@ -17,26 +17,20 @@
  */
 package net.pkhapps.fenix.entity;
 
-import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import net.pkhapps.fenix.validation.Phone;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.*;
+import java.util.Date;
+
 /**
  * Abstract entity class for users of the system.
  *
+ * @author Petter Holmström
  * @see OrganizationUser
  * @see SysAdmin
- * @author Petter Holmström
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

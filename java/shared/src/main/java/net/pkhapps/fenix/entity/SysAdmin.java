@@ -17,11 +17,12 @@
  */
 package net.pkhapps.fenix.entity;
 
-import java.util.Collection;
-import java.util.Collections;
+import org.springframework.security.core.GrantedAuthority;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import org.springframework.security.core.GrantedAuthority;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Entity class for system users that are system administrators.

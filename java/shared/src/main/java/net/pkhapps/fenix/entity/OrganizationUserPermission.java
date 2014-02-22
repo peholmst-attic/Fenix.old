@@ -17,9 +17,10 @@
  */
 package net.pkhapps.fenix.entity;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import org.springframework.security.core.GrantedAuthority;
 
 /**
  * Embeddable that represents a permission that is granted to a

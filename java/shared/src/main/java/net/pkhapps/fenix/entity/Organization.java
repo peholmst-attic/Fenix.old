@@ -17,26 +17,20 @@
  */
 package net.pkhapps.fenix.entity;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.persistence.*;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapKeyColumn;
-import javax.persistence.Table;
-import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * Entity representing an organization. Most of the data and operations of the
  * system are associated with an organization. In most cases, the organization
  * is a fire department.
  *
- * @see OrganizationUser
- *
  * @author Petter Holmström
+ * @see OrganizationUser
  */
 @Entity
 @Table(name = "organizations")
