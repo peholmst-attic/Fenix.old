@@ -33,7 +33,7 @@ import javax.annotation.PostConstruct;
 
 /**
  * Implementation of {@link UserDetailsService} that invokes a
- * {@link UserRepository} to look up users.
+ * {@link net.pkhapps.fenix.entity.UserRepository} to look up users.
  *
  * @author Petter Holmström
  */

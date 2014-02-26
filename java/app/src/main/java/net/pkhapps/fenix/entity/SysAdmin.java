@@ -19,26 +19,26 @@ package net.pkhapps.fenix.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import java.util.Collection;
+import java.util.Collections;
+
 /**
- * Enumeration of the roles of an {@link OrganizationUser}. An organization user
- * always holds exactly one role.
+ * Entity class for system users that are system administrators.
  *
  * @author Petter Holmström
  */
-public enum OrganizationUserRole implements GrantedAuthority {
+@Entity
+@DiscriminatorValue("ADMIN")
+public class SysAdmin extends User {
 
-    /**
-     * The user is allowed to manage the organization information and the
-     * organization users.
-     */
-    SUPERUSER,
-    /**
-     * Ordinary user.
-     */
-    USER;
+    public static final String ROLE_NAME = "ROLE_SYSADMIN";
+    public static final GrantedAuthority ROLE = () -> ROLE_NAME;
+
 
     @Override
-    public String getAuthority() {
-        return "ROLE_" + name();
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singleton(ROLE);
     }
 }

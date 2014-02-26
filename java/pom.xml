@@ -59,6 +59,11 @@
                 <version>${vaadin4spring.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.peimari</groupId>
+                <artifactId>maddon</artifactId>
+                <version>1.2</version>
+            </dependency>
+            <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>
                 <version>5.1.0.CR1</version>
@@ -77,6 +82,11 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>jcl-over-slf4j</artifactId>
                 <version>1.7.5</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains</groupId>
+                <artifactId>annotations</artifactId>
+                <version>13.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -115,6 +125,10 @@
             <artifactId>vaadin-themes</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.peimari</groupId>
+            <artifactId>maddon</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.vaadin.spring</groupId>
             <artifactId>spring-boot-vaadin</artifactId>
         </dependency>
@@ -137,6 +151,10 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
         </dependency>
     </dependencies>
 
@@ -181,11 +199,7 @@
     </build>
 
     <modules>
-        <module>shared</module>
-        <!--        <module>zoner-sms-gateway</module>
-                <module>aspsms-gateway</module>
-                <module>messaging</module>-->
-        <module>webui</module>
+        <module>app</module>
     </modules>
 
     <repositories>
@@ -196,6 +210,10 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
+        </repository>
+        <repository>
+            <id>vaadin-addons</id>
+            <url>http://maven.vaadin.com/vaadin-addons</url>
         </repository>
     </repositories>
 </project>
