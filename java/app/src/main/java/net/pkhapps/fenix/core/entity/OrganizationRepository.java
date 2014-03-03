@@ -15,20 +15,15 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.pkhapps.fenix.validation;
+package net.pkhapps.fenix.core.entity;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * The string has to be a well formed phone number.
+ * Repository interface for {@link Organization}.
  *
- * @author peholmst
+ * @author Petter Holmström
  */
-@Target({ElementType.FIELD, ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Phone {
-    // TODO Define me
+public interface OrganizationRepository extends JpaRepository<Organization, Long> {
+
 }

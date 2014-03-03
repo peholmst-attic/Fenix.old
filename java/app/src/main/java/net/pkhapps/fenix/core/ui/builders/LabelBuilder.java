@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.pkhapps.fenix.web.ui.builders;
+package net.pkhapps.fenix.core.ui.builders;
 
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.shared.ui.label.ContentMode;

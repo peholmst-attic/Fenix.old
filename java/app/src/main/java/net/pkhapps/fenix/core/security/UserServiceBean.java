@@ -15,10 +15,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.pkhapps.fenix.security;
+package net.pkhapps.fenix.core.security;
 
-import net.pkhapps.fenix.entity.User;
-import net.pkhapps.fenix.entity.UserRepository;
+import net.pkhapps.fenix.core.entity.User;
+import net.pkhapps.fenix.core.entity.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ import javax.annotation.PostConstruct;
 
 /**
  * Implementation of {@link UserDetailsService} that invokes a
- * {@link net.pkhapps.fenix.entity.UserRepository} to look up users.
+ * {@link net.pkhapps.fenix.core.entity.UserRepository} to look up users.
  *
  * @author Petter Holmström
  */

@@ -17,7 +17,7 @@
  */
 package net.pkhapps.fenix;
 
-import net.pkhapps.fenix.security.UserServiceBean;
+import net.pkhapps.fenix.core.security.UserServiceBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;

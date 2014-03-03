@@ -15,15 +15,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.pkhapps.fenix.entity;
+package net.pkhapps.fenix.core.entity;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
 
 /**
- * Repository interface for {@link Organization}.
+ * Repository interface for {@link User}.
  *
  * @author Petter Holmström
  */
-public interface OrganizationRepository extends JpaRepository<Organization, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
+    User findByUsername(@Param(value = "username") String username);
 }

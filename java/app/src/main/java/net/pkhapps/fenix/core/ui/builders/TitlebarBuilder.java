@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.pkhapps.fenix.web.ui.builders;
+package net.pkhapps.fenix.core.ui.builders;
 
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.List;
 
-import static net.pkhapps.fenix.web.ui.builders.LabelBuilder.h1;
+import static net.pkhapps.fenix.core.ui.builders.LabelBuilder.h1;
 
 /**
  * Builder for creating a titlebar. A titlebar is a {@link com.vaadin.ui.HorizontalLayout} that has

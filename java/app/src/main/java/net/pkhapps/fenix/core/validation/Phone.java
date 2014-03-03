@@ -15,34 +15,20 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.pkhapps.fenix.entity;
+package net.pkhapps.fenix.core.validation;
 
-import org.springframework.security.core.GrantedAuthority;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Enumeration of the roles of an {@link OrganizationUser}. An organization user
- * always holds exactly one role.
+ * The string has to be a well formed phone number.
  *
- * @author Petter Holmström
+ * @author peholmst
  */
-public enum OrganizationUserRole implements GrantedAuthority {
-
-
-    /**
-     * The user is allowed to manage the organization information and the
-     * organization users.
-     */
-    SUPERUSER,
-    /**
-     * Ordinary user.
-     */
-    USER;
-
-    String SUPERUSER_ROLE_NAME = "ROLE_SUPERUSER";
-    String USER_ROLE_NAME = "ROLE_USER";
-
-    @Override
-    public String getAuthority() {
-        return "ROLE_" + name();
-    }
+@Target({ElementType.FIELD, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Phone {
+    // TODO Define me
 }

@@ -15,17 +15,34 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.pkhapps.fenix.entity;
+package net.pkhapps.fenix.core.entity;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.GrantedAuthority;
 
 /**
- * Repository interface for {@link User}.
+ * Enumeration of the roles of an {@link OrganizationUser}. An organization user
+ * always holds exactly one role.
  *
  * @author Petter Holmström
  */
-public interface UserRepository extends JpaRepository<User, Long> {
+public enum OrganizationUserRole implements GrantedAuthority {
 
-    User findByUsername(@Param(value = "username") String username);
+
+    /**
+     * The user is allowed to manage the organization information and the
+     * organization users.
+     */
+    SUPERUSER,
+    /**
+     * Ordinary user.
+     */
+    USER;
+
+    String SUPERUSER_ROLE_NAME = "ROLE_SUPERUSER";
+    String USER_ROLE_NAME = "ROLE_USER";
+
+    @Override
+    public String getAuthority() {
+        return "ROLE_" + name();
+    }
 }
