@@ -25,6 +25,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.vaadin.spring.stuff.sidebar.EnableSideBar;
 
 /**
  * Entry-point into the Fenix Web Application. Can be run as-is or deployed in a
@@ -36,6 +37,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 //@EnableJpaAuditing
 @EnableAutoConfiguration
 @EnableWebSecurity
+@EnableSideBar
 @ComponentScan
 @Configuration
 public class WebApplication extends SpringBootServletInitializer {

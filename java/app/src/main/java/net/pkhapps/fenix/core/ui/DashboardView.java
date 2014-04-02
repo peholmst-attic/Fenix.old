@@ -15,27 +15,23 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.pkhapps.fenix.web.ui;
+package net.pkhapps.fenix.core.ui;
 
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.UI;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.vaadin.spring.VaadinUI;
-import org.vaadin.spring.security.Security;
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.ui.CssLayout;
+import org.vaadin.spring.UIScope;
+import org.vaadin.spring.navigator.VaadinView;
 
 /**
- * @author Petter Holmström
+ * @author petter@vaadin.com
  */
-@VaadinUI
-public class FenixUI extends UI {
-
-    @Autowired
-    Security security;
+@UIScope
+@VaadinView(name = "")
+public class DashboardView extends CssLayout implements View {
 
     @Override
-    protected void init(VaadinRequest request) {
-        setContent(new Label("Fenix UI: " + security.getAuthentication().getName()));
-    }
+    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
 
+    }
 }
