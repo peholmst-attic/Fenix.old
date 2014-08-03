@@ -1,6 +1,7 @@
 package net.pkhapps.fenix.core.entity;
 
 import javax.persistence.*;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -46,8 +47,19 @@ public class FireDepartmentUser extends AbstractEntity {
 
     /**
      * Checks if the user has the specified authority in this particular {@link net.pkhapps.fenix.core.entity.FireDepartment}.
+     *
+     * @see #getAuthorities()
      */
     public boolean hasAuthority(String authority) {
         return authorities.contains(authority);
+    }
+
+    /**
+     * Returns an unmodifiable set of all the authorities this user has in this particular {@link net.pkhapps.fenix.core.entity.FireDepartment}.
+     *
+     * @see #hasAuthority(String)
+     */
+    public Set<String> getAuthorities() {
+        return Collections.unmodifiableSet(authorities);
     }
 }
