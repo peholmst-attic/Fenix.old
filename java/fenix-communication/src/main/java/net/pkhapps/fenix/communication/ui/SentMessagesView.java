@@ -14,7 +14,7 @@ import org.vaadin.spring.stuff.sidebar.SideBarItem;
  * View for browsing sent messages.
  */
 @VaadinView(name = SentMessagesView.VIEW_NAME)
-@SideBarItem(sectionId = CommunicationModule.SECTION_ID, captionCode = "communication.sidebar.sentMessages.caption", order = 10)
+@SideBarItem(sectionId = CommunicationModule.SECTION_ID, captionCode = "net.pkhapps.fenix.communication.sidebar.sentMessages.caption", order = 10)
 @FontAwesomeIcon(FontAwesome.ARCHIVE)
 @PrototypeScope
 public class SentMessagesView extends VerticalLayout implements View {

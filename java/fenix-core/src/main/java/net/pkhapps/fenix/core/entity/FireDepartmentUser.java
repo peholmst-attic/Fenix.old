@@ -25,7 +25,7 @@ public class FireDepartmentUser extends AbstractEntity {
     @CollectionTable(name = "fire_department_user_authorities",
             joinColumns = @JoinColumn(name = "fire_department_user_id", nullable = false),
             uniqueConstraints = @UniqueConstraint(columnNames = {"authority", "fire_department_user_id"}))
-    private Set<String> authorities = new HashSet<String>();
+    private Set<String> authorities = new HashSet<>();
 
     protected FireDepartmentUser() {
     }

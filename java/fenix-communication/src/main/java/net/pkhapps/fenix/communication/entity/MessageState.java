@@ -1,13 +1,16 @@
 package net.pkhapps.fenix.communication.entity;
 
 /**
- * Enumeration of the different states a {@link net.pkhapps.fenix.communication.entity.Message} can be in.
+ * Enumeration of the different states a {@link net.pkhapps.fenix.communication.entity.Message} can be in for a
+ * particular {@link net.pkhapps.fenix.communication.entity.CommunicationMethod}.
+ *
+ * @see net.pkhapps.fenix.communication.entity.MessageCommunicationMethodState
  */
 public enum MessageState {
     /**
-     * The message is still being edited.
+     * The message has not been sent yet.
      */
-    DRAFT,
+    UNSENT,
     /**
      * The message is being sent.
      */

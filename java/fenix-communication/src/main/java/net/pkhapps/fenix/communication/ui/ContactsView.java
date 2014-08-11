@@ -14,7 +14,7 @@ import org.vaadin.spring.stuff.sidebar.SideBarItem;
  * View for managing contacts.
  */
 @VaadinView(name = ContactsView.VIEW_NAME)
-@SideBarItem(sectionId = CommunicationModule.SECTION_ID, captionCode = "communication.sidebar.contacts.caption", order = 20)
+@SideBarItem(sectionId = CommunicationModule.SECTION_ID, captionCode = "net.pkhapps.fenix.communication.sidebar.contacts.caption", order = 20)
 @FontAwesomeIcon(FontAwesome.USER)
 @PrototypeScope
 public class ContactsView extends VerticalLayout implements View {

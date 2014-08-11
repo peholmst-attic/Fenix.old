@@ -25,7 +25,7 @@ public abstract class AbstractFireDepartmentSpecificEntity extends AbstractEntit
         this.fireDepartment = fireDepartment;
     }
 
-    public abstract class Builder<ENTITY extends AbstractFireDepartmentSpecificEntity, BUILDER extends Builder<ENTITY, BUILDER>>
+    public static abstract class Builder<ENTITY extends AbstractFireDepartmentSpecificEntity, BUILDER extends Builder<ENTITY, BUILDER>>
             extends AbstractEntity.Builder<ENTITY, BUILDER> {
 
         public Builder() {

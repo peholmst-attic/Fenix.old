@@ -97,7 +97,7 @@ public class Contact extends AbstractFireDepartmentSpecificEntity {
         }
     }
 
-    public class Builder extends AbstractFireDepartmentSpecificEntity.Builder<Contact, Builder> {
+    public static class Builder extends AbstractFireDepartmentSpecificEntity.Builder<Contact, Builder> {
 
         public Builder() {
         }

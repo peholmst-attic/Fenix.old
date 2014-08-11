@@ -4,24 +4,32 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.pkhapps.fenix</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>Fenix Parent POM</name>
+    <name>POM: Fenix Parent</name>
+
+    <licenses>
+        <license>
+            <name>GNU Affero General Public License Version 3</name>
+            <url>http://www.gnu.org/licenses/agpl-3.0.html</url>
+        </license>
+    </licenses>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.0.0.RC3</version>
+        <version>1.1.4.RELEASE</version>
     </parent>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <vaadin.version>7.1.11</vaadin.version>
+        <vaadin.version>7.2.6</vaadin.version>
         <vaadin4spring.version>0.0.2-SNAPSHOT</vaadin4spring.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!-- Vaadin -->
             <dependency>
                 <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-server</artifactId>
@@ -43,6 +51,8 @@
                 <artifactId>vaadin-themes</artifactId>
                 <version>${vaadin.version}</version>
             </dependency>
+
+            <!-- Vaadin4Spring -->
             <dependency>
                 <groupId>org.vaadin.spring</groupId>
                 <artifactId>spring-boot-vaadin</artifactId>
@@ -55,14 +65,11 @@
             </dependency>
             <dependency>
                 <groupId>org.vaadin.spring</groupId>
-                <artifactId>spring-security-vaadin</artifactId>
+                <artifactId>spring-vaadin-stuff</artifactId>
                 <version>${vaadin4spring.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.peimari</groupId>
-                <artifactId>maddon</artifactId>
-                <version>1.2</version>
-            </dependency>
+
+            <!-- Stuff -->
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>
@@ -83,15 +90,14 @@
                 <artifactId>jcl-over-slf4j</artifactId>
                 <version>1.7.5</version>
             </dependency>
-            <dependency>
-                <groupId>org.jetbrains</groupId>
-                <artifactId>annotations</artifactId>
-                <version>13.0</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-ldap</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -125,10 +131,6 @@
             <artifactId>vaadin-themes</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.peimari</groupId>
-            <artifactId>maddon</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.vaadin.spring</groupId>
             <artifactId>spring-boot-vaadin</artifactId>
         </dependency>
@@ -138,7 +140,7 @@
         </dependency>
         <dependency>
             <groupId>org.vaadin.spring</groupId>
-            <artifactId>spring-security-vaadin</artifactId>
+            <artifactId>spring-vaadin-stuff</artifactId>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -151,10 +153,6 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
         </dependency>
     </dependencies>
 
@@ -199,18 +197,14 @@
     </build>
 
     <modules>
-        <module>app</module>
+        <module>fenix-core</module>
+        <module>fenix-app</module>
+        <module>fenix-theme</module>
+        <module>fenix-communication</module>
+        <module>fenix-aspsms</module>
     </modules>
 
     <repositories>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>http://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
         <repository>
             <id>vaadin-addons</id>
             <url>http://maven.vaadin.com/vaadin-addons</url>

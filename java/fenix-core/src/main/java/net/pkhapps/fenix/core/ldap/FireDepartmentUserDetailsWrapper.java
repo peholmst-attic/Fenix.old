@@ -24,14 +24,15 @@ public class FireDepartmentUserDetailsWrapper implements FenixLdapUserDetails {
 
     public FireDepartmentUserDetailsWrapper(FenixLdapUserDetails userDetails, FireDepartmentUser fireDepartmentUser) {
         Assert.notNull(userDetails);
-        Assert.notNull(fireDepartmentUser);
-        Assert.isTrue(userDetails.getUsername().equals(fireDepartmentUser.getUid()));
+        Assert.isTrue(fireDepartmentUser == null || userDetails.getUsername().equals(fireDepartmentUser.getUid()));
         this.userDetails = userDetails;
         this.fireDepartmentUser = fireDepartmentUser;
 
         final Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         grantedAuthorities.addAll(userDetails.getAuthorities());
-        grantedAuthorities.addAll(fireDepartmentUser.getAuthorities().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet()));
+        if (fireDepartmentUser != null) {
+            grantedAuthorities.addAll(fireDepartmentUser.getAuthorities().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet()));
+        }
         this.grantedAuthorities = Collections.unmodifiableSet(grantedAuthorities);
     }
 
@@ -43,17 +44,18 @@ public class FireDepartmentUserDetailsWrapper implements FenixLdapUserDetails {
     }
 
     /**
-     * Returns the {@link net.pkhapps.fenix.core.entity.FireDepartmentUser} that corresponds to the LDAP user.
+     * Returns the {@link net.pkhapps.fenix.core.entity.FireDepartmentUser} that corresponds to the LDAP user,
+     * or {@code null} if no such object exists.
      */
     public FireDepartmentUser getFireDepartmentUser() {
         return fireDepartmentUser;
     }
 
     /**
-     * Returns the {@link net.pkhapps.fenix.core.entity.FireDepartment} of the user.
+     * Returns the {@link net.pkhapps.fenix.core.entity.FireDepartment} of the user, or {@code null} if not found.
      */
     public FireDepartment getFireDepartment() {
-        return fireDepartmentUser.getFireDepartment();
+        return fireDepartmentUser == null ? null : fireDepartmentUser.getFireDepartment();
     }
 
     @Override
@@ -105,6 +107,10 @@ public class FireDepartmentUserDetailsWrapper implements FenixLdapUserDetails {
 
     @Override
     public boolean isEnabled() {
-        return userDetails.isEnabled();
+        if (fireDepartmentUser == null) {
+            return false;
+        } else {
+            return fireDepartmentUser.getFireDepartment().isEnabled() && userDetails.isEnabled();
+        }
     }
 }

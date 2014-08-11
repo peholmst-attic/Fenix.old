@@ -52,7 +52,7 @@ public class MessageRecipient extends AbstractEntity {
         this.email = email.orElse(null);
     }
 
-    public class Builder extends AbstractEntity.Builder<MessageRecipient, Builder> {
+    public static class Builder extends AbstractEntity.Builder<MessageRecipient, Builder> {
 
         public Builder() {
         }

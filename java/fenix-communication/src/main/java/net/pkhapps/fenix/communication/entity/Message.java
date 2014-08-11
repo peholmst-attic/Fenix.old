@@ -35,10 +35,6 @@ public class Message extends AbstractFireDepartmentSpecificEntity {
     @Lob
     private String messageText = "";
 
-    @Column(name = "message_state", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private MessageState state = MessageState.DRAFT;
-
     protected Message() {
     }
 
@@ -56,14 +52,6 @@ public class Message extends AbstractFireDepartmentSpecificEntity {
 
     protected void setRecipients(Set<MessageRecipient> recipients) {
         this.recipients = recipients;
-    }
-
-    protected void addRecipient(MessageRecipient recipient) {
-        recipients.add(recipient);
-    }
-
-    protected void removeRecipient(MessageRecipient recipient) {
-        recipients.remove(recipient);
     }
 
     public Optional<Instant> getSent() {
@@ -86,22 +74,13 @@ public class Message extends AbstractFireDepartmentSpecificEntity {
         this.messageText = messageText;
     }
 
-    public MessageState getState() {
-        return state;
-    }
-
-    protected void setState(MessageState state) {
-        this.state = state;
-    }
-
-    public class Builder extends AbstractFireDepartmentSpecificEntity.Builder<Message, Builder> {
+    public static class Builder extends AbstractFireDepartmentSpecificEntity.Builder<Message, Builder> {
 
         public Builder() {
         }
 
         public Builder(Message original) {
             super(original);
-            setState(original.getState());
             setMessageText(original.getMessageText());
             setSent(original.getSent());
             setRecipients(original.getRecipients());
@@ -112,15 +91,6 @@ public class Message extends AbstractFireDepartmentSpecificEntity {
         public Builder asNew() {
             super.asNew();
             getInstance().getRecipients().forEach(this::setNew);
-            return myself();
-        }
-
-        public MessageState getState() {
-            return getInstance().getState();
-        }
-
-        public Builder setState(MessageState state) {
-            getInstance().setState(Objects.requireNonNull(state));
             return myself();
         }
 

@@ -18,6 +18,11 @@
             <artifactId>fenix-core</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>fenix-theme</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

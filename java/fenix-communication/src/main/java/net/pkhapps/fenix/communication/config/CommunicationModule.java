@@ -1,16 +1,16 @@
 package net.pkhapps.fenix.communication.config;
 
-import net.pkhapps.fenix.core.i18n.MessageProvider;
-import net.pkhapps.fenix.core.i18n.ResourceBundleMessageProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.vaadin.spring.stuff.i18n.MessageProvider;
+import org.vaadin.spring.stuff.i18n.ResourceBundleMessageProvider;
 import org.vaadin.spring.stuff.sidebar.SideBarSection;
 
 /**
  * Spring configuration for the Communication module.
  */
 @Configuration
-@SideBarSection(id = CommunicationModule.SECTION_ID, captionCode = "communication.sidebar.section.caption")
+@SideBarSection(id = CommunicationModule.SECTION_ID, captionCode = "net.pkhapps.fenix.communication.sidebar.section.caption")
 public class CommunicationModule {
 
     public static final String SECTION_ID = "communication.section";

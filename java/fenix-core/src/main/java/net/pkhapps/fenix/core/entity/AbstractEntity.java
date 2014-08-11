@@ -126,7 +126,7 @@ public abstract class AbstractEntity extends AbstractPersistable<Long> {
     /**
      * Base class for builders that are used to modify entities.
      */
-    public abstract class Builder<ENTITY extends AbstractEntity, BUILDER extends Builder<ENTITY, BUILDER>> {
+    public static abstract class Builder<ENTITY extends AbstractEntity, BUILDER extends Builder<ENTITY, BUILDER>> {
 
         private ENTITY instance;
 

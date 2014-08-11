@@ -14,7 +14,7 @@ import org.vaadin.spring.stuff.sidebar.SideBarItem;
  * View for managing contact groups.
  */
 @VaadinView(name = GroupsView.VIEW_NAME)
-@SideBarItem(sectionId = CommunicationModule.SECTION_ID, captionCode = "communication.sidebar.groups.caption", order = 30)
+@SideBarItem(sectionId = CommunicationModule.SECTION_ID, captionCode = "net.pkhapps.fenix.communication.sidebar.groups.caption", order = 30)
 @FontAwesomeIcon(FontAwesome.USERS)
 @PrototypeScope
 public class GroupsView extends VerticalLayout implements View {
