@@ -7,7 +7,8 @@ import javax.persistence.*;
 import java.util.Objects;
 
 /**
- * Created by peholmst on 2014-08-09.
+ * Entity that combines a {@link net.pkhapps.fenix.communication.entity.CommunicationMethod} and a {@link net.pkhapps.fenix.communication.entity.MessageState}
+ * for a particular {@link net.pkhapps.fenix.communication.entity.Message}.
  */
 @Entity
 @Table(name = "message_states", uniqueConstraints = @UniqueConstraint(columnNames = {"message_id", "communication_method"}))

@@ -1,0 +1,34 @@
+package net.pkhapps.fenix.communication.control;
+
+import net.pkhapps.fenix.communication.entity.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+
+/**
+ * Helper class for updating the {@link net.pkhapps.fenix.communication.entity.MessageState} of a {@link Message}.
+ */
+@Service
+public class MessageStateHelper {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MessageStateHelper.class);
+
+    private final MessageCommunicationMethodStateRepository messageCommunicationMethodStateRepository;
+
+    public MessageStateHelper(MessageCommunicationMethodStateRepository messageCommunicationMethodStateRepository) {
+        this.messageCommunicationMethodStateRepository = messageCommunicationMethodStateRepository;
+    }
+
+    @Transactional(Transactional.TxType.MANDATORY)
+    public void updateState(Message message, CommunicationMethod communicationMethod, MessageState newState) {
+        LOGGER.debug("Updating state of message {} to {} for {}", message, newState, communicationMethod);
+        final MessageCommunicationMethodState stateEntity = new MessageCommunicationMethodState.Builder()
+                .setMessage(message)
+                .setCommunicationMethod(CommunicationMethod.SMS)
+                .setState(newState)
+                .build();
+        messageCommunicationMethodStateRepository.saveAndFlush(stateEntity);
+    }
+}

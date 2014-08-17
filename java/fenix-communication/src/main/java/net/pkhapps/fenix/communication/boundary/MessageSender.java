@@ -15,8 +15,8 @@ public interface MessageSender {
      * @param message the message to send. If this message is not new, a copy of the message will be sent.
      * @return the archived message in the {@link net.pkhapps.fenix.communication.entity.MessageState#SENDING} state for all communication methods.
      * @throws ValidationFailedException if the initial message could not be validated.
-     * @see net.pkhapps.fenix.communication.boundary.MessageSentEvent
-     * @see net.pkhapps.fenix.communication.boundary.MessageFailedEvent
+     * @see net.pkhapps.fenix.communication.events.MessageSentEvent
+     * @see net.pkhapps.fenix.communication.events.MessageFailedEvent
      */
     Message sendMessage(Message message) throws ValidationFailedException;
 

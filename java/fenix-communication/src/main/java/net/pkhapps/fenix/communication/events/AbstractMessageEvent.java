@@ -1,4 +1,4 @@
-package net.pkhapps.fenix.communication.boundary;
+package net.pkhapps.fenix.communication.events;
 
 import net.pkhapps.fenix.communication.entity.CommunicationMethod;
 import net.pkhapps.fenix.communication.entity.Message;
