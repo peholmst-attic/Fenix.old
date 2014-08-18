@@ -3,7 +3,8 @@ package net.pkhapps.fenix.core.security;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
- * Created by peholmst on 2014-08-06.
+ * Extended version of {@link org.springframework.security.core.userdetails.UserDetails} that add some additional
+ * user attributes.
  */
 public interface FenixUserDetails extends UserDetails {
 

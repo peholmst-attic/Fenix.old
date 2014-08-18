@@ -4,6 +4,7 @@ import net.pkhapps.fenix.communication.entity.CommunicationMethod;
 import net.pkhapps.fenix.communication.entity.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -16,6 +17,7 @@ class EmailSender extends Sender {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SmsSender.class);
 
+    @Autowired
     EmailSender(ApplicationContext applicationContext, MessageStateHelper messageStateHelper, PlatformTransactionManager platformTransactionManager) {
         super(applicationContext, messageStateHelper, platformTransactionManager);
     }

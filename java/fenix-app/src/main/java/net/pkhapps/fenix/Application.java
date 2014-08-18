@@ -13,6 +13,9 @@ import org.vaadin.spring.stuff.i18n.MessageProvider;
 import org.vaadin.spring.stuff.i18n.ResourceBundleMessageProvider;
 import org.vaadin.spring.stuff.sidebar.EnableSideBar;
 
+import javax.validation.Validation;
+import javax.validation.Validator;
+
 /**
  * Created by peholmst on 2014-06-19.
  */
@@ -36,4 +39,8 @@ public class Application {
         return new ResourceBundleMessageProvider("net.pkhapps.fenix.app.messages");
     }
 
+    @Bean
+    Validator validator() {
+        return Validation.buildDefaultValidatorFactory().getValidator();
+    }
 }

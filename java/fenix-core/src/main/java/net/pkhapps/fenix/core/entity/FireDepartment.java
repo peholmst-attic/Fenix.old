@@ -6,8 +6,6 @@ import javax.persistence.Table;
 
 /**
  * Entity representing a fire department.
- *
- * @see net.pkhapps.fenix.core.entity.FireDepartmentUser
  */
 @Entity
 @Table(name = "fire_departments")

@@ -1,12 +1,13 @@
 package net.pkhapps.fenix.app.ui;
 
 import com.vaadin.server.FontAwesome;
-import com.vaadin.ui.*;
-import net.pkhapps.fenix.core.ldap.FenixLdapUserDetails;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.MenuBar;
 import net.pkhapps.fenix.core.security.SessionInfo;
 import net.pkhapps.fenix.theme.FenixTheme;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
 import org.vaadin.spring.i18n.I18N;

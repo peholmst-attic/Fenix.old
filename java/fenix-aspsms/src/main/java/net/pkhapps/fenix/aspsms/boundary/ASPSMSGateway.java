@@ -17,13 +17,13 @@ import java.util.Collection;
  * Implementation of {@link net.pkhapps.fenix.core.sms.boundary.SmsGateway} that uses ASPSMS.COM.
  */
 @Service
-public class ASPSMSGateway implements SmsGateway {
+class ASPSMSGateway implements SmsGateway {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ASPSMSGateway.class);
 
     private final ASPSMSX2Soap aspsmsx2Soap;
 
-    public ASPSMSGateway() {
+    ASPSMSGateway() {
         aspsmsx2Soap = new ASPSMSX2().getASPSMSX2Soap();
     }
 
@@ -32,7 +32,7 @@ public class ASPSMSGateway implements SmsGateway {
         return new SendSmsCommand(messageText, phoneNumbers, smsProperties).observe();
     }
 
-    private class SendSmsCommand extends HystrixCommand<String> {
+    private class SendSmsCommand extends HystrixCommand<Object> {
 
         private final String messageText;
         private final Collection<String> phoneNumbers;
@@ -46,7 +46,7 @@ public class ASPSMSGateway implements SmsGateway {
         }
 
         @Override
-        protected String run() throws Exception {
+        protected Object run() throws Exception {
             LOGGER.debug("Sending message \"{}\" to recipients {}", messageText, phoneNumbers);
             final String resultCode = aspsmsx2Soap.sendSimpleTextSMS(
                     smsProperties.getUserKey(),
@@ -55,8 +55,11 @@ public class ASPSMSGateway implements SmsGateway {
                     smsProperties.getOriginator(),
                     messageText
             );
-            LOGGER.debug("Returning result \"{}\"", resultCode);
-            return resultCode;
+            LOGGER.debug("Response: \"{}\"", resultCode);
+            if (!resultCode.equals("StatusCode:1")) {
+                throw new Exception("Could not send SMS: " + resultCode);
+            }
+            return null;
         }
     }
 

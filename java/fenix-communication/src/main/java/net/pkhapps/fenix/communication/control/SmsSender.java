@@ -1,9 +1,12 @@
 package net.pkhapps.fenix.communication.control;
 
-import net.pkhapps.fenix.aspsms.ASPSMSX2;
-import net.pkhapps.fenix.aspsms.ASPSMSX2Soap;
-import net.pkhapps.fenix.communication.entity.*;
+import net.pkhapps.fenix.communication.entity.CommunicationMethod;
+import net.pkhapps.fenix.communication.entity.Message;
+import net.pkhapps.fenix.communication.entity.MessageRecipient;
 import net.pkhapps.fenix.core.entity.FireDepartment;
+import net.pkhapps.fenix.core.sms.boundary.SmsGateway;
+import net.pkhapps.fenix.core.sms.entity.SmsProperties;
+import net.pkhapps.fenix.core.sms.entity.SmsPropertiesRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.util.Assert;
+import rx.Observable;
+import rx.Observer;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -20,7 +25,7 @@ import java.util.stream.Collectors;
 /**
  * {@link net.pkhapps.fenix.communication.control.Sender}-implementation for the {@link net.pkhapps.fenix.communication.entity.CommunicationMethod#SMS}
  * communication method that uses ASPSMS.COM to send messages. Information needed by the SMS gateway are retrieved from
- * an {@link net.pkhapps.fenix.communication.entity.SmsProperties} instance.
+ * an {@link net.pkhapps.fenix.core.sms.entity.SmsProperties} instance.
  */
 @Service
 class SmsSender extends Sender {
@@ -28,25 +33,36 @@ class SmsSender extends Sender {
     private static final Logger LOGGER = LoggerFactory.getLogger(SmsSender.class);
 
     private final SmsPropertiesRepository smsPropertiesRepository;
-    private final ASPSMSX2Soap aspsmsx2Soap;
+    private final SmsGateway smsGateway;
 
     @Autowired
-    SmsSender(ApplicationContext applicationContext, MessageStateHelper messageStateHelper, PlatformTransactionManager platformTransactionManager, SmsPropertiesRepository smsPropertiesRepository) {
+    SmsSender(ApplicationContext applicationContext, MessageStateHelper messageStateHelper, PlatformTransactionManager platformTransactionManager, SmsPropertiesRepository smsPropertiesRepository, SmsGateway smsGateway) {
         super(applicationContext, messageStateHelper, platformTransactionManager);
         this.smsPropertiesRepository = smsPropertiesRepository;
-        LOGGER.info("Initializing ASPSMS.COM web service client");
-        aspsmsx2Soap = new ASPSMSX2().getASPSMSX2Soap();
+        this.smsGateway = smsGateway;
     }
 
     @Override
     protected void doSend(Message message) {
         final Optional<SmsProperties> smsProperties = getSmsProperties(message);
         if (smsProperties.isPresent()) {
-            if (sendMessage(message, smsProperties.get())) {
-                succeeded(message);
-            } else {
-                failed(message);
-            }
+            Observable<?> result = smsGateway.sendSms(message.getMessageText(), getPhoneNumbers(message.getRecipients()), smsProperties.get());
+            result.subscribe(new Observer<Object>() {
+                @Override
+                public void onCompleted() {
+                    succeeded(message);
+                }
+
+                @Override
+                public void onError(Throwable throwable) {
+                    failed(message);
+                }
+
+                @Override
+                public void onNext(Object o) {
+                    // NOP
+                }
+            });
         } else {
             LOGGER.warn("No SMSProperties found for fire department {}", message.getFireDepartment());
             failed(message);
@@ -72,27 +88,5 @@ class SmsSender extends Sender {
                 .filter(recipient -> recipient.getCellPhoneNumber().isPresent())
                 .map(recipient -> recipient.getCellPhoneNumber().get())
                 .collect(Collectors.toSet());
-    }
-
-    private boolean sendMessage(Message message, SmsProperties smsProperties) {
-        final Set<String> phoneNumbers = getPhoneNumbers(message.getRecipients());
-        if (phoneNumbers.isEmpty()) {
-            LOGGER.warn("Message {} did not include any recipients", message);
-            return false;
-        }
-        LOGGER.debug("Sending message {} to recipients {}", message, phoneNumbers);
-        final String resultCode = aspsmsx2Soap.sendSimpleTextSMS(
-                smsProperties.getUserKey(),
-                smsProperties.getPassword(),
-                String.join(";", phoneNumbers),
-                smsProperties.getOriginator(),
-                message.getMessageText()
-        );
-        if (resultCode.equals("StatusCode:1")) {
-            return true;
-        } else {
-            LOGGER.warn("Message {} was not successfully sent: {}", resultCode);
-            return false;
-        }
     }
 }

@@ -8,7 +8,6 @@ import net.pkhapps.fenix.communication.events.MessageSentEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -44,7 +43,6 @@ public abstract class Sender {
      * @see net.pkhapps.fenix.communication.events.MessageSentEvent
      * @see net.pkhapps.fenix.communication.events.MessageFailedEvent
      */
-    @Async
     public void send(Message message) {
         if (message.getSendAs().contains(getCommunicationMethod())) {
             doSend(message);

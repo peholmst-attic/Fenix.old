@@ -1,9 +1,14 @@
 package net.pkhapps.fenix.core.security;
 
+import net.pkhapps.fenix.core.entity.FireDepartment;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.util.Optional;
+
 /**
- * Created by peholmst on 2014-08-06.
+ * Extended version of {@link org.springframework.security.core.userdetails.UserDetailsService}.
  */
 public interface FenixUserDetailsService extends UserDetailsService {
+
+    Optional<FireDepartment> getFireDepartmentOfUser(FenixUserDetails userDetails);
 }

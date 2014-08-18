@@ -28,7 +28,6 @@ public class Message extends AbstractFireDepartmentSpecificEntity {
     private Set<MessageRecipient> recipients = new HashSet<>();
 
     @Column(name = "sent_ts", nullable = true)
-    @Temporal(TemporalType.TIMESTAMP)
     private Timestamp sent;
 
     @Column(name = "message_text", nullable = false)
