@@ -1,4 +1,4 @@
-package net.pkhapps.fenix.communication.entity;
+package net.pkhapps.fenix.core.sms.entity;
 
 import com.google.gwt.thirdparty.guava.common.base.Strings;
 import net.pkhapps.fenix.core.entity.AbstractFireDepartmentSpecificEntity;
@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 /**
- * Entity containing fire department specific SMS properties (for aspsms.com).
+ * Entity containing fire department specific SMS properties (currently for ASPSMS.COM, but this might change in the future).
  */
 @Entity
 @Table(name = "sms_properties", uniqueConstraints = @UniqueConstraint(columnNames = "fire_department_id"))

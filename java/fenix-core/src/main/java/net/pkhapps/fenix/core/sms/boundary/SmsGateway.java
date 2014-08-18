@@ -1,0 +1,23 @@
+package net.pkhapps.fenix.core.sms.boundary;
+
+import net.pkhapps.fenix.core.sms.entity.SmsProperties;
+import rx.Observable;
+
+import java.util.Collection;
+
+/**
+ * Boundary interface for an SMS gateway that can be used to send SMS messages.
+ */
+public interface SmsGateway {
+
+    /**
+     * Attempts to asynchronously send the specified SMS to the specified phone numbers.
+     *
+     * @param messageText   the text of the message.
+     * @param phoneNumbers  the phone numbers to send the message to (in international format, eg. +35840123..).
+     * @param smsProperties the SMS properties to use when sending the message.
+     * @return an observable that can be used to check whether the operation succeeded or failed.
+     */
+    Observable<?> sendSms(String messageText, Collection<String> phoneNumbers, SmsProperties smsProperties);
+
+}

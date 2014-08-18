@@ -11,4 +11,12 @@
 
     <artifactId>fenix-aspsms</artifactId>
     <name>Integration Library: ASPSMS Web Service Client</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>fenix-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>
