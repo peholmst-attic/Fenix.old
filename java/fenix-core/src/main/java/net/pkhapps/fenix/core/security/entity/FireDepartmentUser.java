@@ -19,6 +19,15 @@ public class FireDepartmentUser extends SystemUser {
     protected FireDepartmentUser() {
     }
 
+    @Override
+    public boolean isEnabled() {
+        if (fireDepartment != null) {
+            return fireDepartment.isEnabled() && super.isEnabled();
+        } else {
+            return super.isEnabled();
+        }
+    }
+
     /**
      * Returns the fire department that the user belongs to.
      */
