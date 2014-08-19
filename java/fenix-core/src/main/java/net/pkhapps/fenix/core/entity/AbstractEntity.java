@@ -5,6 +5,7 @@ import org.springframework.util.Assert;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Version;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -17,6 +18,7 @@ import java.util.function.Function;
 public abstract class AbstractEntity extends AbstractPersistable<Long> {
 
     @Column(name = "rev", nullable = false)
+    @Version
     private Long optLockVersion;
 
     protected AbstractEntity() {
