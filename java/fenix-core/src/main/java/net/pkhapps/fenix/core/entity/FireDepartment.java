@@ -14,9 +14,6 @@ public class FireDepartment extends AbstractEntity {
     @Column(nullable = false, unique = true)
     private String name = "";
 
-    @Column(nullable = false)
-    private boolean enabled = true;
-
     protected FireDepartment() {
     }
 
@@ -25,12 +22,5 @@ public class FireDepartment extends AbstractEntity {
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * Returns whether the fire department is enabled (i.e. users belonging to the fire department are allowed to use the system).
-     */
-    public boolean isEnabled() {
-        return enabled;
     }
 }

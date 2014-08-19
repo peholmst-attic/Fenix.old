@@ -1,17 +1,14 @@
 package net.pkhapps.fenix.core.security.entity;
 
 import com.google.gwt.thirdparty.guava.common.base.Strings;
-import com.google.gwt.thirdparty.guava.common.collect.Sets;
 import net.pkhapps.fenix.core.entity.AbstractEntity;
+import net.pkhapps.fenix.core.entity.FireDepartment;
 import net.pkhapps.fenix.core.security.FenixUserDetails;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -19,9 +16,6 @@ import java.util.stream.Collectors;
  */
 @Entity
 @Table(name = "users")
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "user_type")
-@DiscriminatorValue("system")
 public class SystemUser extends AbstractEntity implements FenixUserDetails {
 
     @Column(name = "first_name", nullable = false)
@@ -57,6 +51,10 @@ public class SystemUser extends AbstractEntity implements FenixUserDetails {
     @Column(name = "enabled", nullable = false)
     private boolean enabled = true;
 
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "fire_department_id", nullable = true)
+    private FireDepartment fireDepartment;
+
     protected SystemUser() {
     }
 
@@ -87,10 +85,7 @@ public class SystemUser extends AbstractEntity implements FenixUserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (authorities == null) {
             authorities = Collections.unmodifiableSet(
-                    Sets.union(
-                            grantedAuthorities.stream().map(authority -> new SimpleGrantedAuthority(authority)).collect(Collectors.toSet()),
-                            getDefaultRoles()
-                    )
+                    grantedAuthorities.stream().map(authority -> new SimpleGrantedAuthority(authority)).collect(Collectors.toSet())
             );
         }
         return authorities;
@@ -174,12 +169,13 @@ public class SystemUser extends AbstractEntity implements FenixUserDetails {
         this.enabled = enabled;
     }
 
-    /**
-     * Returns the roles that by default are given to the user of this class, and that cannot be removed.
-     * These roles will be added to the set of granted authorities.
-     */
-    protected Set<? extends GrantedAuthority> getDefaultRoles() {
-        return Collections.emptySet();
+    @Override
+    public Optional<FireDepartment> getFireDepartment() {
+        return Optional.ofNullable(fireDepartment);
+    }
+
+    protected void setFireDepartment(FireDepartment fireDepartment) {
+        this.fireDepartment = fireDepartment;
     }
 
     protected static abstract class AbstractBuilder<ENTITY extends SystemUser, BUILDER extends AbstractBuilder<ENTITY, BUILDER>> extends AbstractEntity.Builder<ENTITY, BUILDER> {
@@ -198,6 +194,7 @@ public class SystemUser extends AbstractEntity implements FenixUserDetails {
             setEnabled(original.isEnabled());
             setLocked(original.isLocked());
             setPasswordExpired(original.isPasswordExpired());
+            setFireDepartment(original.getFireDepartment().orElse(null));
         }
 
         public String getLastName() {
@@ -281,6 +278,16 @@ public class SystemUser extends AbstractEntity implements FenixUserDetails {
 
         public BUILDER setPasswordExpired(boolean passwordExpired) {
             getInstance().setPasswordExpired(passwordExpired);
+            return myself();
+        }
+
+        public FireDepartment getFireDepartment() {
+            Optional<FireDepartment> fireDepartment = getInstance().getFireDepartment();
+            return fireDepartment.orElse(null);
+        }
+
+        public BUILDER setFireDepartment(FireDepartment fireDepartment) {
+            getInstance().setFireDepartment(fireDepartment);
             return myself();
         }
     }
