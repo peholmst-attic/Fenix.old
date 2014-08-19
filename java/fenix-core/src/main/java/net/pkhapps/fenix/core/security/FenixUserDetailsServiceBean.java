@@ -49,7 +49,7 @@ class FenixUserDetailsServiceBean implements FenixUserDetailsService {
                     .setFirstName("System")
                     .setLastName("Administrator")
                     .setEncryptedPassword(passwordEncoder.encode(password))
-                    .setGrantedAuthorities(Sets.newHashSet(SystemAuthorities.MANAGE_SYSTEM.name()))
+                    .setGrantedAuthorities(Sets.newHashSet(SystemAuthorities.MANAGE_SYSTEM))
                     .build();
             systemUserRepository.saveAndFlush(adminUser);
             System.out.println(" ! ! ! !");

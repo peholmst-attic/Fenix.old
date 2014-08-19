@@ -1,6 +1,7 @@
 package net.pkhapps.fenix.core.security.entity;
 
 import com.google.gwt.thirdparty.guava.common.base.Strings;
+import com.google.gwt.thirdparty.guava.common.collect.Sets;
 import net.pkhapps.fenix.core.entity.AbstractEntity;
 import net.pkhapps.fenix.core.security.FenixUserDetails;
 import org.springframework.security.core.GrantedAuthority;
@@ -85,7 +86,12 @@ public class SystemUser extends AbstractEntity implements FenixUserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (authorities == null) {
-            authorities = Collections.unmodifiableSet(grantedAuthorities.stream().map(authority -> new SimpleGrantedAuthority(authority)).collect(Collectors.toSet()));
+            authorities = Collections.unmodifiableSet(
+                    Sets.union(
+                            grantedAuthorities.stream().map(authority -> new SimpleGrantedAuthority(authority)).collect(Collectors.toSet()),
+                            getDefaultRoles()
+                    )
+            );
         }
         return authorities;
     }
@@ -166,6 +172,14 @@ public class SystemUser extends AbstractEntity implements FenixUserDetails {
 
     protected void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    /**
+     * Returns the roles that by default are given to the user of this class, and that cannot be removed.
+     * These roles will be added to the set of granted authorities.
+     */
+    protected Set<? extends GrantedAuthority> getDefaultRoles() {
+        return Collections.emptySet();
     }
 
     protected static abstract class AbstractBuilder<ENTITY extends SystemUser, BUILDER extends AbstractBuilder<ENTITY, BUILDER>> extends AbstractEntity.Builder<ENTITY, BUILDER> {

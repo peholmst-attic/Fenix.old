@@ -1,6 +1,5 @@
 package net.pkhapps.fenix.core.security;
 
-import net.pkhapps.fenix.core.annotations.SessionScope;
 import net.pkhapps.fenix.core.entity.FireDepartment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -12,10 +11,9 @@ import java.io.Serializable;
 import java.util.Optional;
 
 /**
- * Session scoped bean that provides information about the current session.
+ * Bean that provides information about the current session.
  */
 @Component
-@SessionScope
 public class SessionInfo implements Serializable {
 
     private final FenixUserDetailsService fenixUserDetailsService;
@@ -31,8 +29,7 @@ public class SessionInfo implements Serializable {
     public FenixUserDetails getCurrentUserDetails() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Assert.notNull(authentication, "No authentication stored in SecurityContext");
-        Assert.isInstanceOf(FenixUserDetails.class, "Stored user details are not an instance of FenixUserDetails");
-        return (FenixUserDetails) authentication.getDetails();
+        return (FenixUserDetails) fenixUserDetailsService.loadUserByUsername(authentication.getName());
     }
 
     /**
