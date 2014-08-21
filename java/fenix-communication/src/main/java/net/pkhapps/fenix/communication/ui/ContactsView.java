@@ -5,7 +5,9 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.VerticalLayout;
 import net.pkhapps.fenix.communication.config.CommunicationModule;
+import net.pkhapps.fenix.communication.security.CommunicationAuthorities;
 import net.pkhapps.fenix.core.annotations.PrototypeScope;
+import org.springframework.security.access.annotation.Secured;
 import org.vaadin.spring.navigator.VaadinView;
 import org.vaadin.spring.stuff.sidebar.FontAwesomeIcon;
 import org.vaadin.spring.stuff.sidebar.SideBarItem;
@@ -17,6 +19,7 @@ import org.vaadin.spring.stuff.sidebar.SideBarItem;
 @SideBarItem(sectionId = CommunicationModule.SECTION_ID, captionCode = "net.pkhapps.fenix.communication.sidebar.contacts.caption", order = 20)
 @FontAwesomeIcon(FontAwesome.USER)
 @PrototypeScope
+@Secured({CommunicationAuthorities.EDIT_CONTACTS_AND_GROUPS, CommunicationAuthorities.VIEW_CONTACTS_AND_GROUPS})
 public class ContactsView extends VerticalLayout implements View {
 
     public static final String VIEW_NAME = "communication/contacts";

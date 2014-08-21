@@ -5,6 +5,7 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.*;
 import net.pkhapps.fenix.communication.config.CommunicationModule;
+import net.pkhapps.fenix.communication.security.CommunicationAuthorities;
 import net.pkhapps.fenix.core.annotations.PrototypeScope;
 import net.pkhapps.fenix.core.components.DiscardButton;
 import net.pkhapps.fenix.core.components.PrimaryButton;
@@ -12,6 +13,7 @@ import net.pkhapps.fenix.core.components.TinyLabel;
 import net.pkhapps.fenix.core.components.ViewTitleLabel;
 import net.pkhapps.fenix.core.i18n.MessageKeyGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.navigator.VaadinView;
 import org.vaadin.spring.stuff.sidebar.FontAwesomeIcon;
@@ -26,6 +28,7 @@ import javax.annotation.PostConstruct;
 @SideBarItem(sectionId = CommunicationModule.SECTION_ID, captionCode = "net.pkhapps.fenix.communication.sidebar.newMessage.caption", order = 0)
 @FontAwesomeIcon(FontAwesome.ENVELOPE)
 @PrototypeScope
+@Secured(CommunicationAuthorities.SEND_MESSAGES)
 public class NewMessageView extends VerticalLayout implements View {
 
     public static final String VIEW_NAME = "communication/newMessage";

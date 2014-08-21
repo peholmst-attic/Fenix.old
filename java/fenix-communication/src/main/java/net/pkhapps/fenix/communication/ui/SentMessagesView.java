@@ -5,7 +5,9 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.VerticalLayout;
 import net.pkhapps.fenix.communication.config.CommunicationModule;
+import net.pkhapps.fenix.communication.security.CommunicationAuthorities;
 import net.pkhapps.fenix.core.annotations.PrototypeScope;
+import org.springframework.security.access.annotation.Secured;
 import org.vaadin.spring.navigator.VaadinView;
 import org.vaadin.spring.stuff.sidebar.FontAwesomeIcon;
 import org.vaadin.spring.stuff.sidebar.SideBarItem;
@@ -17,6 +19,7 @@ import org.vaadin.spring.stuff.sidebar.SideBarItem;
 @SideBarItem(sectionId = CommunicationModule.SECTION_ID, captionCode = "net.pkhapps.fenix.communication.sidebar.sentMessages.caption", order = 10)
 @FontAwesomeIcon(FontAwesome.ARCHIVE)
 @PrototypeScope
+@Secured(CommunicationAuthorities.VIEW_MESSAGES)
 public class SentMessagesView extends VerticalLayout implements View {
 
     public static final String VIEW_NAME = "communication/sentMessages";
