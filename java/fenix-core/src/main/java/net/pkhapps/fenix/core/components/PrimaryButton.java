@@ -9,11 +9,11 @@ import net.pkhapps.fenix.theme.FenixTheme;
 public class PrimaryButton extends Button {
     public PrimaryButton(String caption, ClickListener listener) {
         super(caption, listener);
-        addStyleName(FenixTheme.PRIMARY_BUTTON);
+        addStyleName(FenixTheme.BUTTON_PRIMARY);
     }
 
     public PrimaryButton(String caption) {
         super(caption);
-        addStyleName(FenixTheme.PRIMARY_BUTTON);
+        addStyleName(FenixTheme.BUTTON_PRIMARY);
     }
 }

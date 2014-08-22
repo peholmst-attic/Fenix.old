@@ -16,6 +16,14 @@ import java.util.Set;
 @Table(name = "contacts")
 public class Contact extends AbstractFireDepartmentSpecificEntity {
 
+    public static final String PROP_FIRST_NAME = "firstName";
+    public static final String PROP_LAST_NAME = "lastName";
+    public static final String PROP_SINGLE_NAME = "singleName";
+    public static final String PROP_CELL_PHONE_NUMBER = "cellPhoneNumber";
+    public static final String PROP_EMAIL = "email";
+    public static final String PROP_DISPLAY_NAME = "displayName";
+    public static final String PROP_COMMUNICATION_METHODS = "communicationMethods";
+
     @Column(name = "first_name", nullable = false)
     private String firstName = "";
 

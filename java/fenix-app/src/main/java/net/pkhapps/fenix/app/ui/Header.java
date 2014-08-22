@@ -15,7 +15,7 @@ import org.vaadin.spring.i18n.I18N;
 import javax.annotation.PostConstruct;
 
 /**
- * Created by peholmst on 2014-06-19.
+ * Header component for the Fenix UI.
  */
 @VaadinComponent
 @UIScope
@@ -39,12 +39,22 @@ class Header extends HorizontalLayout {
         applicationTitle.addStyleName(FenixTheme.HEADER_APPLICATION_TITLE);
         applicationTitle.setSizeUndefined();
         addComponent(applicationTitle);
-        setExpandRatio(applicationTitle, 1f);
+        setComponentAlignment(applicationTitle, Alignment.MIDDLE_LEFT);
+
+        sessionInfo.getCurrentUserDetails().getFireDepartment().ifPresent(fireDepartment -> {
+            final Label fireDepartmentName = new Label(fireDepartment.getName());
+            fireDepartmentName.addStyleName(FenixTheme.HEADER_FIRE_DEPARTMENT_NAME);
+            fireDepartmentName.setSizeUndefined();
+            addComponent(fireDepartmentName);
+            setComponentAlignment(fireDepartmentName, Alignment.MIDDLE_LEFT);
+        });
 
         final MenuBar menuBar = new MenuBar();
+        menuBar.addStyleName(FenixTheme.MENUBAR_SMALL);
         menuBar.addStyleName(FenixTheme.HEADER_MENU_BAR);
         addComponent(menuBar);
         setComponentAlignment(menuBar, Alignment.MIDDLE_RIGHT);
+        setExpandRatio(menuBar, 1f);
         addMenuItems(menuBar);
     }
 
@@ -56,5 +66,7 @@ class Header extends HorizontalLayout {
         final MenuBar.MenuItem user = menuBar.addItem(i18n.get("header.menu.user.caption",
                 sessionInfo.getCurrentUserDetails().getDisplayName()), null);
         user.setIcon(FontAwesome.USER);
+        user.addItem(i18n.get("header.menu.user.changePassword.caption"), menuController::changePassword);
+        user.addItem(i18n.get("header.menu.user.logout.caption"), menuController::logout);
     }
 }

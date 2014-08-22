@@ -7,7 +7,7 @@ import com.vaadin.ui.*;
 import net.pkhapps.fenix.communication.config.CommunicationModule;
 import net.pkhapps.fenix.communication.security.CommunicationAuthorities;
 import net.pkhapps.fenix.core.annotations.PrototypeScope;
-import net.pkhapps.fenix.core.components.DiscardButton;
+import net.pkhapps.fenix.core.components.FriendlyButton;
 import net.pkhapps.fenix.core.components.PrimaryButton;
 import net.pkhapps.fenix.core.components.TinyLabel;
 import net.pkhapps.fenix.core.components.ViewTitleLabel;
@@ -33,7 +33,7 @@ public class NewMessageView extends VerticalLayout implements View {
 
     public static final String VIEW_NAME = "communication/newMessage";
 
-    private final MessageKeyGenerator messages = new MessageKeyGenerator(NewMessageView.class);
+    private static final MessageKeyGenerator messages = new MessageKeyGenerator(NewMessageView.class);
 
     @Autowired
     I18N i18n;
@@ -47,7 +47,7 @@ public class NewMessageView extends VerticalLayout implements View {
     private Button removeRecipients;
     private Table selectedRecipients;
     private PrimaryButton send;
-    private DiscardButton discard;
+    private FriendlyButton discard;
 
     @PostConstruct
     void init() {
@@ -116,7 +116,7 @@ public class NewMessageView extends VerticalLayout implements View {
         send = new PrimaryButton(i18n.get(messages.key("send.caption")));
         buttonsLayout.addComponent(send);
 
-        discard = new DiscardButton(i18n.get(messages.key("discard.caption")));
+        discard = new FriendlyButton(i18n.get(messages.key("discard.caption")));
         buttonsLayout.addComponent(discard);
     }
 

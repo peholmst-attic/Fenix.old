@@ -1,7 +1,33 @@
-@import "../reindeer/reindeer.scss";
+$v-font-size: 14px;
+
+@import "../valo/valo";
 
 @mixin fenix {
-  @include reindeer;
+  @include valo;
 
+  .header-layout {
+    background-color: orangered;
+    color: whitesmoke;
+  }
 
+  .header-application-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .header-menu-bar {
+    margin-right: 10px;
+  }
+
+  .header-fire-department-name {
+    font-size: 20px;
+  }
+
+  .view-title {
+    border-bottom: 1px solid orangered;
+    font-size: 2.4em;
+    padding-left: 10px;
+  }
 }

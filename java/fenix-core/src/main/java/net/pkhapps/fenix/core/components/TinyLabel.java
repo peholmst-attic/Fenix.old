@@ -8,11 +8,11 @@ import net.pkhapps.fenix.theme.FenixTheme;
  */
 public class TinyLabel extends Label {
     public TinyLabel() {
-        addStyleName(FenixTheme.TINY_LABEL);
+        addStyleName(FenixTheme.LABEL_SMALL);
     }
 
     public TinyLabel(String content) {
         super(content);
-        addStyleName(FenixTheme.TINY_LABEL);
+        addStyleName(FenixTheme.LABEL_SMALL);
     }
 }
