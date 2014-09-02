@@ -17,9 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Optional;
@@ -50,9 +48,6 @@ public class SystemUser extends AbstractEntity implements FenixUserDetails {
     @CollectionTable(name = "user_authorities",
             joinColumns = @JoinColumn(name = "user_id", nullable = false))
     private Set<String> grantedAuthorities = new HashSet<>();
-
-    @Transient
-    private Set<GrantedAuthority> authorities;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "password_exp_date", nullable = true)
@@ -97,12 +92,7 @@ public class SystemUser extends AbstractEntity implements FenixUserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (authorities == null) {
-            authorities = Collections.unmodifiableSet(
-                    grantedAuthorities.stream().map(authority -> new SimpleGrantedAuthority(authority)).collect(Collectors.toSet())
-            );
-        }
-        return authorities;
+        return grantedAuthorities.stream().map(authority -> new SimpleGrantedAuthority(authority)).collect(Collectors.toSet());
     }
 
     @Override
@@ -186,5 +176,12 @@ public class SystemUser extends AbstractEntity implements FenixUserDetails {
 
     public void setLocked(boolean locked) {
         this.locked = locked;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        final SystemUser clone = (SystemUser) super.clone();
+        clone.grantedAuthorities = new HashSet<>(grantedAuthorities);
+        return clone;
     }
 }
