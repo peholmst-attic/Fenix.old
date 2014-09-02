@@ -40,13 +40,12 @@ class FenixUserDetailsServiceBean implements FenixUserDetailsService {
         if (adminUser == null) {
             LOGGER.info("Creating default admin user, sending username and password to STDOUT");
             final String password = RandomStringUtils.randomAlphanumeric(10);
-            adminUser = new SystemUser.Builder()
-                    .setUsername("admin")
-                    .setFirstName("System")
-                    .setLastName("Administrator")
-                    .setEncryptedPassword(passwordEncoder.encode(password))
-                    .setGrantedAuthorities(Sets.newHashSet(SystemAuthorities.MANAGE_SYSTEM))
-                    .build();
+            adminUser = new SystemUser();
+            adminUser.setUsername("admin");
+            adminUser.setFirstName("System");
+            adminUser.setLastName("Administrator");
+            adminUser.setEncryptedPassword(passwordEncoder.encode(password));
+            adminUser.setGrantedAuthorities(Sets.newHashSet(SystemAuthorities.MANAGE_SYSTEM));
             systemUserRepository.saveAndFlush(adminUser);
             System.out.println(" ! ! ! !");
             System.out.println(String.format(" Created default admin user, username = %s, password = %s", adminUser.getUsername(), password));

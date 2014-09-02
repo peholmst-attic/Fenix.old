@@ -1,5 +1,6 @@
 package net.pkhapps.fenix.core.security;
 
+import net.pkhapps.fenix.core.entity.FireDepartment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,6 +28,14 @@ public class SessionInfo implements Serializable {
     public FenixUserDetails getCurrentUserDetails() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Assert.notNull(authentication, "No authentication stored in SecurityContext");
-        return (FenixUserDetails) fenixUserDetailsService.loadUserByUsername(authentication.getName());
+        return fenixUserDetailsService.loadUserByUsername(authentication.getName());
+    }
+
+    /**
+     * Returns the fire department of the current user, or throws an exception if the current user
+     * does not belong to any.
+     */
+    public FireDepartment getCurrentFireDepartment() throws FireDepartmentRequiredException {
+        return getCurrentUserDetails().getFireDepartment().orElseThrow(FireDepartmentRequiredException::new);
     }
 }

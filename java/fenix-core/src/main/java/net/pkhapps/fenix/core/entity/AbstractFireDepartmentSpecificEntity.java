@@ -21,28 +21,7 @@ public abstract class AbstractFireDepartmentSpecificEntity extends AbstractEntit
         return fireDepartment;
     }
 
-    protected void setFireDepartment(FireDepartment fireDepartment) {
+    public void setFireDepartment(FireDepartment fireDepartment) {
         this.fireDepartment = fireDepartment;
-    }
-
-    public static abstract class Builder<ENTITY extends AbstractFireDepartmentSpecificEntity, BUILDER extends Builder<ENTITY, BUILDER>>
-            extends AbstractEntity.Builder<ENTITY, BUILDER> {
-
-        public Builder() {
-        }
-
-        public Builder(ENTITY original) {
-            super(original);
-            setFireDepartment(original.getFireDepartment());
-        }
-
-        public FireDepartment getFireDepartment() {
-            return getInstance().getFireDepartment();
-        }
-
-        public BUILDER setFireDepartment(FireDepartment fireDepartment) {
-            getInstance().setFireDepartment(fireDepartment);
-            return myself();
-        }
     }
 }

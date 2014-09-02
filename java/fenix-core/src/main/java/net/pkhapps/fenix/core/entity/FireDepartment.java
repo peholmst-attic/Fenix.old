@@ -1,5 +1,7 @@
 package net.pkhapps.fenix.core.entity;
 
+import com.google.gwt.thirdparty.guava.common.base.Strings;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -11,10 +13,13 @@ import javax.persistence.Table;
 @Table(name = "fire_departments")
 public class FireDepartment extends AbstractEntity {
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "name", nullable = false, unique = true)
     private String name = "";
 
-    protected FireDepartment() {
+    @Column(name = "enabled", nullable = false)
+    private boolean enabled = true;
+
+    public FireDepartment() {
     }
 
     /**
@@ -22,5 +27,17 @@ public class FireDepartment extends AbstractEntity {
      */
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = Strings.nullToEmpty(name);
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

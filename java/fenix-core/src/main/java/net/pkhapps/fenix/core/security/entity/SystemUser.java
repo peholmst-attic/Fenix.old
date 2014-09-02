@@ -7,8 +7,23 @@ import net.pkhapps.fenix.core.security.FenixUserDetails;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import javax.persistence.*;
-import java.util.*;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -39,23 +54,22 @@ public class SystemUser extends AbstractEntity implements FenixUserDetails {
     @Transient
     private Set<GrantedAuthority> authorities;
 
-    @Column(name = "expired", nullable = false)
-    private boolean expired = false;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "password_exp_date", nullable = true)
+    private Date passwordExpirationDate;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "account_exp_date", nullable = true)
+    private Date accountExpirationDate;
 
     @Column(name = "locked", nullable = false)
     private boolean locked = false;
-
-    @Column(name = "password_expired", nullable = false)
-    private boolean passwordExpired = false;
-
-    @Column(name = "enabled", nullable = false)
-    private boolean enabled = true;
 
     @ManyToOne(optional = true)
     @JoinColumn(name = "fire_department_id", nullable = true)
     private FireDepartment fireDepartment;
 
-    protected SystemUser() {
+    public SystemUser() {
     }
 
     @Override
@@ -63,8 +77,8 @@ public class SystemUser extends AbstractEntity implements FenixUserDetails {
         return firstName;
     }
 
-    protected void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirstName(String firstName) {
+        this.firstName = Strings.nullToEmpty(firstName);
     }
 
     @Override
@@ -72,8 +86,8 @@ public class SystemUser extends AbstractEntity implements FenixUserDetails {
         return lastName;
     }
 
-    protected void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setLastName(String lastName) {
+        this.lastName = Strings.nullToEmpty(lastName);
     }
 
     @Override
@@ -96,44 +110,36 @@ public class SystemUser extends AbstractEntity implements FenixUserDetails {
         return encryptedPassword;
     }
 
-    protected String getEncryptedPassword() {
+    public String getEncryptedPassword() {
         return encryptedPassword;
     }
 
-    protected void setEncryptedPassword(String encryptedPassword) {
-        this.encryptedPassword = encryptedPassword;
+    public void setEncryptedPassword(String encryptedPassword) {
+        this.encryptedPassword = Strings.nullToEmpty(encryptedPassword);
     }
 
-    protected Set<String> getGrantedAuthorities() {
-        return Collections.unmodifiableSet(grantedAuthorities);
+    public Set<String> getGrantedAuthorities() {
+        return grantedAuthorities;
     }
 
-    protected void setGrantedAuthorities(Set<String> grantedAuthorities) {
+    public void setGrantedAuthorities(Set<String> grantedAuthorities) {
         this.grantedAuthorities = grantedAuthorities;
     }
 
-    protected boolean isExpired() {
-        return expired;
+    public Date getPasswordExpirationDate() {
+        return passwordExpirationDate;
     }
 
-    protected void setExpired(boolean expired) {
-        this.expired = expired;
+    public void setPasswordExpirationDate(Date passwordExpirationDate) {
+        this.passwordExpirationDate = passwordExpirationDate;
     }
 
-    protected boolean isLocked() {
-        return locked;
+    public Date getAccountExpirationDate() {
+        return accountExpirationDate;
     }
 
-    protected void setLocked(boolean locked) {
-        this.locked = locked;
-    }
-
-    protected boolean isPasswordExpired() {
-        return passwordExpired;
-    }
-
-    protected void setPasswordExpired(boolean passwordExpired) {
-        this.passwordExpired = passwordExpired;
+    public void setAccountExpirationDate(Date accountExpirationDate) {
+        this.accountExpirationDate = accountExpirationDate;
     }
 
     @Override
@@ -141,13 +147,13 @@ public class SystemUser extends AbstractEntity implements FenixUserDetails {
         return username;
     }
 
-    protected void setUsername(String username) {
-        this.username = username;
+    public void setUsername(String username) {
+        this.username = Strings.nullToEmpty(username);
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return !expired;
+        return accountExpirationDate == null || accountExpirationDate.after(new Date());
     }
 
     @Override
@@ -157,16 +163,12 @@ public class SystemUser extends AbstractEntity implements FenixUserDetails {
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return !passwordExpired;
+        return passwordExpirationDate == null || passwordExpirationDate.after(new Date());
     }
 
     @Override
     public boolean isEnabled() {
-        return enabled;
-    }
-
-    protected void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+        return fireDepartment == null || fireDepartment.isEnabled();
     }
 
     @Override
@@ -174,136 +176,15 @@ public class SystemUser extends AbstractEntity implements FenixUserDetails {
         return Optional.ofNullable(fireDepartment);
     }
 
-    protected void setFireDepartment(FireDepartment fireDepartment) {
+    public void setFireDepartment(FireDepartment fireDepartment) {
         this.fireDepartment = fireDepartment;
     }
 
-    protected static abstract class AbstractBuilder<ENTITY extends SystemUser, BUILDER extends AbstractBuilder<ENTITY, BUILDER>> extends AbstractEntity.Builder<ENTITY, BUILDER> {
-
-        protected AbstractBuilder() {
-        }
-
-        protected AbstractBuilder(ENTITY original) {
-            super(original);
-            setLastName(original.getLastName());
-            setFirstName(original.getFirstName());
-            setUsername(original.getUsername());
-            setGrantedAuthorities(original.getGrantedAuthorities());
-            setEncryptedPassword(original.getEncryptedPassword());
-            setExpired(original.isExpired());
-            setEnabled(original.isEnabled());
-            setLocked(original.isLocked());
-            setPasswordExpired(original.isPasswordExpired());
-            setFireDepartment(original.getFireDepartment().orElse(null));
-        }
-
-        public String getLastName() {
-            return getInstance().getLastName();
-        }
-
-        public BUILDER setLastName(String lastName) {
-            getInstance().setLastName(Strings.nullToEmpty(lastName));
-            return myself();
-        }
-
-        public Set<String> getGrantedAuthorities() {
-            return getInstance().getGrantedAuthorities();
-        }
-
-        public BUILDER setGrantedAuthorities(Set<String> grantedAuthorities) {
-            if (grantedAuthorities == null) {
-                grantedAuthorities = Collections.emptySet();
-            }
-            getInstance().setGrantedAuthorities(new HashSet<>(grantedAuthorities));
-            return myself();
-        }
-
-        public String getEncryptedPassword() {
-            return getInstance().getEncryptedPassword();
-        }
-
-        public BUILDER setEncryptedPassword(String encryptedPassword) {
-            getInstance().setEncryptedPassword(Strings.nullToEmpty(encryptedPassword));
-            return myself();
-        }
-
-        public String getUsername() {
-            return getInstance().getUsername();
-        }
-
-        public BUILDER setUsername(String username) {
-            getInstance().setUsername(Strings.nullToEmpty(username));
-            return myself();
-        }
-
-        public boolean isEnabled() {
-            return getInstance().isEnabled();
-        }
-
-        public BUILDER setEnabled(boolean enabled) {
-            getInstance().setEnabled(enabled);
-            return myself();
-        }
-
-        public String getFirstName() {
-            return getInstance().getFirstName();
-        }
-
-        public BUILDER setFirstName(String firstName) {
-            getInstance().setFirstName(Strings.nullToEmpty(firstName));
-            return myself();
-        }
-
-        public boolean isExpired() {
-            return getInstance().isExpired();
-        }
-
-        public BUILDER setExpired(boolean expired) {
-            getInstance().setExpired(expired);
-            return myself();
-        }
-
-        public boolean isLocked() {
-            return getInstance().isLocked();
-        }
-
-        public BUILDER setLocked(boolean locked) {
-            getInstance().setLocked(locked);
-            return myself();
-        }
-
-        public boolean isPasswordExpired() {
-            return getInstance().isPasswordExpired();
-        }
-
-        public BUILDER setPasswordExpired(boolean passwordExpired) {
-            getInstance().setPasswordExpired(passwordExpired);
-            return myself();
-        }
-
-        public FireDepartment getFireDepartment() {
-            Optional<FireDepartment> fireDepartment = getInstance().getFireDepartment();
-            return fireDepartment.orElse(null);
-        }
-
-        public BUILDER setFireDepartment(FireDepartment fireDepartment) {
-            getInstance().setFireDepartment(fireDepartment);
-            return myself();
-        }
+    public boolean isLocked() {
+        return locked;
     }
 
-    public static class Builder extends AbstractBuilder<SystemUser, Builder> {
-
-        public Builder() {
-        }
-
-        public Builder(SystemUser original) {
-            super(original);
-        }
-
-        @Override
-        protected SystemUser newInstance() {
-            return new SystemUser();
-        }
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 }
