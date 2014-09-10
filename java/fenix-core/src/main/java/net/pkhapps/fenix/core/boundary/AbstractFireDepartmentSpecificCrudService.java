@@ -32,6 +32,7 @@ public abstract class AbstractFireDepartmentSpecificCrudService<E extends Abstra
     public E save(E entity) throws ValidationFailedException, OptimisticLockingFailureException {
         final FireDepartment currentFireDepartment = getSessionInfo().getCurrentFireDepartment();
         if (entity.getFireDepartment() == null) {
+            logger.trace("Assigning {} to fire department {}", entity, currentFireDepartment);
             entity.setFireDepartment(currentFireDepartment);
         }
         sessionInfo.checkFireDepartment(entity);

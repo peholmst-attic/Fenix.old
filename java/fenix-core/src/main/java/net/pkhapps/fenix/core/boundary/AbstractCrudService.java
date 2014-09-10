@@ -2,6 +2,8 @@ package net.pkhapps.fenix.core.boundary;
 
 import net.pkhapps.fenix.core.entity.AbstractEntity;
 import net.pkhapps.fenix.core.validation.ValidationFailedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,6 +17,7 @@ import java.util.stream.Stream;
  */
 public abstract class AbstractCrudService<E extends AbstractEntity, R extends JpaRepository<E, Long>> implements CrudService<E> {
 
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
     private final Validator validator;
     private final R repository;
     private final ApplicationContext applicationContext;
@@ -35,6 +38,7 @@ public abstract class AbstractCrudService<E extends AbstractEntity, R extends Jp
 
     @Override
     public E save(E entity) throws ValidationFailedException, OptimisticLockingFailureException {
+        logger.debug("Saving {}", entity);
         ValidationFailedException.throwIfNotEmpty(validator.validate(entity));
         getCallbacks(CrudServiceCallback.SaveCallback.class, entity).forEach(callback -> callback.beforeSave(entity));
         final E savedEntity = getRepository().saveAndFlush(entity);
@@ -44,12 +48,14 @@ public abstract class AbstractCrudService<E extends AbstractEntity, R extends Jp
 
     @Override
     public void delete(E entity) {
+        logger.debug("Deleting {}");
         getCallbacks(CrudServiceCallback.DeleteCallback.class, entity).forEach(callback -> callback.beforeDelete(entity));
         getRepository().delete(entity.getId());
         getCallbacks(CrudServiceCallback.DeleteCallback.class, entity).forEach(callback -> callback.afterDelete(entity));
     }
 
     protected <CB extends CrudServiceCallback> Stream<CB> getCallbacks(Class<CB> callbackClass, E entity) {
+        logger.trace("Looking up callbacks of type {} for {}", callbackClass, entity);
         return applicationContext.getBeansOfType(callbackClass).values().stream().filter(callback -> callback.supports(entity));
     }
 
