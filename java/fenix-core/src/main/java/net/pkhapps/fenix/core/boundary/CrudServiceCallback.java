@@ -17,18 +17,23 @@ public interface CrudServiceCallback {
      * Callback for delete operations.
      */
     public interface DeleteCallback<E extends AbstractEntity> extends CrudServiceCallback {
-        void beforeDelete(E entity);
 
-        void afterDelete(E entity);
+        default void beforeDelete(E entity) {
+        }
+
+        default void afterDelete(E entity) {
+        }
     }
 
     /**
      * Callback for save operations.
      */
     public interface SaveCallback<E extends AbstractEntity> extends CrudServiceCallback {
-        void beforeSave(E entity);
+        default void beforeSave(E entity) {
+        }
 
-        void afterSave(E entity);
+        default void afterSave(E entity) {
+        }
     }
 
 }
