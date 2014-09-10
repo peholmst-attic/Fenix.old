@@ -1,4 +1,4 @@
-package net.pkhapps.fenix.communication.boundary;
+package net.pkhapps.fenix.communication.control;
 
 import net.pkhapps.fenix.communication.entity.Contact;
 import net.pkhapps.fenix.communication.entity.ContactGroupRepository;
