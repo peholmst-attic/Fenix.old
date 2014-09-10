@@ -4,7 +4,6 @@ import net.pkhapps.fenix.communication.entity.Contact;
 import net.pkhapps.fenix.communication.entity.ContactRepository;
 import net.pkhapps.fenix.core.entity.FireDepartment;
 import net.pkhapps.fenix.core.security.SessionInfo;
-import net.pkhapps.fenix.core.security.WrongFireDepartmentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -30,14 +29,14 @@ class ContactServiceBean implements ContactService {
         final FireDepartment currentFireDepartment = sessionInfo.getCurrentFireDepartment();
         if (contact.getFireDepartment() == null) {
             contact.setFireDepartment(currentFireDepartment);
-        } else if (!currentFireDepartment.equals(contact.getFireDepartment())) {
-            throw new WrongFireDepartmentException();
         }
+        sessionInfo.checkFireDepartment(contact);
         return contactRepository.saveAndFlush(contact);
     }
 
     @Override
     public void delete(Contact contact) {
+        sessionInfo.checkFireDepartment(contact);
         contactRepository.delete(contact);
     }
 
