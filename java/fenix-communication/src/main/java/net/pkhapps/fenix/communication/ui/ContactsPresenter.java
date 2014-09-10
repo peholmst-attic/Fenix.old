@@ -3,6 +3,7 @@ package net.pkhapps.fenix.communication.ui;
 import net.pkhapps.fenix.communication.boundary.ContactService;
 import net.pkhapps.fenix.communication.entity.Contact;
 import net.pkhapps.fenix.core.annotations.PrototypeScope;
+import net.pkhapps.fenix.core.validation.ValidationFailedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,15 +82,19 @@ class ContactsPresenter {
         LOGGER.trace("Save: {}", contact);
         editing = false;
         boolean isNew = contact.isNew();
-        contact = contactService.save(contact);
-        if (isNew) {
-            contacts.add(contact);
-        } else {
-            contacts.remove(contact);
-            contacts.add(contact);
+        try {
+            contact = contactService.save(contact);
+            if (isNew) {
+                contacts.add(contact);
+            } else {
+                contacts.remove(contact);
+                contacts.add(contact);
+            }
+            getViewDelegate().setContacts(contacts);
+            doSelect(Optional.of(contact));
+        } catch (ValidationFailedException ex) {
+            getViewDelegate().showValidationErrors(ex);
         }
-        getViewDelegate().setContacts(contacts);
-        doSelect(Optional.of(contact));
     }
 
     void cancel() {
@@ -156,6 +161,11 @@ class ContactsPresenter {
         Optional<Contact> commitForm();
 
         /**
+         * Shows the validation users to the user.
+         */
+        void showValidationErrors(ValidationFailedException validationErrors);
+
+        /**
          * Discards the form.
          */
         void discardForm();
@@ -184,7 +194,6 @@ class ContactsPresenter {
          * Shows or hides the specified buttons. By default, all buttons are hidden.
          */
         void setButtonsVisible(boolean visible, ViewButton... buttons);
-
     }
 
 }

@@ -22,6 +22,7 @@ import net.pkhapps.fenix.core.components.FriendlyButton;
 import net.pkhapps.fenix.core.components.PrimaryButton;
 import net.pkhapps.fenix.core.components.ViewTitleLabel;
 import net.pkhapps.fenix.core.i18n.MessageKeyGenerator;
+import net.pkhapps.fenix.core.validation.ValidationFailedException;
 import net.pkhapps.fenix.theme.FenixTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -176,6 +177,12 @@ public class ContactsView extends VerticalLayout implements View, ContactsPresen
     @Override
     public Optional<Contact> commitForm() {
         return contactForm.commit();
+    }
+
+    @Override
+    public void showValidationErrors(ValidationFailedException validationErrors) {
+        // TODO Implement showValidationErrors
+        throw new UnsupportedOperationException("showValidationErrors not implemented yet");
     }
 
     @Override
