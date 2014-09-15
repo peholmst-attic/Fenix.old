@@ -5,6 +5,7 @@ import net.pkhapps.fenix.core.entity.AbstractFireDepartmentSpecificEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -20,10 +21,13 @@ import java.util.Set;
 @Table(name = "contact_groups")
 public class ContactGroup extends AbstractFireDepartmentSpecificEntity {
 
+    public static final String PROP_NAME = "name";
+    public static final String PROP_MEMBERS = "members";
+
     @Column(name = "group_name", nullable = false)
     private String name = "";
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "contact_group_members", joinColumns = @JoinColumn(name = "group_id"),
             inverseJoinColumns = @JoinColumn(name = "member_id"))
     private Set<Contact> members = new HashSet<>();

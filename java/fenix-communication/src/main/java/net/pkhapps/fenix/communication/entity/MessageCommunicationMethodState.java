@@ -1,9 +1,17 @@
 package net.pkhapps.fenix.communication.entity;
 
 import net.pkhapps.fenix.core.entity.AbstractEntity;
-import org.springframework.util.Assert;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -26,7 +34,17 @@ public class MessageCommunicationMethodState extends AbstractEntity {
     @Column(name = "state", nullable = false)
     private MessageState state = MessageState.UNSENT;
 
+    @Column(name = "ts", nullable = false)
+    private Timestamp timestamp;
+
     protected MessageCommunicationMethodState() {
+    }
+
+    public MessageCommunicationMethodState(Message message, CommunicationMethod communicationMethod, MessageState state) {
+        this.message = Objects.requireNonNull(message);
+        this.communicationMethod = Objects.requireNonNull(communicationMethod);
+        this.state = Objects.requireNonNull(state);
+        this.timestamp = Timestamp.from(Instant.now());
     }
 
     public Message getMessage() {
@@ -41,8 +59,8 @@ public class MessageCommunicationMethodState extends AbstractEntity {
         return communicationMethod;
     }
 
-    protected void setCommunicationMethod(CommunicationMethod communicationMethod) {
-        this.communicationMethod = communicationMethod;
+    public void setCommunicationMethod(CommunicationMethod communicationMethod) {
+        this.communicationMethod = Objects.requireNonNull(communicationMethod);
     }
 
     public MessageState getState() {
@@ -50,54 +68,14 @@ public class MessageCommunicationMethodState extends AbstractEntity {
     }
 
     protected void setState(MessageState state) {
-        this.state = state;
+        this.state = Objects.requireNonNull(state);
     }
 
-    public static class Builder extends AbstractEntity.Builder<MessageCommunicationMethodState, Builder> {
+    public Instant getTimestamp() {
+        return timestamp.toInstant();
+    }
 
-        public Builder() {
-        }
-
-        public Builder(MessageCommunicationMethodState original) {
-            super(original);
-        }
-
-        public Message getMessage() {
-            return getInstance().getMessage();
-        }
-
-        public Builder setMessage(Message message) {
-            getInstance().setMessage(Objects.requireNonNull(message));
-            return myself();
-        }
-
-        public CommunicationMethod getCommunicationMethod() {
-            return getInstance().getCommunicationMethod();
-        }
-
-        public Builder setCommunicationMethod(CommunicationMethod communicationMethod) {
-            getInstance().setCommunicationMethod(Objects.requireNonNull(communicationMethod));
-            return myself();
-        }
-
-        public MessageState getState() {
-            return getInstance().getState();
-        }
-
-        public Builder setState(MessageState state) {
-            getInstance().setState(Objects.requireNonNull(state));
-            return myself();
-        }
-
-        @Override
-        protected void validateBeforeBuild() {
-            Assert.notNull(getCommunicationMethod(), "communicationMethod must be specified");
-            Assert.notNull(getMessage(), "message must be specified");
-        }
-
-        @Override
-        protected MessageCommunicationMethodState newInstance() {
-            return new MessageCommunicationMethodState();
-        }
+    protected void setTimestamp(Instant timestamp) {
+        this.timestamp = Timestamp.from(Objects.requireNonNull(timestamp));
     }
 }

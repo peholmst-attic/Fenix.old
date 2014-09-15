@@ -1,6 +1,9 @@
 package net.pkhapps.fenix.communication.control;
 
-import net.pkhapps.fenix.communication.entity.*;
+import net.pkhapps.fenix.communication.entity.CommunicationMethod;
+import net.pkhapps.fenix.communication.entity.Message;
+import net.pkhapps.fenix.communication.entity.MessageCommunicationMethodStateRepository;
+import net.pkhapps.fenix.communication.entity.MessageState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +28,12 @@ public class MessageStateHelper {
 
     @Transactional(propagation = Propagation.MANDATORY)
     public void updateState(Message message, CommunicationMethod communicationMethod, MessageState newState) {
-        LOGGER.debug("Updating state of message {} to {} for {}", message, newState, communicationMethod);
+/*        LOGGER.debug("Updating state of message {} to {} for {}", message, newState, communicationMethod);
         final MessageCommunicationMethodState stateEntity = new MessageCommunicationMethodState.Builder()
                 .setMessage(message)
                 .setCommunicationMethod(CommunicationMethod.SMS)
                 .setState(newState)
                 .build();
-        messageCommunicationMethodStateRepository.saveAndFlush(stateEntity);
+        messageCommunicationMethodStateRepository.saveAndFlush(stateEntity);*/
     }
 }

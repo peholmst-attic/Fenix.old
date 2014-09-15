@@ -20,7 +20,6 @@ import rx.Observer;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * {@link net.pkhapps.fenix.communication.control.Sender}-implementation for the {@link net.pkhapps.fenix.communication.entity.CommunicationMethod#SMS}
@@ -83,10 +82,11 @@ class SmsSender extends Sender {
     }
 
     private Set<String> getPhoneNumbers(Collection<MessageRecipient> recipientCollection) {
-        return recipientCollection
+        /*return recipientCollection
                 .stream()
                 .filter(recipient -> recipient.getCellPhoneNumber().isPresent())
                 .map(recipient -> recipient.getCellPhoneNumber().get())
-                .collect(Collectors.toSet());
+                .collect(Collectors.toSet());*/
+        return null;
     }
 }

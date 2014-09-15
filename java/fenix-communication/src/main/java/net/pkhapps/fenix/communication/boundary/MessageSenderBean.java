@@ -48,7 +48,8 @@ class MessageSenderBean implements MessageSender {
     public Message sendMessage(Message message) throws ValidationFailedException {
         if (!message.isNew()) {
             LOGGER.debug("Message {} is not new, making a copy");
-            message = new Message.Builder(message).asNew().build();
+            message = (Message) message.copy();
+            message.setNew();
         }
         LOGGER.debug("Validating message {}", message);
         ValidationFailedException.throwIfNotEmpty(validator.validate(message));

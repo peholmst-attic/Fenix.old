@@ -3,13 +3,23 @@ package net.pkhapps.fenix.communication.ui;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.OptionGroup;
+import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.Table;
+import com.vaadin.ui.TextArea;
+import com.vaadin.ui.TextField;
+import com.vaadin.ui.VerticalLayout;
 import net.pkhapps.fenix.communication.config.CommunicationModule;
 import net.pkhapps.fenix.communication.security.CommunicationAuthorities;
 import net.pkhapps.fenix.core.annotations.PrototypeScope;
 import net.pkhapps.fenix.core.components.FriendlyButton;
 import net.pkhapps.fenix.core.components.PrimaryButton;
-import net.pkhapps.fenix.core.components.TinyLabel;
+import net.pkhapps.fenix.core.components.SmallLabel;
 import net.pkhapps.fenix.core.components.ViewTitleLabel;
 import net.pkhapps.fenix.core.i18n.MessageKeyGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +51,7 @@ public class NewMessageView extends VerticalLayout implements View {
     private ViewTitleLabel title;
     private OptionGroup sendMessageAs;
     private TextArea messageText;
-    private TinyLabel charsLeft;
+    private SmallLabel charsLeft;
     private TabSheet availableRecipientsTabs;
     private Button addReceipients;
     private Button removeRecipients;
@@ -72,7 +82,7 @@ public class NewMessageView extends VerticalLayout implements View {
         messageText.setHeight(80, Unit.PIXELS);
         addComponent(messageText);
 
-        charsLeft = new TinyLabel(i18n.get(messages.key("charsLeft"), 0, 900));
+        charsLeft = new SmallLabel(i18n.get(messages.key("charsLeft"), 0, 900));
         addComponent(charsLeft);
         setComponentAlignment(charsLeft, Alignment.TOP_RIGHT);
 
