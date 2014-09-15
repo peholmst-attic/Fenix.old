@@ -4,7 +4,7 @@ import com.vaadin.ui.Button;
 import net.pkhapps.fenix.theme.FenixTheme;
 
 /**
- * Created by peholmst on 2014-07-10.
+ * TODO Document me!
  */
 public class PrimaryButton extends Button {
     public PrimaryButton(String caption, ClickListener listener) {

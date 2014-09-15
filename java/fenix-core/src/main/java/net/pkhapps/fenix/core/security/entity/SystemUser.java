@@ -20,6 +20,7 @@ import javax.persistence.TemporalType;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -113,7 +114,7 @@ public class SystemUser extends AbstractEntity implements FenixUserDetails {
     }
 
     public void setGrantedAuthorities(Set<String> grantedAuthorities) {
-        this.grantedAuthorities = grantedAuthorities;
+        this.grantedAuthorities = Objects.requireNonNull(grantedAuthorities);
     }
 
     public Date getPasswordExpirationDate() {

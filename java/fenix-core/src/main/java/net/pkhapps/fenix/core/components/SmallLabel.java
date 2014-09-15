@@ -4,14 +4,14 @@ import com.vaadin.ui.Label;
 import net.pkhapps.fenix.theme.FenixTheme;
 
 /**
- * Created by peholmst on 2014-07-10.
+ * TODO Document me
  */
-public class TinyLabel extends Label {
-    public TinyLabel() {
+public class SmallLabel extends Label {
+    public SmallLabel() {
         addStyleName(FenixTheme.LABEL_SMALL);
     }
 
-    public TinyLabel(String content) {
+    public SmallLabel(String content) {
         super(content);
         addStyleName(FenixTheme.LABEL_SMALL);
     }
