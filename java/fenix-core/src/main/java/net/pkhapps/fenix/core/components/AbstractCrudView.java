@@ -112,6 +112,7 @@ public abstract class AbstractCrudView<E extends AbstractEntity,
 
         final Component tableFormLayout = createTableFormLayout(table, editorLayout);
         tableFormLayout.setSizeFull();
+        tableFormLayout.addStyleName(FenixTheme.VIEW_CONTENT);
         root.addComponent(tableFormLayout);
         root.setExpandRatio(tableFormLayout, 1);
     }

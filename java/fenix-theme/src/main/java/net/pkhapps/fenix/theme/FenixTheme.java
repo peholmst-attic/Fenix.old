@@ -12,12 +12,5 @@ public class FenixTheme extends ValoTheme {
     public static final String HEADER_FIRE_DEPARTMENT_NAME = "header-fire-department-name";
 
     public static final String VIEW_TITLE = "view-title";
-
-    @Deprecated
-    public static final String TINY_LABEL = "tiny-label";
-    @Deprecated
-    public static final String PRIMARY_BUTTON = "primary-button";
-    @Deprecated
-    public static final String DISCARD_BUTTON = "discard-button";
-
+    public static final String VIEW_CONTENT = "view-content";
 }

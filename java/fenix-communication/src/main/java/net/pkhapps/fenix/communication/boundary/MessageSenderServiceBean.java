@@ -20,13 +20,13 @@ import javax.validation.Validator;
 import java.util.Collection;
 
 /**
- * Default implementation of {@link net.pkhapps.fenix.communication.boundary.MessageSender} that delegates
+ * Default implementation of {@link MessageSenderService} that delegates
  * the actual sending to an implementation of {@link net.pkhapps.fenix.communication.control.Sender}.
  */
 @Service
-class MessageSenderBean implements MessageSender {
+class MessageSenderServiceBean implements MessageSenderService {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(MessageSenderBean.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(MessageSenderServiceBean.class);
 
     private final ApplicationContext applicationContext;
     private final Validator validator;
@@ -35,7 +35,7 @@ class MessageSenderBean implements MessageSender {
     private final TransactionTemplate txTemplate;
 
     @Autowired
-    MessageSenderBean(ApplicationContext applicationContext, Validator validator, MessageRepository messageRepository, MessageStateHelper messageStateHelper, PlatformTransactionManager platformTransactionManager) {
+    MessageSenderServiceBean(ApplicationContext applicationContext, Validator validator, MessageRepository messageRepository, MessageStateHelper messageStateHelper, PlatformTransactionManager platformTransactionManager) {
         this.applicationContext = applicationContext;
         this.validator = validator;
         this.messageRepository = messageRepository;

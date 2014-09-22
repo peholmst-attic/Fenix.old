@@ -6,8 +6,9 @@ $v-font-size: 14px;
   @include valo;
 
   .header-layout {
-    background-color: orangered;
-    color: whitesmoke;
+    @extend .valo-menu-title;
+//    background-color: orangered;
+//    color: whitesmoke;
   }
 
   .header-application-title {
@@ -26,8 +27,14 @@ $v-font-size: 14px;
   }
 
   .view-title {
-    border-bottom: 1px solid orangered;
-    font-size: 2.4em;
+    //border-bottom: 1px solid orangered;
+    font-size: 2.2em;
     padding-left: 10px;
+    padding-top: 10px;
+  }
+
+  .view-content {
+    margin: 10px;
+    box-shadow: -1px -1px 10px lightgray;
   }
 }

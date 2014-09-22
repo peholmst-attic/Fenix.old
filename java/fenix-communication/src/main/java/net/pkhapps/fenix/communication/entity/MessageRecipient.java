@@ -14,6 +14,10 @@ import javax.persistence.Table;
 @Table(name = "message_recipients")
 public class MessageRecipient extends AbstractEntity {
 
+    public static final String PROP_NAME = "name";
+    public static final String PROP_CELL_PHONE_NUMBER = "cellPhoneNumber";
+    public static final String PROP_EMAIL = "email";
+
     @Column(name = "name", nullable = false)
     private String name = "";
 

@@ -1,161 +1,93 @@
 package net.pkhapps.fenix.communication.ui;
 
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.server.FontAwesome;
+import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.OptionGroup;
-import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.Table;
 import com.vaadin.ui.TextArea;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import net.pkhapps.fenix.communication.config.CommunicationModule;
-import net.pkhapps.fenix.communication.security.CommunicationAuthorities;
+import com.vaadin.ui.Window;
 import net.pkhapps.fenix.core.annotations.PrototypeScope;
-import net.pkhapps.fenix.core.components.FriendlyButton;
+import net.pkhapps.fenix.core.components.AbstractView;
+import net.pkhapps.fenix.core.components.CustomTwinColSelect;
 import net.pkhapps.fenix.core.components.PrimaryButton;
 import net.pkhapps.fenix.core.components.SmallLabel;
-import net.pkhapps.fenix.core.components.ViewTitleLabel;
-import net.pkhapps.fenix.core.i18n.MessageKeyGenerator;
+import net.pkhapps.fenix.theme.FenixTheme;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
+import org.vaadin.spring.VaadinComponent;
 import org.vaadin.spring.i18n.I18N;
-import org.vaadin.spring.navigator.VaadinView;
-import org.vaadin.spring.stuff.sidebar.FontAwesomeIcon;
-import org.vaadin.spring.stuff.sidebar.SideBarItem;
 
-import javax.annotation.PostConstruct;
+import java.util.Collection;
 
 /**
- * View for creating and sending new messages.
+ * View for creating and sending new messages. Designed to be used in {@link net.pkhapps.fenix.core.components.ViewWindow}s.
  */
-@VaadinView(name = NewMessageView.VIEW_NAME)
-@SideBarItem(sectionId = CommunicationModule.SECTION_ID, captionCode = "net.pkhapps.fenix.communication.sidebar.newMessage.caption", order = 0)
-@FontAwesomeIcon(FontAwesome.ENVELOPE)
+@VaadinComponent
 @PrototypeScope
-@Secured(CommunicationAuthorities.SEND_MESSAGES)
-public class NewMessageView extends VerticalLayout implements View {
+public class NewMessageView extends AbstractView<NewMessagePresenter.ViewDelegate, NewMessagePresenter> implements NewMessagePresenter.ViewDelegate {
 
     public static final String VIEW_NAME = "communication/newMessage";
 
-    private static final MessageKeyGenerator messages = new MessageKeyGenerator(NewMessageView.class);
-
-    @Autowired
-    I18N i18n;
-
-    private ViewTitleLabel title;
-    private OptionGroup sendMessageAs;
+    private CommunicationMethodField sendMessageAs;
     private TextArea messageText;
     private SmallLabel charsLeft;
-    private TabSheet availableRecipientsTabs;
-    private Button addReceipients;
-    private Button removeRecipients;
-    private Table selectedRecipients;
     private PrimaryButton send;
-    private FriendlyButton discard;
+    private Button cancel;
+    private CustomTwinColSelect<NewMessagePresenter.Recipient> recipients;
 
-    @PostConstruct
-    void init() {
-        setMargin(true);
-        setSpacing(true);
-        setSizeFull();
-
-        title = new ViewTitleLabel(i18n.get(messages.key("title")));
-        addComponent(title);
-
-        sendMessageAs = new OptionGroup(i18n.get(messages.key("sendMessageAs.caption")));
-        addComponent(sendMessageAs);
-        sendMessageAs.setMultiSelect(true);
-        // TODO Make this dynamic
-        {
-            sendMessageAs.addItem("SMS");
-            sendMessageAs.addItem("E-mail");
-        }
-
-        messageText = new TextArea(i18n.get(messages.key("messageText.caption")));
-        messageText.setWidth(100, Unit.PERCENTAGE);
-        messageText.setHeight(80, Unit.PIXELS);
-        addComponent(messageText);
-
-        charsLeft = new SmallLabel(i18n.get(messages.key("charsLeft"), 0, 900));
-        addComponent(charsLeft);
-        setComponentAlignment(charsLeft, Alignment.TOP_RIGHT);
-
-        final HorizontalLayout recipientsLayout = new HorizontalLayout();
-        recipientsLayout.setSpacing(true);
-        recipientsLayout.setSizeFull();
-        addComponent(recipientsLayout);
-        setExpandRatio(recipientsLayout, 1);
-
-        availableRecipientsTabs = new TabSheet();
-        availableRecipientsTabs.setHeight(100, Unit.PERCENTAGE);
-        availableRecipientsTabs.setWidth(200, Unit.PIXELS);
-        availableRecipientsTabs.addTab(createContactsTab(), i18n.get(messages.key("contacts.caption")), FontAwesome.USER);
-        availableRecipientsTabs.addTab(createGroupsTab(), i18n.get(messages.key("groups.caption")), FontAwesome.USERS);
-        recipientsLayout.addComponent(availableRecipientsTabs);
-
-        final VerticalLayout recipientsButtonsLayout = new VerticalLayout();
-        recipientsButtonsLayout.setWidth(150, Unit.PIXELS);
-        recipientsButtonsLayout.setSpacing(true);
-        recipientsLayout.addComponent(recipientsButtonsLayout);
-
-        addReceipients = new Button(i18n.get(messages.key("addRecipients.caption")));
-        addReceipients.setWidth(100, Unit.PERCENTAGE);
-        recipientsButtonsLayout.addComponent(addReceipients);
-
-        removeRecipients = new Button(i18n.get(messages.key("removeRecipients.caption")));
-        removeRecipients.setWidth(100, Unit.PERCENTAGE);
-        recipientsButtonsLayout.addComponent(removeRecipients);
-
-        selectedRecipients = new Table(i18n.get(messages.key("selectedRecipients.caption")));
-        selectedRecipients.setSizeFull();
-        recipientsLayout.addComponent(selectedRecipients);
-        recipientsLayout.setExpandRatio(selectedRecipients, 1);
-
-        final HorizontalLayout buttonsLayout = new HorizontalLayout();
-        buttonsLayout.setSizeUndefined();
-        buttonsLayout.setSpacing(true);
-        addComponent(buttonsLayout);
-        setComponentAlignment(buttonsLayout, Alignment.BOTTOM_RIGHT);
-
-        send = new PrimaryButton(i18n.get(messages.key("send.caption")));
-        buttonsLayout.addComponent(send);
-
-        discard = new FriendlyButton(i18n.get(messages.key("discard.caption")));
-        buttonsLayout.addComponent(discard);
-    }
-
-    private Component createContactsTab() {
-        final VerticalLayout layout = new VerticalLayout();
-        layout.setSizeFull();
-        layout.setMargin(true);
-        layout.setSpacing(true);
-
-        final TextField search = new TextField();
-        search.setInputPrompt(i18n.get(messages.key("contacts.search.inputPrompt")));
-        search.setWidth(100, Unit.PERCENTAGE);
-        layout.addComponent(search);
-
-        final Table contacts = new Table();
-        contacts.setColumnHeaderMode(Table.ColumnHeaderMode.HIDDEN);
-        contacts.setSizeFull();
-        layout.addComponent(contacts);
-        layout.setExpandRatio(contacts, 1);
-
-        return layout;
-    }
-
-    private Component createGroupsTab() {
-        return new Label("Groups");
+    @Autowired
+    protected NewMessageView(NewMessagePresenter presenter, I18N i18n) {
+        super(presenter, i18n);
     }
 
     @Override
-    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+    protected void doInit() {
+        setSizeFull();
+        final VerticalLayout root = new VerticalLayout();
+        root.setSizeFull();
+        root.setSpacing(true);
+        root.setMargin(true);
+        setCompositionRoot(root);
 
+        sendMessageAs = new CommunicationMethodField(getI18N().get(getMessages().key("sendMessageAs.caption")), getI18N());
+        sendMessageAs.setMultiSelect(true);
+        sendMessageAs.addStyleName(FenixTheme.OPTIONGROUP_HORIZONTAL);
+        root.addComponent(sendMessageAs);
+
+        messageText = new TextArea(getI18N().get(getMessages().key("messageText.caption")));
+        messageText.setWidth(100, Unit.PERCENTAGE);
+        messageText.setHeight(80, Unit.PIXELS);
+        root.addComponent(messageText);
+
+        charsLeft = new SmallLabel(getI18N().get(getMessages().key("charsLeft"), 0, 900));
+        root.addComponent(charsLeft);
+        root.setComponentAlignment(charsLeft, Alignment.TOP_RIGHT);
+
+        recipients = new CustomTwinColSelect<>(CustomTwinColSelect.Direction.HORIZONTAL, NewMessagePresenter.Recipient.class);
+        recipients.setCaption(getI18N().get(getMessages().key("recipients.caption")));
+        recipients.setSizeFull();
+        recipients.setItemIconPropertyId(NewMessagePresenter.Recipient.PROP_ICON);
+        recipients.setItemCaptionPropertyId(NewMessagePresenter.Recipient.PROP_NAME);
+        recipients.setFilterInputPrompt(getI18N().get(getMessages().key("recipients.search.inputPrompt")));
+        root.addComponent(recipients);
+        root.setExpandRatio(recipients, 1);
+
+        final HorizontalLayout buttonsLayout = new HorizontalLayout();
+        buttonsLayout.setSpacing(true);
+        root.addComponent(buttonsLayout);
+        root.setComponentAlignment(buttonsLayout, Alignment.BOTTOM_RIGHT);
+
+        send = new PrimaryButton(getI18N().get(getMessages().key("send.caption")));
+        buttonsLayout.addComponent(send);
+
+        cancel = new Button(getI18N().get(getMessages().key("cancel.caption")), event -> ((Window) getParent()).close());
+        cancel.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
+        buttonsLayout.addComponent(cancel);
     }
+
+    @Override
+    public void setAvailableRecipients(Collection<NewMessagePresenter.Recipient> recipients) {
+        this.recipients.setItems(recipients);
+    }
+
 }

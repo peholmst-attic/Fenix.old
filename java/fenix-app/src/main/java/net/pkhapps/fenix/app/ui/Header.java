@@ -34,6 +34,7 @@ class Header extends HorizontalLayout {
     void init() {
         setWidth(100, Unit.PERCENTAGE);
         addStyleName(FenixTheme.HEADER_LAYOUT);
+//        addStyleName("valo-menu-title");
 
         final Label applicationTitle = new Label("Fenix");
         applicationTitle.addStyleName(FenixTheme.HEADER_APPLICATION_TITLE);

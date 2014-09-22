@@ -25,7 +25,7 @@ public abstract class AbstractForm<E> extends FormLayout {
      */
     protected AbstractForm(I18N i18n) {
         this.i18n = i18n;
-        addStyleName(FenixTheme.FORMLAYOUT_LIGHT);
+//        addStyleName(FenixTheme.FORMLAYOUT_LIGHT);
         createFields();
         binder = createBinder();
     }

@@ -1,14 +1,13 @@
 package net.pkhapps.fenix.communication.ui;
 
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.TwinColSelect;
 import net.pkhapps.fenix.communication.boundary.ContactService;
 import net.pkhapps.fenix.communication.entity.Contact;
 import net.pkhapps.fenix.communication.entity.ContactGroup;
 import net.pkhapps.fenix.core.annotations.PrototypeScope;
 import net.pkhapps.fenix.core.components.AbstractForm;
+import net.pkhapps.fenix.core.components.CustomTwinColSelect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.VaadinComponent;
 import org.vaadin.spring.i18n.I18N;
@@ -24,7 +23,7 @@ class GroupForm extends AbstractForm<ContactGroup> {
     @PropertyId("name")
     private TextField name;
     @PropertyId("members")
-    private TwinColSelect members; // TODO Replace with a better member selection component (custom)
+    private CustomTwinColSelect<Contact> members;
 
     @Autowired
     GroupForm(I18N i18n, ContactService contactService) {
@@ -35,16 +34,20 @@ class GroupForm extends AbstractForm<ContactGroup> {
     @Override
     protected void createFields() {
         name = new TextField(getMessage("name.caption"));
+        name.setWidth("100%");
         addComponent(name);
 
-        members = new TwinColSelect(getMessage("members.caption"));
+        members = new CustomTwinColSelect(CustomTwinColSelect.Direction.VERTICAL, Contact.class);
+        members.setCaption(getMessage("members.caption"));
+        members.setFilterInputPrompt(getMessage("members.search.inputPrompt"));
+        members.setHeight("400px");
         addComponent(members);
     }
 
     @Override
     public void attach() {
         super.attach();
-        members.setContainerDataSource(new BeanItemContainer<>(Contact.class, contactService.findAll()));
+        members.setItems(contactService.findAll());
         members.setItemCaptionPropertyId(Contact.PROP_DISPLAY_NAME);
     }
 

@@ -6,7 +6,7 @@ import net.pkhapps.fenix.core.validation.ValidationFailedException;
 /**
  * Created by peholmst on 2014-08-08.
  */
-public interface MessageSender {
+public interface MessageSenderService {
 
     /**
      * Sends the specified message asynchronously. The result of this operation will be published on the
