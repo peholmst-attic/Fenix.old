@@ -8,6 +8,8 @@ import java.util.Objects;
 
 /**
  * Base class for presenters.
+ *
+ * @param <V> the type of the view delegate.
  */
 public abstract class AbstractPresenter<V extends AbstractPresenter.ViewDelegate> implements Serializable {
 
@@ -32,14 +34,25 @@ public abstract class AbstractPresenter<V extends AbstractPresenter.ViewDelegate
     }
 
     /**
-     * Called by the view delegate when the user has entered the view.
+     * Called by the view delegate when the view has been attached to the Vaadin UI.
+     * Default implementation does nothing.
      */
-    protected abstract void viewDelegateEntered();
+    protected void viewAttached() {
+    }
+
+    /**
+     * Called by the view delegate when the view has been detached from the Vaadin UI.
+     * Default implementation does nothing.
+     */
+    protected void viewDetached() {
+    }
 
     /**
      * Updates the visibility/enablement states of all buttons in the view.
+     * Default implementation does nothing.
      */
-    protected abstract void updateButtonStates();
+    protected void updateButtonStates() {
+    }
 
     /**
      * Marker interface for view buttons, designed to be used with enums.
