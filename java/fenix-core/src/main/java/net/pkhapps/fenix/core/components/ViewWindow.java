@@ -9,6 +9,7 @@ import com.vaadin.ui.Window;
  * a modal window. Please note that the view's {@link View#enter(com.vaadin.navigator.ViewChangeListener.ViewChangeEvent) enter} method
  * will be called with a {@code null} parameter.
  */
+@Deprecated
 public class ViewWindow<V extends View & Component> extends Window {
 
     public ViewWindow(String caption, V view, String width, String height) {

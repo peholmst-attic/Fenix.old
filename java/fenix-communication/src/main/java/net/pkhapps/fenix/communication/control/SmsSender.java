@@ -1,8 +1,8 @@
 package net.pkhapps.fenix.communication.control;
 
+import net.pkhapps.fenix.communication.entity.ArchivedMessage;
+import net.pkhapps.fenix.communication.entity.ArchivedMessageRecipient;
 import net.pkhapps.fenix.communication.entity.CommunicationMethod;
-import net.pkhapps.fenix.communication.entity.Message;
-import net.pkhapps.fenix.communication.entity.MessageRecipient;
 import net.pkhapps.fenix.core.entity.FireDepartment;
 import net.pkhapps.fenix.core.sms.boundary.SmsGateway;
 import net.pkhapps.fenix.core.sms.entity.SmsProperties;
@@ -42,7 +42,7 @@ class SmsSender extends Sender {
     }
 
     @Override
-    protected void doSend(Message message) {
+    protected void doSend(ArchivedMessage message) {
         final Optional<SmsProperties> smsProperties = getSmsProperties(message);
         if (smsProperties.isPresent()) {
             Observable<?> result = smsGateway.sendSms(message.getMessageText(), getPhoneNumbers(message.getRecipients()), smsProperties.get());
@@ -73,7 +73,7 @@ class SmsSender extends Sender {
         return CommunicationMethod.SMS;
     }
 
-    private Optional<SmsProperties> getSmsProperties(Message message) {
+    private Optional<SmsProperties> getSmsProperties(ArchivedMessage message) {
         final FireDepartment fireDepartment = message.getFireDepartment();
         Assert.notNull(fireDepartment, "Message was not associated with a fire department");
         LOGGER.debug("Looking up SMSProperties of fire department {}", fireDepartment);
@@ -81,7 +81,7 @@ class SmsSender extends Sender {
         return Optional.ofNullable(smsProperties);
     }
 
-    private Set<String> getPhoneNumbers(Collection<MessageRecipient> recipientCollection) {
+    private Set<String> getPhoneNumbers(Collection<ArchivedMessageRecipient> recipientCollection) {
         /*return recipientCollection
                 .stream()
                 .filter(recipient -> recipient.getCellPhoneNumber().isPresent())

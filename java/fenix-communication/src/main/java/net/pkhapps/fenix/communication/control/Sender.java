@@ -1,7 +1,7 @@
 package net.pkhapps.fenix.communication.control;
 
+import net.pkhapps.fenix.communication.entity.ArchivedMessage;
 import net.pkhapps.fenix.communication.entity.CommunicationMethod;
-import net.pkhapps.fenix.communication.entity.Message;
 import net.pkhapps.fenix.communication.entity.MessageState;
 import net.pkhapps.fenix.communication.events.MessageFailedEvent;
 import net.pkhapps.fenix.communication.events.MessageSentEvent;
@@ -16,7 +16,7 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 /**
- * Base class for controls that send a {@link net.pkhapps.fenix.communication.entity.Message} using a
+ * Base class for controls that send a {@link net.pkhapps.fenix.communication.entity.ArchivedMessage} using a
  * {@link net.pkhapps.fenix.communication.entity.CommunicationMethod}.
  */
 public abstract class Sender {
@@ -43,21 +43,21 @@ public abstract class Sender {
      * @see net.pkhapps.fenix.communication.events.MessageSentEvent
      * @see net.pkhapps.fenix.communication.events.MessageFailedEvent
      */
-    public void send(Message message) {
+    public void send(ArchivedMessage message) {
         if (message.getSendAs().contains(getCommunicationMethod())) {
             doSend(message);
         }
     }
 
-    protected abstract void doSend(Message message);
+    protected abstract void doSend(ArchivedMessage message);
 
-    protected void failed(Message message) {
+    protected void failed(ArchivedMessage message) {
         LOGGER.debug("Sending of message {} failed", message);
         updateState(message, MessageState.FAILED);
         applicationContext.publishEvent(new MessageFailedEvent(this, message, getCommunicationMethod()));
     }
 
-    protected void succeeded(Message message) {
+    protected void succeeded(ArchivedMessage message) {
         LOGGER.debug("Sending of message {} succeeded", message);
         updateState(message, MessageState.SENT);
         applicationContext.publishEvent(new MessageSentEvent(this, message, getCommunicationMethod()));
@@ -65,7 +65,7 @@ public abstract class Sender {
 
     protected abstract CommunicationMethod getCommunicationMethod();
 
-    protected void updateState(Message message, MessageState newState) {
+    protected void updateState(ArchivedMessage message, MessageState newState) {
         txTemplate.execute(new TransactionCallbackWithoutResult() {
             @Override
             protected void doInTransactionWithoutResult(TransactionStatus status) {

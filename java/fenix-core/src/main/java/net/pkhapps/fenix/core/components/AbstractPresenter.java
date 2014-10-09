@@ -11,6 +11,7 @@ import java.util.Objects;
  *
  * @param <V> the type of the view delegate.
  */
+@Deprecated
 public abstract class AbstractPresenter<V extends AbstractPresenter.ViewDelegate> implements Serializable {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());

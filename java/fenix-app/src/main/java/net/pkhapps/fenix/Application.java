@@ -13,6 +13,7 @@ import org.vaadin.spring.stuff.i18n.MessageProvider;
 import org.vaadin.spring.stuff.i18n.ResourceBundleMessageProvider;
 import org.vaadin.spring.stuff.sidebar.EnableSideBar;
 
+import javax.validation.MessageInterpolator;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
@@ -42,5 +43,10 @@ public class Application {
     @Bean
     Validator validator() {
         return Validation.buildDefaultValidatorFactory().getValidator();
+    }
+
+    @Bean
+    MessageInterpolator messageInterpolator() {
+        return Validation.buildDefaultValidatorFactory().getMessageInterpolator();
     }
 }

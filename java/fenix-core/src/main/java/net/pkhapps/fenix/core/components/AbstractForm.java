@@ -4,9 +4,8 @@ import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
-import net.pkhapps.fenix.core.i18n.MessageKeyGenerator;
+import net.pkhapps.fenix.core.i18n.MessageKeyConventions;
 import net.pkhapps.fenix.core.validation.ValidationFailedException;
-import net.pkhapps.fenix.theme.FenixTheme;
 import org.vaadin.spring.i18n.I18N;
 
 import java.util.Optional;
@@ -14,9 +13,10 @@ import java.util.Optional;
 /**
  * TODO Document me!
  */
+@Deprecated
 public abstract class AbstractForm<E> extends FormLayout {
 
-    private final MessageKeyGenerator messages = new MessageKeyGenerator(getClass());
+    private final MessageKeyConventions messages = new MessageKeyConventions(getClass());
     private final I18N i18n;
     private BeanFieldGroup<E> binder;
 
@@ -30,7 +30,7 @@ public abstract class AbstractForm<E> extends FormLayout {
         binder = createBinder();
     }
 
-    protected MessageKeyGenerator getMessages() {
+    protected MessageKeyConventions getMessages() {
         return messages;
     }
 

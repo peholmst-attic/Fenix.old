@@ -16,7 +16,7 @@ import java.util.Objects;
 
 /**
  * Entity that combines a {@link net.pkhapps.fenix.communication.entity.CommunicationMethod} and a {@link net.pkhapps.fenix.communication.entity.MessageState}
- * for a particular {@link net.pkhapps.fenix.communication.entity.Message}.
+ * for a particular {@link ArchivedMessage}.
  */
 @Entity
 @Table(name = "message_states", uniqueConstraints = @UniqueConstraint(columnNames = {"message_id", "communication_method"}))
@@ -24,7 +24,7 @@ public class MessageCommunicationMethodState extends AbstractEntity {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "message_id", nullable = false)
-    private Message message;
+    private ArchivedMessage message;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "communication_method", nullable = false)
@@ -40,18 +40,18 @@ public class MessageCommunicationMethodState extends AbstractEntity {
     protected MessageCommunicationMethodState() {
     }
 
-    public MessageCommunicationMethodState(Message message, CommunicationMethod communicationMethod, MessageState state) {
+    public MessageCommunicationMethodState(ArchivedMessage message, CommunicationMethod communicationMethod, MessageState state) {
         this.message = Objects.requireNonNull(message);
         this.communicationMethod = Objects.requireNonNull(communicationMethod);
         this.state = Objects.requireNonNull(state);
         this.timestamp = Timestamp.from(Instant.now());
     }
 
-    public Message getMessage() {
+    public ArchivedMessage getMessage() {
         return message;
     }
 
-    protected void setMessage(Message message) {
+    protected void setMessage(ArchivedMessage message) {
         this.message = message;
     }
 

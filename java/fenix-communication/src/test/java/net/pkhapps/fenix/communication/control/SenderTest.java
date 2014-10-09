@@ -1,7 +1,7 @@
 package net.pkhapps.fenix.communication.control;
 
+import net.pkhapps.fenix.communication.entity.ArchivedMessage;
 import net.pkhapps.fenix.communication.entity.CommunicationMethod;
-import net.pkhapps.fenix.communication.entity.Message;
 import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -17,7 +17,7 @@ public class SenderTest {
         }
 
         @Override
-        protected void doSend(Message message) {
+        protected void doSend(ArchivedMessage message) {
             // NOP
         }
 

@@ -7,6 +7,8 @@ import net.pkhapps.fenix.core.security.SessionInfo;
 import net.pkhapps.fenix.core.validation.ValidationFailedException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Validator;
 import java.util.List;
@@ -29,6 +31,7 @@ public abstract class AbstractFireDepartmentSpecificCrudService<E extends Abstra
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public E save(E entity) throws ValidationFailedException, OptimisticLockingFailureException {
         final FireDepartment currentFireDepartment = getSessionInfo().getCurrentFireDepartment();
         if (entity.getFireDepartment() == null) {
@@ -40,12 +43,14 @@ public abstract class AbstractFireDepartmentSpecificCrudService<E extends Abstra
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void delete(E entity) {
         getSessionInfo().checkFireDepartment(entity);
         super.delete(entity);
     }
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
     public List<E> findAll() {
         return getRepository().findByFireDepartment(getSessionInfo().getCurrentFireDepartment());
     }

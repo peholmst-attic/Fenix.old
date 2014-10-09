@@ -11,6 +11,7 @@ public class FenixTheme extends ValoTheme {
     public static final String HEADER_MENU_BAR = "header-menu-bar";
     public static final String HEADER_FIRE_DEPARTMENT_NAME = "header-fire-department-name";
 
+    public static final String VIEW_HEADER = "view-header";
     public static final String VIEW_TITLE = "view-title";
     public static final String VIEW_CONTENT = "view-content";
 }

@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Validator;
 import java.util.List;
@@ -37,6 +39,7 @@ public abstract class AbstractCrudService<E extends AbstractEntity, R extends Jp
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public E save(E entity) throws ValidationFailedException, OptimisticLockingFailureException {
         logger.debug("Saving {}", entity);
         ValidationFailedException.throwIfNotEmpty(validator.validate(entity));
@@ -47,8 +50,9 @@ public abstract class AbstractCrudService<E extends AbstractEntity, R extends Jp
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void delete(E entity) {
-        logger.debug("Deleting {}");
+        logger.debug("Deleting {}", entity);
         getCallbacks(CrudServiceCallback.DeleteCallback.class, entity).forEach(callback -> callback.beforeDelete(entity));
         getRepository().delete(entity.getId());
         getCallbacks(CrudServiceCallback.DeleteCallback.class, entity).forEach(callback -> callback.afterDelete(entity));
@@ -60,6 +64,7 @@ public abstract class AbstractCrudService<E extends AbstractEntity, R extends Jp
     }
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
     public List<E> findAll() {
         return getRepository().findAll();
     }

@@ -2,7 +2,7 @@ package net.pkhapps.fenix.communication.boundary;
 
 import net.pkhapps.fenix.communication.control.MessageStateHelper;
 import net.pkhapps.fenix.communication.control.Sender;
-import net.pkhapps.fenix.communication.entity.Message;
+import net.pkhapps.fenix.communication.entity.ArchivedMessage;
 import net.pkhapps.fenix.communication.entity.MessageRepository;
 import net.pkhapps.fenix.communication.entity.MessageState;
 import net.pkhapps.fenix.core.validation.ValidationFailedException;
@@ -45,30 +45,30 @@ class MessageSenderServiceBean implements MessageSenderService {
     }
 
     @Override
-    public Message sendMessage(Message message) throws ValidationFailedException {
+    public ArchivedMessage sendMessage(ArchivedMessage message) throws ValidationFailedException {
         if (!message.isNew()) {
             LOGGER.debug("Message {} is not new, making a copy");
-            message = (Message) message.copy();
+            message = (ArchivedMessage) message.copy();
             message.setNew();
         }
         LOGGER.debug("Validating message {}", message);
         ValidationFailedException.throwIfNotEmpty(validator.validate(message));
         LOGGER.info("Archiving message {}", message);
-        final Message messageToSend = archiveMessage(message);
+        final ArchivedMessage messageToSend = archiveMessage(message);
         LOGGER.info("Attempting to send message {}", messageToSend);
         doSend(messageToSend);
         return messageToSend;
     }
 
-    private Message archiveMessage(Message message) {
+    private ArchivedMessage archiveMessage(ArchivedMessage message) {
         return txTemplate.execute(tx -> {
-            final Message messageToSend = messageRepository.saveAndFlush(message);
+            final ArchivedMessage messageToSend = messageRepository.saveAndFlush(message);
             messageToSend.getSendAs().forEach(communicationMethod -> messageStateHelper.updateState(messageToSend, communicationMethod, MessageState.SENDING));
             return messageToSend;
         });
     }
 
-    private void doSend(Message message) {
+    private void doSend(ArchivedMessage message) {
         final Collection<Sender> senders = applicationContext.getBeansOfType(Sender.class).values();
         LOGGER.debug("Found senders {}", senders);
         senders.forEach(sender -> sender.send(message));

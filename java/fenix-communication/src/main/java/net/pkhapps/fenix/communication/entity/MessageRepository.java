@@ -3,7 +3,7 @@ package net.pkhapps.fenix.communication.entity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * Repository of {@link net.pkhapps.fenix.communication.entity.Message}s.
+ * Repository of {@link ArchivedMessage}s.
  */
-public interface MessageRepository extends JpaRepository<Message, Long> {
+public interface MessageRepository extends JpaRepository<ArchivedMessage, Long> {
 }

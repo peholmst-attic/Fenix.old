@@ -1,7 +1,7 @@
 package net.pkhapps.fenix.communication.entity;
 
 /**
- * Enumeration of the different states a {@link net.pkhapps.fenix.communication.entity.Message} can be in for a
+ * Enumeration of the different states a {@link ArchivedMessage} can be in for a
  * particular {@link net.pkhapps.fenix.communication.entity.CommunicationMethod}.
  *
  * @see net.pkhapps.fenix.communication.entity.MessageCommunicationMethodState

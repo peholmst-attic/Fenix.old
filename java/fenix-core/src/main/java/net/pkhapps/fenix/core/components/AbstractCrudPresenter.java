@@ -1,8 +1,8 @@
 package net.pkhapps.fenix.core.components;
 
+import com.vaadin.navigator.ViewChangeListener;
 import net.pkhapps.fenix.core.boundary.CrudService;
 import net.pkhapps.fenix.core.entity.AbstractEntity;
-import net.pkhapps.fenix.core.validation.ValidationFailedException;
 
 import java.util.Collections;
 import java.util.List;
@@ -11,9 +11,10 @@ import java.util.Optional;
 /**
  * Base class for CRUD presenters.
  */
+@Deprecated
 public abstract class AbstractCrudPresenter<E extends AbstractEntity,
         S extends CrudService<E>,
-        V extends AbstractCrudPresenter.ViewDelegate<E>> extends AbstractPresenter<V> {
+        V extends AbstractCrudPresenter.ViewDelegate<E>> extends AbstractViewPresenter<V> {
 
     private final S service;
     private List<E> entities = Collections.emptyList();
@@ -29,18 +30,18 @@ public abstract class AbstractCrudPresenter<E extends AbstractEntity,
     }
 
     @Override
-    protected void viewDelegateEntered() {
+    protected void viewDelegateEntered(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
         refresh();
     }
 
     public void add() {
-        logger.trace("Add");
+/*        logger.trace("Add");
         selection = Optional.empty();
         editing = true;
         getViewDelegate().setSelection(selection);
         getViewDelegate().showForm(newEntity());
         getViewDelegate().setFormEditMode(true);
-        updateButtonStates();
+        updateButtonStates();*/
     }
 
     /**
@@ -48,64 +49,33 @@ public abstract class AbstractCrudPresenter<E extends AbstractEntity,
      */
     protected abstract E newEntity();
 
-    public void edit() {
-        if (selection.isPresent()) {
+    public void edit(E entity) {
+/*        if (selection.isPresent()) {
             logger.trace("Edit: {}", selection.get());
             editing = true;
             getViewDelegate().setFormEditMode(true);
             updateButtonStates();
-        }
+        }*/
     }
 
-    public void delete() {
-        if (selection.isPresent()) {
+    public void delete(E entity) {
+/*        if (selection.isPresent()) {
             E entityToDelete = selection.get();
             logger.trace("Delete: {}", entityToDelete);
             service.delete(entityToDelete);
             entities.remove(entityToDelete);
             getViewDelegate().setEntities(entities);
             select(Optional.empty());
-        }
-    }
-
-    public void save() {
-        Optional<E> committedEntity = getViewDelegate().commitForm();
-        committedEntity.ifPresent(this::doSave);
-    }
-
-    protected void doSave(E entity) {
-        logger.trace("Save: {}", entity);
-        editing = false;
-        boolean isNew = entity.isNew();
-        try {
-            entities.remove(entity);
-            entity = service.save(entity);
-            entities.add(entity);
-            getViewDelegate().setEntities(entities);
-            doSelect(Optional.of(entity));
-        } catch (ValidationFailedException ex) {
-            getViewDelegate().showValidationErrors(ex);
-        }
-    }
-
-    public void cancel() {
-        logger.trace("Cancel");
-        editing = false;
-        getViewDelegate().discardForm();
-        getViewDelegate().setFormEditMode(false);
-        if (!selection.isPresent()) {
-            getViewDelegate().hideForm();
-        }
-        updateButtonStates();
+        }*/
     }
 
     public void refresh() {
-        if (!editing) {
+/*        if (!editing) {
             logger.trace("Refresh");
             entities = service.findAll();
             getViewDelegate().setEntities(entities);
             select(Optional.empty());
-        }
+        }*/
     }
 
     public void select(Optional<E> selection) {
@@ -115,7 +85,7 @@ public abstract class AbstractCrudPresenter<E extends AbstractEntity,
     }
 
     protected void doSelect(Optional<E> selection) {
-        logger.trace("Select: {}", selection);
+/*        logger.trace("Select: {}", selection);
         this.selection = selection;
         getViewDelegate().setSelection(selection);
         if (selection.isPresent()) {
@@ -124,15 +94,16 @@ public abstract class AbstractCrudPresenter<E extends AbstractEntity,
         } else {
             getViewDelegate().hideForm();
         }
-        updateButtonStates();
+        updateButtonStates();*/
     }
 
     @Override
     protected void updateButtonStates() {
-        logger.trace("Update button states (editing = {}, selection = {})", editing, selection);
+        getViewDelegate().setButtonsVisible(true, DefaultViewButton.ADD, DefaultViewButton.EDIT, DefaultViewButton.DELETE, DefaultViewButton.REFRESH);
+/*        logger.trace("Update button states (editing = {}, selection = {})", editing, selection);
         getViewDelegate().setButtonsVisible(editing, DefaultViewButton.SAVE, DefaultViewButton.CANCEL);
         getViewDelegate().setButtonsVisible(selection.isPresent() && !editing, DefaultViewButton.EDIT, DefaultViewButton.DELETE);
-        getViewDelegate().setButtonsVisible(!editing, DefaultViewButton.ADD);
+        getViewDelegate().setButtonsVisible(!editing, DefaultViewButton.ADD);*/
     }
 
     /**
@@ -140,50 +111,14 @@ public abstract class AbstractCrudPresenter<E extends AbstractEntity,
      * may be specified in a separate enumeration.
      */
     public enum DefaultViewButton implements ViewButton {
-        REFRESH, ADD, EDIT, SAVE, CANCEL, DELETE
+        REFRESH, ADD, EDIT, DELETE
     }
 
     public interface ViewDelegate<E extends AbstractEntity> extends AbstractPresenter.ViewDelegate {
 
         /**
-         * Shows the form with the specified entity. By default, the form is hidden.
-         */
-        void showForm(E entity);
-
-        /**
-         * Commits the form and returns the updated entity. If the form cannot be committed (e.g. due to
-         * validation errors), an empty Optional is returned.
-         */
-        Optional<E> commitForm();
-
-        /**
-         * Shows the validation errors to the user.
-         */
-        void showValidationErrors(ValidationFailedException validationErrors);
-
-        /**
-         * Discards the form.
-         */
-        void discardForm();
-
-        /**
-         * Hides the form.
-         */
-        void hideForm();
-
-        /**
          * Shows the specified entities in the table.
          */
         void setEntities(List<E> entities);
-
-        /**
-         * Sets the currently selected entity in the table (can also be empty, which clears the selection).
-         */
-        void setSelection(Optional<E> selection);
-
-        /**
-         * Turns edit mode on or off.
-         */
-        void setFormEditMode(boolean editMode);
     }
 }

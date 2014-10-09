@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -22,7 +23,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "contacts")
-public class Contact extends AbstractFireDepartmentSpecificEntity {
+public class Contact extends AbstractFireDepartmentSpecificEntity implements EmailRecipient, SmsRecipient {
 
     public static final String PROP_FIRST_NAME = "firstName";
     public static final String PROP_LAST_NAME = "lastName";
@@ -118,5 +119,28 @@ public class Contact extends AbstractFireDepartmentSpecificEntity {
         final Contact clone = (Contact) super.clone();
         clone.communicationMethods = new HashSet<>(communicationMethods);
         return clone;
+    }
+
+    @Override
+    public Collection<String> getEmailAddresses() {
+        if (communicationMethods.contains(CommunicationMethod.EMAIL) && !email.isEmpty()) {
+            return Collections.singleton(email);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public Collection<String> getPhoneNumbers() {
+        if (communicationMethods.contains(CommunicationMethod.SMS) && !cellPhoneNumber.isEmpty()) {
+            return Collections.singleton(cellPhoneNumber);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public String getRecipientName() {
+        return getDisplayName();
     }
 }

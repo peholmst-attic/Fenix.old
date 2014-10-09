@@ -27,6 +27,6 @@ class RemoveContactFromGroupOnDeleteCallback extends AbstractCrudServiceCallback
     @Override
     public void beforeDelete(Contact entity) {
         // TODO Implement beforeDelete()
-        throw new UnsupportedOperationException("Implement beforeDelete()");
+        //throw new UnsupportedOperationException("Implement beforeDelete()");
     }
 }

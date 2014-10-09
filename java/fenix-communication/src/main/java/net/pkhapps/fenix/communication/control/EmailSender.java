@@ -1,7 +1,7 @@
 package net.pkhapps.fenix.communication.control;
 
+import net.pkhapps.fenix.communication.entity.ArchivedMessage;
 import net.pkhapps.fenix.communication.entity.CommunicationMethod;
-import net.pkhapps.fenix.communication.entity.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ class EmailSender extends Sender {
     }
 
     @Override
-    protected void doSend(Message message) {
+    protected void doSend(ArchivedMessage message) {
         LOGGER.error("EmailSender not implemented yet");
         failed(message);
     }

@@ -10,16 +10,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Entity representing a group of {@link net.pkhapps.fenix.communication.entity.Contact}s.
  */
 @Entity
 @Table(name = "contact_groups")
-public class ContactGroup extends AbstractFireDepartmentSpecificEntity {
+public class ContactGroup extends AbstractFireDepartmentSpecificEntity implements SmsRecipient, EmailRecipient {
 
     public static final String PROP_NAME = "name";
     public static final String PROP_MEMBERS = "members";
@@ -56,5 +58,20 @@ public class ContactGroup extends AbstractFireDepartmentSpecificEntity {
         ContactGroup clone = (ContactGroup) super.clone();
         clone.members = new HashSet<>(members);
         return clone;
+    }
+
+    @Override
+    public Collection<String> getEmailAddresses() {
+        return members.stream().flatMap(contact -> contact.getEmailAddresses().stream()).collect(Collectors.toSet());
+    }
+
+    @Override
+    public Collection<String> getPhoneNumbers() {
+        return members.stream().flatMap(contact -> contact.getPhoneNumbers().stream()).collect(Collectors.toSet());
+    }
+
+    @Override
+    public String getRecipientName() {
+        return getName();
     }
 }

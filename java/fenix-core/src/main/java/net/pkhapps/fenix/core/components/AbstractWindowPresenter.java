@@ -6,6 +6,7 @@ package net.pkhapps.fenix.core.components;
  * @param <S> the type of the status object to return to the caller.
  * @param <V> the type of the view delegate.
  */
+@Deprecated
 public abstract class AbstractWindowPresenter<S, V extends AbstractWindowPresenter.ViewDelegate<S>> extends AbstractPresenter<V> {
 
     /**

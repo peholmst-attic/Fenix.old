@@ -16,7 +16,6 @@ import javax.validation.Validator;
  * Default implementation of {@link net.pkhapps.fenix.communication.boundary.ContactService}.
  */
 @Service
-@Transactional(propagation = Propagation.REQUIRES_NEW)
 class ContactServiceBean extends AbstractFireDepartmentSpecificCrudService<Contact, ContactRepository> implements ContactService {
 
     @Autowired

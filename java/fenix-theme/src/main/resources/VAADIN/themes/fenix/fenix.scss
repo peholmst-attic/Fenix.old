@@ -26,11 +26,15 @@ $v-font-size: 14px;
     font-size: 20px;
   }
 
+  .view-header {
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-right: 10px;
+  }
+
   .view-title {
     //border-bottom: 1px solid orangered;
     font-size: 2.2em;
-    padding-left: 10px;
-    padding-top: 10px;
   }
 
   .view-content {
