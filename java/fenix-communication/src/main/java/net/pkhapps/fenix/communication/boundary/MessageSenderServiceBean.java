@@ -1,23 +1,17 @@
 package net.pkhapps.fenix.communication.boundary;
 
-import net.pkhapps.fenix.communication.control.MessageStateHelper;
 import net.pkhapps.fenix.communication.control.Sender;
-import net.pkhapps.fenix.communication.entity.ArchivedMessage;
-import net.pkhapps.fenix.communication.entity.MessageRepository;
-import net.pkhapps.fenix.communication.entity.MessageState;
-import net.pkhapps.fenix.core.validation.ValidationFailedException;
+import net.pkhapps.fenix.communication.entity.CommunicationMethod;
+import net.pkhapps.fenix.communication.entity.MessageId;
+import net.pkhapps.fenix.communication.entity.Recipient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
-import org.springframework.transaction.support.TransactionTemplate;
 
-import javax.validation.Validator;
 import java.util.Collection;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Default implementation of {@link MessageSenderService} that delegates
@@ -29,48 +23,21 @@ class MessageSenderServiceBean implements MessageSenderService {
     private final static Logger LOGGER = LoggerFactory.getLogger(MessageSenderServiceBean.class);
 
     private final ApplicationContext applicationContext;
-    private final Validator validator;
-    private final MessageRepository messageRepository;
-    private final MessageStateHelper messageStateHelper;
-    private final TransactionTemplate txTemplate;
+    private final AtomicLong nextMessageId = new AtomicLong(0);
 
     @Autowired
-    MessageSenderServiceBean(ApplicationContext applicationContext, Validator validator, MessageRepository messageRepository, MessageStateHelper messageStateHelper, PlatformTransactionManager platformTransactionManager) {
+    MessageSenderServiceBean(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
-        this.validator = validator;
-        this.messageRepository = messageRepository;
-        this.messageStateHelper = messageStateHelper;
-        txTemplate = new TransactionTemplate(platformTransactionManager,
-                new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_REQUIRES_NEW));
     }
 
     @Override
-    public ArchivedMessage sendMessage(ArchivedMessage message) throws ValidationFailedException {
-        if (!message.isNew()) {
-            LOGGER.debug("Message {} is not new, making a copy");
-            message = (ArchivedMessage) message.copy();
-            message.setNew();
-        }
-        LOGGER.debug("Validating message {}", message);
-        ValidationFailedException.throwIfNotEmpty(validator.validate(message));
-        LOGGER.info("Archiving message {}", message);
-        final ArchivedMessage messageToSend = archiveMessage(message);
-        LOGGER.info("Attempting to send message {}", messageToSend);
-        doSend(messageToSend);
-        return messageToSend;
-    }
-
-    private ArchivedMessage archiveMessage(ArchivedMessage message) {
-        return txTemplate.execute(tx -> {
-            final ArchivedMessage messageToSend = messageRepository.saveAndFlush(message);
-            messageToSend.getSendAs().forEach(communicationMethod -> messageStateHelper.updateState(messageToSend, communicationMethod, MessageState.SENDING));
-            return messageToSend;
-        });
-    }
-
-    private void doSend(ArchivedMessage message) {
-        final Collection<Sender> senders = applicationContext.getBeansOfType(Sender.class).values();
-        LOGGER.debug("Found senders {}", senders);
-        senders.forEach(sender -> sender.send(message));
+    public MessageId sendMessage(String message, Collection<Recipient> recipients, Collection<CommunicationMethod> sendAs) {
+        MessageId messageId = new MessageId(nextMessageId.getAndIncrement());
+        applicationContext.getBeansOfType(Sender.class)
+                .values()
+                .stream()
+                .filter(sender -> sendAs.contains(sender.getCommunicationMethod()))
+                .forEach(sender -> sender.send(message, recipients, messageId));
+        return messageId;
     }
 }

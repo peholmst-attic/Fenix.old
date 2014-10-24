@@ -35,6 +35,7 @@ public abstract class AbstractEntityWindow<S extends CrudService<E>, E extends A
     private final S service;
     private final ValidationI18N validationI18N;
 
+    private Component header;
     private Button saveAndClose;
     private Button discardAndClose;
     private VerticalLayout validationErrors;
@@ -59,7 +60,7 @@ public abstract class AbstractEntityWindow<S extends CrudService<E>, E extends A
         setContent(content);
         content.setMargin(true);
         content.setSpacing(true);
-        content.addComponent(createHeader());
+        content.addComponent(header = createHeader());
         Component form = createForm();
         content.addComponent(form);
         content.setExpandRatio(form, 1);
@@ -77,9 +78,24 @@ public abstract class AbstractEntityWindow<S extends CrudService<E>, E extends A
      * @return
      */
     protected Component createHeader() {
-        Label label = new Label(getI18N().get(getMessages().key("title")));
+        Label label = new Label();
         label.addStyleName(FenixTheme.LABEL_H2);
         return label;
+    }
+
+    /**
+     *
+     * @param creatingNew
+     */
+    protected void setCreatingNew(boolean creatingNew) {
+        if (header instanceof Label) {
+            final Label label = (Label) header;
+            if (creatingNew) {
+                label.setValue(getI18N().get(getMessages().key("title.new")));
+            } else {
+                label.setValue(getI18N().get(getMessages().key("title.edit")));
+            }
+        }
     }
 
     /**
@@ -188,6 +204,7 @@ public abstract class AbstractEntityWindow<S extends CrudService<E>, E extends A
     public void openWindow(Optional<Callback<E>> callback, E entity) {
         super.openWindow(callback);
         getBinder().setItemDataSource((E) entity.copy());
+        setCreatingNew(entity.isNew());
     }
 
     /**
@@ -199,5 +216,6 @@ public abstract class AbstractEntityWindow<S extends CrudService<E>, E extends A
     public void openWindow(UI ui, Optional<Callback<E>> callback, E entity) {
         super.openWindow(ui, callback);
         getBinder().setItemDataSource((E) entity.copy());
+        setCreatingNew(entity.isNew());
     }
 }

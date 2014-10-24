@@ -4,12 +4,15 @@ package net.pkhapps.fenix.communication.entity;
  * Enumeration of supported communication methods.
  */
 public enum CommunicationMethod {
-    SMS(1377), EMAIL(-1);
+    SMS(1377, SmsRecipient.class), EMAIL(-1, EmailRecipient.class);
 
     private final int maxLength;
 
-    CommunicationMethod(int maxLength) {
+    private final Class<? extends Recipient> recipientClass;
+
+    CommunicationMethod(int maxLength, Class<? extends Recipient> recipientClass) {
         this.maxLength = maxLength;
+        this.recipientClass = recipientClass;
     }
 
     /**
@@ -19,5 +22,13 @@ public enum CommunicationMethod {
      */
     public int getMessageMaxLength() {
         return maxLength;
+    }
+
+    /**
+     * Returns the subclass of {@link net.pkhapps.fenix.communication.entity.Recipient} that
+     * recipients supported by this communication method should implement.
+     */
+    public Class<? extends Recipient> getRecipientClass() {
+        return recipientClass;
     }
 }

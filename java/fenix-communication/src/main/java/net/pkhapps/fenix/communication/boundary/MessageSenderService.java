@@ -1,12 +1,13 @@
 package net.pkhapps.fenix.communication.boundary;
 
-import net.pkhapps.fenix.communication.entity.ArchivedMessage;
+import net.pkhapps.fenix.communication.entity.CommunicationMethod;
+import net.pkhapps.fenix.communication.entity.MessageId;
 import net.pkhapps.fenix.communication.entity.Recipient;
 
 import java.util.Collection;
 
 /**
- *
+ * TODO Document me!
  */
 public interface MessageSenderService {
 
@@ -16,10 +17,11 @@ public interface MessageSenderService {
      *
      * @param message    the message to send.
      * @param recipients the recipients of the message.
-     * @return the archived message.
+     * @param sendAs     the communication methods to use when sending the message.
+     * @return the message ID.
      * @see net.pkhapps.fenix.communication.events.MessageSentEvent
      * @see net.pkhapps.fenix.communication.events.MessageFailedEvent
      */
-    ArchivedMessage sendMessage(String message, Collection<Recipient> recipients);
+    MessageId sendMessage(String message, Collection<Recipient> recipients, Collection<CommunicationMethod> sendAs);
 
 }

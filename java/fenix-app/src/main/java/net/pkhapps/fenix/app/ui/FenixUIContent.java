@@ -5,6 +5,7 @@ import com.vaadin.navigator.ViewDisplay;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.VerticalLayout;
+import net.pkhapps.fenix.theme.FenixTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinComponent;
@@ -34,6 +35,7 @@ class FenixUIContent extends VerticalLayout implements ViewDisplay {
 
         splitPanel = new HorizontalSplitPanel();
         splitPanel.setSizeFull();
+        splitPanel.addStyleName(FenixTheme.VIEW_SPLIT_PANEL);
         addComponent(splitPanel);
         setExpandRatio(splitPanel, 1f);
 

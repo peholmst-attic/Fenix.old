@@ -1,13 +1,10 @@
 package net.pkhapps.fenix.core.components;
 
-import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.filter.Like;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.server.FontAwesome;
-import com.vaadin.server.Resource;
 import com.vaadin.shared.ui.MultiSelectMode;
-import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
@@ -26,9 +23,7 @@ import java.util.Set;
  */
 public class CustomTwinColSelect<T> extends CustomField<Set> {
 
-    private final Direction direction;
-
-    private AbstractOrderedLayout layout;
+    private HorizontalLayout layout;
     private BeanItemContainer<T> available;
     private BeanItemContainer<T> selected;
     private TextField filterAvailable;
@@ -38,8 +33,7 @@ public class CustomTwinColSelect<T> extends CustomField<Set> {
     private Button remove;
     private String itemCaptionPropertyId;
 
-    public CustomTwinColSelect(Direction direction, Class<T> itemClass) {
-        this.direction = direction;
+    public CustomTwinColSelect(Class<T> itemClass) {
         available = new BeanItemContainer<>(itemClass);
         selected = new BeanItemContainer<>(itemClass);
 
@@ -58,7 +52,7 @@ public class CustomTwinColSelect<T> extends CustomField<Set> {
 
         selectedTable = createTable(selected);
 
-        layout = createLayout();
+        layout = new HorizontalLayout();
         layout.setSpacing(true);
         layout.setSizeFull();
 
@@ -69,6 +63,8 @@ public class CustomTwinColSelect<T> extends CustomField<Set> {
 
         layout.addComponent(selectedTable);
         layout.setExpandRatio(selectedTable, 1);
+
+        setInternalValue(new HashSet<T>());
     }
 
     private void filter(FieldEvents.TextChangeEvent event) {
@@ -171,34 +167,15 @@ public class CustomTwinColSelect<T> extends CustomField<Set> {
         return table;
     }
 
-    private AbstractOrderedLayout createLayout() {
-        if (direction == Direction.HORIZONTAL) {
-            return new HorizontalLayout();
-        } else {
-            return new VerticalLayout();
-        }
-    }
-
     private Component createButtons() {
-        AbstractOrderedLayout layout;
-        Resource addIcon;
-        Resource removeIcon;
-        if (direction == Direction.HORIZONTAL) {
-            layout = new VerticalLayout();
-            addIcon = FontAwesome.CARET_RIGHT;
-            removeIcon = FontAwesome.CARET_LEFT;
-        } else {
-            layout = new HorizontalLayout();
-            addIcon = FontAwesome.CARET_DOWN;
-            removeIcon = FontAwesome.CARET_UP;
-        }
+        VerticalLayout layout = new VerticalLayout();
         layout.setSpacing(true);
         layout.setSizeUndefined();
-        add = new Button(addIcon);
+        add = new Button(FontAwesome.CARET_RIGHT);
         add.addClickListener(this::add);
         layout.addComponent(add);
 
-        remove = new Button(removeIcon);
+        remove = new Button(FontAwesome.CARET_LEFT);
         remove.addClickListener(this::remove);
         layout.addComponent(remove);
 
@@ -223,9 +200,5 @@ public class CustomTwinColSelect<T> extends CustomField<Set> {
         remove.setEnabled(!readOnly);
         selectedTable.setSelectable(!readOnly);
         availableTable.setSelectable(!readOnly);
-    }
-
-    public enum Direction {
-        HORIZONTAL, VERTICAL
     }
 }

@@ -14,4 +14,5 @@ public class FenixTheme extends ValoTheme {
     public static final String VIEW_HEADER = "view-header";
     public static final String VIEW_TITLE = "view-title";
     public static final String VIEW_CONTENT = "view-content";
+    public static final String VIEW_SPLIT_PANEL = "view-split-panel";
 }

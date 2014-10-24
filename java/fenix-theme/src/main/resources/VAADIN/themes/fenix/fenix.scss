@@ -41,4 +41,58 @@ $v-font-size: 14px;
     margin: 10px;
     box-shadow: -1px -1px 10px lightgray;
   }
+
+  .v-splitpanel-hsplitter-view-split-panel {
+    width: 0 !important;
+  }
+
+  .v-accordion-sideBar {
+    @extend .valo-menu;
+    border: none;
+    border-radius: 0;
+
+    .v-accordion-item-content {
+      background: transparent;
+    }
+
+    .v-panel-sideBarSection {
+      border: none;
+      background: transparent;
+    }
+
+    .v-nativebutton-sideBarSectionItem {
+      color: valo-font-color($valo-menu-background-color, 0.5);
+      cursor: pointer;
+
+      .v-icon {
+        height: 60px;
+      }
+
+      .v-nativebutton-caption {
+        display: block;
+        text-align: center;
+      }
+    }
+
+    .v-nativebutton-sideBarSectionItem.selected {
+      color: $v-font-color;
+    }
+
+    .v-nativebutton-sideBarSectionItem:hover {
+      color: valo-font-color($valo-menu-background-color, 1);
+    }
+
+    .v-nativebutton-sideBarSectionItem.selected:hover {
+      color: $v-font-color;
+    }
+
+
+    .v-slot-sideBarSectionItem.v-slot-selected {
+      background-color: $v-app-background-color;
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+    }
+  }
+
+
 }

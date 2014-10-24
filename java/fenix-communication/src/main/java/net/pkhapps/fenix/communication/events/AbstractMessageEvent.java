@@ -1,28 +1,25 @@
 package net.pkhapps.fenix.communication.events;
 
-import net.pkhapps.fenix.communication.entity.ArchivedMessage;
 import net.pkhapps.fenix.communication.entity.CommunicationMethod;
+import net.pkhapps.fenix.communication.entity.MessageId;
 import org.springframework.context.ApplicationEvent;
 
 import java.util.Objects;
 import java.util.Optional;
 
-/**
- * Created by peholmst on 2014-08-08.
- */
 public abstract class AbstractMessageEvent extends ApplicationEvent {
 
-    private final ArchivedMessage message;
+    private final MessageId messageId;
     private final Optional<CommunicationMethod> communicationMethod;
 
-    public AbstractMessageEvent(Object source, ArchivedMessage message, Optional<CommunicationMethod> communicationMethod) {
+    public AbstractMessageEvent(Object source, MessageId messageId, Optional<CommunicationMethod> communicationMethod) {
         super(source);
-        this.message = Objects.requireNonNull(message);
+        this.messageId = Objects.requireNonNull(messageId);
         this.communicationMethod = Objects.requireNonNull(communicationMethod);
     }
 
-    public ArchivedMessage getMessage() {
-        return message;
+    public MessageId getMessageId() {
+        return messageId;
     }
 
     public Optional<CommunicationMethod> getCommunicationMethod() {

@@ -5,7 +5,9 @@ import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.VerticalLayout;
 import net.pkhapps.fenix.communication.boundary.ContactGroupService;
+import net.pkhapps.fenix.communication.boundary.ContactService;
 import net.pkhapps.fenix.communication.entity.Contact;
 import net.pkhapps.fenix.communication.entity.ContactGroup;
 import net.pkhapps.fenix.core.components.AbstractEntityWindow;
@@ -30,9 +32,12 @@ public class EditGroupWindow extends AbstractEntityWindow<ContactGroupService, C
 
     private BeanFieldGroup<ContactGroup> binder;
 
+    private final ContactService contactService;
+
     @Autowired
-    EditGroupWindow(I18N i18n, ValidationI18N validationI18N, ContactGroupService service) {
+    EditGroupWindow(I18N i18n, ValidationI18N validationI18N, ContactGroupService service, ContactService contactService) {
         super(i18n, validationI18N, service);
+        this.contactService = contactService;
     }
 
     @Override
@@ -42,20 +47,27 @@ public class EditGroupWindow extends AbstractEntityWindow<ContactGroupService, C
 
     @Override
     protected Component createForm() {
-        final FormLayout layout = new FormLayout();
+        final VerticalLayout layout = new VerticalLayout();
+        layout.setSpacing(true);
 
         name = new TextField(getI18N().get(getMessages().key("name.caption")));
         name.setWidth("100%");
         layout.addComponent(name);
 
-        members = new CustomTwinColSelect(CustomTwinColSelect.Direction.VERTICAL, Contact.class);
+        members = new CustomTwinColSelect(Contact.class);
         members.setCaption(getI18N().get(getMessages().key("members.caption")));
         members.setFilterInputPrompt(getI18N().get(getMessages().key("members.search.inputPrompt")));
-        members.setHeight("400px");
+        members.setHeight("300px");
+        members.setWidth("450px");
+        members.setItems(contactService.findAll());
+        members.setItemCaptionPropertyId(Contact.PROP_DISPLAY_NAME);
+
         layout.addComponent(members);
 
         binder = new BeanFieldGroup<>(ContactGroup.class);
         binder.bindMemberFields(this);
+
+        name.focus();
 
         return layout;
     }
