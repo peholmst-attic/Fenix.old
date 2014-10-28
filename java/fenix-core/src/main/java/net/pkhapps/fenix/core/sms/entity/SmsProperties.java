@@ -14,6 +14,10 @@ import javax.persistence.UniqueConstraint;
 @Table(name = "sms_properties", uniqueConstraints = @UniqueConstraint(columnNames = "fire_department_id"))
 public class SmsProperties extends AbstractFireDepartmentSpecificEntity {
 
+    public static final String PROP_USER_KEY = "userKey";
+    public static final String PROP_PASSWORD = "password";
+    public static final String PROP_ORIGINATOR = "originator";
+
     @Column(name = "user_key", nullable = false)
     private String userKey = "";
 
