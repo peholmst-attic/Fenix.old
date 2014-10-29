@@ -3,7 +3,7 @@ package net.pkhapps.fenix.communication.ui;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.Table;
 import net.pkhapps.fenix.communication.boundary.ContactGroupService;
 import net.pkhapps.fenix.communication.config.CommunicationModule;
 import net.pkhapps.fenix.communication.entity.ContactGroup;
@@ -17,6 +17,8 @@ import org.vaadin.spring.navigator.VaadinView;
 import org.vaadin.spring.stuff.sidebar.FontAwesomeIcon;
 import org.vaadin.spring.stuff.sidebar.SideBarItem;
 
+import java.util.Optional;
+
 /**
  * View for managing contact groups.
  */
@@ -28,6 +30,8 @@ class GroupsView extends AbstractCrudView<ContactGroupService, ContactGroup> {
 
     public static final String VIEW_NAME = "communication/groups";
 
+    private Table table;
+
     @Autowired
     GroupsView(I18N i18n, ApplicationContext applicationContext, ContactGroupService service) {
         super(i18n, applicationContext, service);
@@ -35,7 +39,26 @@ class GroupsView extends AbstractCrudView<ContactGroupService, ContactGroup> {
 
     @Override
     protected Component createEntityListing(BeanItemContainer<ContactGroup> container) {
-        return new CssLayout();
+        table = new Table();
+        table.setContainerDataSource(container);
+        table.setSelectable(true);
+        table.setVisibleColumns(ContactGroup.PROP_NAME, ContactGroup.PROP_MEMBERS);
+        table.setColumnHeader(ContactGroup.PROP_NAME, getI18N().get(getMessages().key("table.name")));
+        table.setColumnHeader(ContactGroup.PROP_MEMBERS, getI18N().get(getMessages().key("table.members")));
+        table.setConverter(ContactGroup.PROP_MEMBERS, new GroupMembersConverter());
+        table.setSortContainerPropertyId(ContactGroup.PROP_NAME);
+        table.addValueChangeListener(event -> selectionChanged());
+        return table;
+    }
+
+    @Override
+    protected Optional<ContactGroup> getSelection() {
+        return Optional.ofNullable((ContactGroup) table.getValue());
+    }
+
+    @Override
+    protected void setSelection(Optional<ContactGroup> selection) {
+        table.setValue(selection.orElse(null));
     }
 
     @Override
@@ -45,6 +68,7 @@ class GroupsView extends AbstractCrudView<ContactGroupService, ContactGroup> {
 
     @Override
     protected void sortEntityListing() {
+        table.sort();
     }
 
     @Override
