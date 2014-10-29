@@ -28,6 +28,7 @@ class CommunicationMethodConverter implements Converter<String, Collection> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public String convertToPresentation(Collection communicationMethods, Class<? extends String> aClass, Locale locale) throws ConversionException {
         StringBuilder sb = new StringBuilder();
         List<CommunicationMethod> communicationMethodList = new ArrayList<CommunicationMethod>(communicationMethods);
