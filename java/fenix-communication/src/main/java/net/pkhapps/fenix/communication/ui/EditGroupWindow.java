@@ -3,7 +3,6 @@ package net.pkhapps.fenix.communication.ui;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import net.pkhapps.fenix.communication.boundary.ContactGroupService;
@@ -23,16 +22,14 @@ import org.vaadin.spring.i18n.I18N;
  */
 @VaadinComponent
 @PrototypeScope
-public class EditGroupWindow extends AbstractEntityWindow<ContactGroupService, ContactGroup> {
+class EditGroupWindow extends AbstractEntityWindow<ContactGroupService, ContactGroup> {
 
+    private final ContactService contactService;
     @PropertyId("name")
     private TextField name;
     @PropertyId("members")
     private CustomTwinColSelect<Contact> members;
-
     private BeanFieldGroup<ContactGroup> binder;
-
-    private final ContactService contactService;
 
     @Autowired
     EditGroupWindow(I18N i18n, ValidationI18N validationI18N, ContactGroupService service, ContactService contactService) {

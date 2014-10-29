@@ -27,7 +27,7 @@ import java.util.Optional;
 @SideBarItem(sectionId = CommunicationModule.SECTION_ID, captionCode = "net.pkhapps.fenix.communication.sidebar.contacts.caption", order = 20)
 @FontAwesomeIcon(FontAwesome.USER)
 @PrototypeScope
-public class ContactsView extends AbstractCrudView<ContactService, Contact> {
+class ContactsView extends AbstractCrudView<ContactService, Contact> {
 
     public static final String VIEW_NAME = "communication/contacts";
 
@@ -60,7 +60,7 @@ public class ContactsView extends AbstractCrudView<ContactService, Contact> {
 
     @Override
     protected ConfirmationWindow createConfirmDeleteWindow(Contact entity) {
-        ConfirmationWindow window =  super.createConfirmDeleteWindow(entity);
+        ConfirmationWindow window = super.createConfirmDeleteWindow(entity);
         window.setMessage(getI18N().get(getMessages().key("confirmDelete.message"), entity.getDisplayName()));
         window.setConfirmButtonCaption(getI18N().get(getMessages().key("confirmDelete.confirm.caption")));
         return window;
