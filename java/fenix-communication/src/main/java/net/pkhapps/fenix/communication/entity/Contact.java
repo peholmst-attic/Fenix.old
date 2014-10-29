@@ -143,4 +143,15 @@ public class Contact extends AbstractFireDepartmentSpecificEntity implements Ema
     public String getRecipientName() {
         return getDisplayName();
     }
+
+    @Override
+    public boolean supports(Class<? extends Recipient> recipientClass) {
+        if (recipientClass == EmailRecipient.class) {
+            return getEmailAddresses().size() > 0;
+        } else if (recipientClass == SmsRecipient.class) {
+            return getPhoneNumbers().size() > 0;
+        } else {
+            return false;
+        }
+    }
 }

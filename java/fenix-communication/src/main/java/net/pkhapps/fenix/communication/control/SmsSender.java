@@ -1,20 +1,16 @@
 package net.pkhapps.fenix.communication.control;
 
 import net.pkhapps.fenix.communication.entity.CommunicationMethod;
+import net.pkhapps.fenix.communication.entity.MessageReceiptCommunicationMethodStatus;
 import net.pkhapps.fenix.communication.entity.SmsRecipient;
-import net.pkhapps.fenix.core.entity.FireDepartment;
-import net.pkhapps.fenix.core.security.FireDepartmentRequiredException;
-import net.pkhapps.fenix.core.security.SessionInfo;
 import net.pkhapps.fenix.core.sms.boundary.SmsGateway;
+import net.pkhapps.fenix.core.sms.boundary.SmsPropertiesService;
 import net.pkhapps.fenix.core.sms.entity.SmsProperties;
-import net.pkhapps.fenix.core.sms.entity.SmsPropertiesRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -27,15 +23,12 @@ import java.util.stream.Collectors;
 @Service
 class SmsSender extends Sender<SmsRecipient> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SmsSender.class);
-
-    private final SmsPropertiesRepository smsPropertiesRepository;
+    private final SmsPropertiesService smsPropertiesService;
     private final SmsGateway smsGateway;
 
     @Autowired
-    SmsSender(ApplicationContext applicationContext, SessionInfo sessionInfo, SmsPropertiesRepository smsPropertiesRepository, SmsGateway smsGateway) {
-        super(applicationContext, sessionInfo);
-        this.smsPropertiesRepository = smsPropertiesRepository;
+    SmsSender(SmsPropertiesService smsPropertiesService, SmsGateway smsGateway) {
+        this.smsPropertiesService = smsPropertiesService;
         this.smsGateway = smsGateway;
     }
 
@@ -45,24 +38,28 @@ class SmsSender extends Sender<SmsRecipient> {
     }
 
     @Override
-    protected void doSend(String message, Collection<SmsRecipient> recipients) throws Exception {
-        final Optional<SmsProperties> smsProperties = getSmsProperties();
-        if (smsProperties.isPresent()) {
-            smsGateway.sendSMS(message, getPhoneNumbers(recipients), smsProperties.get());
-        } else {
-            throw new IllegalStateException("No SMSProperties found");
-        }
-
-    }
-
-    private Optional<SmsProperties> getSmsProperties() {
+    protected MessageReceiptCommunicationMethodStatus doSend(String message, Collection<SmsRecipient> recipients) {
+        final Optional<SmsProperties> smsProperties = smsPropertiesService.getSmsProperties();
         try {
-            final FireDepartment fireDepartment = getSessionInfo().getCurrentFireDepartment();
-            LOGGER.debug("Looking up SMSProperties of fire department {}", fireDepartment);
-            final SmsProperties smsProperties = smsPropertiesRepository.findByFireDepartment(fireDepartment);
-            return Optional.ofNullable(smsProperties);
-        } catch (FireDepartmentRequiredException ex) {
-            return Optional.empty();
+            if (smsProperties.isPresent()) {
+                final Set<String> phoneNumbers = getPhoneNumbers(recipients);
+                if (phoneNumbers.isEmpty()) {
+                    return new MessageReceiptCommunicationMethodStatus(getCommunicationMethod(),
+                            MessageReceiptCommunicationMethodStatus.Code.NO_RECIPIENTS,
+                            Optional.empty(), phoneNumbers);
+                }
+                smsGateway.sendSMS(message, phoneNumbers, smsProperties.get());
+                return new MessageReceiptCommunicationMethodStatus(getCommunicationMethod(),
+                        MessageReceiptCommunicationMethodStatus.Code.SUCCESSFUL,
+                        Optional.empty(),
+                        phoneNumbers);
+            } else {
+                throw new IllegalStateException("No SMSProperties found");
+            }
+        } catch (Exception ex) {
+            return new MessageReceiptCommunicationMethodStatus(getCommunicationMethod(),
+                    MessageReceiptCommunicationMethodStatus.Code.FAILED,
+                    Optional.of(ex.getMessage()), Collections.emptySet());
         }
     }
 

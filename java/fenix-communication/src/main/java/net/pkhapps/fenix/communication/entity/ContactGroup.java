@@ -74,4 +74,15 @@ public class ContactGroup extends AbstractFireDepartmentSpecificEntity implement
     public String getRecipientName() {
         return getName();
     }
+
+    @Override
+    public boolean supports(Class<? extends Recipient> recipientClass) {
+        if (recipientClass == EmailRecipient.class) {
+            return getEmailAddresses().size() > 0;
+        } else if (recipientClass == SmsRecipient.class) {
+            return getPhoneNumbers().size() > 0;
+        } else {
+            return false;
+        }
+    }
 }

@@ -66,7 +66,7 @@ public class MessageReceipt extends AbstractFireDepartmentSpecificEntity {
 
     public boolean isSuccessful() {
         for (MessageReceiptCommunicationMethodStatus s : status) {
-            if (!s.isSuccessful()) {
+            if (s.getCode() != MessageReceiptCommunicationMethodStatus.Code.SUCCESSFUL) {
                 return false;
             }
         }

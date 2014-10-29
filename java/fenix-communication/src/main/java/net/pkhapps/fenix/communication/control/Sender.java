@@ -1,18 +1,16 @@
 package net.pkhapps.fenix.communication.control;
 
 import net.pkhapps.fenix.communication.entity.CommunicationMethod;
-import net.pkhapps.fenix.communication.entity.MessageId;
+import net.pkhapps.fenix.communication.entity.MessageReceiptCommunicationMethodStatus;
 import net.pkhapps.fenix.communication.entity.Recipient;
-import net.pkhapps.fenix.communication.events.MessageFailedEvent;
-import net.pkhapps.fenix.communication.events.MessageSentEvent;
-import net.pkhapps.fenix.core.security.SessionInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 /**
@@ -21,52 +19,32 @@ import java.util.stream.Collectors;
  */
 public abstract class Sender<R extends Recipient> {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(Sender.class);
-
-    private final ApplicationContext applicationContext;
-
-    private final SessionInfo sessionInfo;
-
-    protected Sender(ApplicationContext applicationContext, SessionInfo sessionInfo) {
-        this.applicationContext = applicationContext;
-        this.sessionInfo = sessionInfo;
+    protected Sender() {
     }
 
     /**
      * Attempts to asynchronously send the specified message to the recipients that are supported by this
-     * particular sender. The result of the operation is published
-     * on the application context event bus. If this sender does not know how to send the specified message,
-     * nothing happens.
+     * particular sender. The result of the operation is returned in a {@link java.util.concurrent.Future}.
+     * <p/>
+     * This method is expected to <b>never</b> throw any exceptions.
      *
      * @param message    the message text.
      * @param recipients the recipients of the message.
-     * @param messageId  the ID of the message to use when publishing events.
-     * @see net.pkhapps.fenix.communication.events.MessageSentEvent
-     * @see net.pkhapps.fenix.communication.events.MessageFailedEvent
+     * @return a {@code Future} containing the status of this operation.
      */
     @Async
-    public void send(String message, Collection<Recipient> recipients, MessageId messageId) {
-        Set<R> supportedRecipients = recipients.stream().filter(r -> getRecipientClass().isInstance(r)).map(r -> getRecipientClass().cast(r)).collect(Collectors.toSet());
+    public Future<MessageReceiptCommunicationMethodStatus> send(String message, Collection<Recipient> recipients) {
+        Set<R> supportedRecipients = recipients.stream().filter(r -> r.supports(getRecipientClass())).map(r -> getRecipientClass().cast(r)).collect(Collectors.toSet());
         if (supportedRecipients.size() > 0) {
-            try {
-                doSend(message, supportedRecipients);
-                LOGGER.debug("Publishing MessageSentEvent for message {} and communication method {}", messageId, getCommunicationMethod());
-                applicationContext.publishEvent(new MessageSentEvent(this, messageId, getCommunicationMethod()));
-            } catch (Exception ex) {
-                LOGGER.error("Error sending message", ex);
-                LOGGER.debug("Publishing MessageFailedEvent for message {} and communication method {}", messageId, getCommunicationMethod());
-                applicationContext.publishEvent(new MessageFailedEvent(this, messageId, getCommunicationMethod()));
-            }
+            return new AsyncResult<>(doSend(message, supportedRecipients));
+        } else {
+            return new AsyncResult<>(new MessageReceiptCommunicationMethodStatus(getCommunicationMethod(), MessageReceiptCommunicationMethodStatus.Code.NO_RECIPIENTS, Optional.empty(), Collections.emptySet()));
         }
     }
 
     @SuppressWarnings("unchecked")
     protected Class<R> getRecipientClass() {
         return (Class<R>) getCommunicationMethod().getRecipientClass();
-    }
-
-    protected SessionInfo getSessionInfo() {
-        return sessionInfo;
     }
 
     /**
@@ -79,7 +57,7 @@ public abstract class Sender<R extends Recipient> {
      *
      * @param message    the message text.
      * @param recipients the recipients of the message.
-     * @throws java.lang.Exception if the message is not sent successfully.
+     * @return the status of the operation.
      */
-    protected abstract void doSend(String message, Collection<R> recipients) throws Exception;
+    protected abstract MessageReceiptCommunicationMethodStatus doSend(String message, Collection<R> recipients);
 }

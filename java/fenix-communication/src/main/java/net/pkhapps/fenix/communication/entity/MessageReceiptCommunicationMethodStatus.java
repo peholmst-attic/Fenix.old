@@ -27,8 +27,9 @@ public class MessageReceiptCommunicationMethodStatus extends AbstractEntity {
     @Column(name = "com_method", nullable = false)
     private CommunicationMethod communicationMethod;
 
-    @Column(name = "successful", nullable = false)
-    private boolean successful = true;
+    @Column(name = "code", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Code code;
 
     @Column(name = "additional_info", nullable = true)
     private String additionalInfo;
@@ -41,9 +42,9 @@ public class MessageReceiptCommunicationMethodStatus extends AbstractEntity {
     public MessageReceiptCommunicationMethodStatus() {
     }
 
-    public MessageReceiptCommunicationMethodStatus(CommunicationMethod communicationMethod, boolean successful, Optional<String> additionalInfo, Set<String> recipients) {
+    public MessageReceiptCommunicationMethodStatus(CommunicationMethod communicationMethod, Code code, Optional<String> additionalInfo, Set<String> recipients) {
         this.communicationMethod = Objects.requireNonNull(communicationMethod);
-        this.successful = successful;
+        this.code = Objects.requireNonNull(code);
         this.additionalInfo = Objects.requireNonNull(additionalInfo).orElse(null);
         this.recipients = Objects.requireNonNull(recipients);
     }
@@ -52,8 +53,8 @@ public class MessageReceiptCommunicationMethodStatus extends AbstractEntity {
         return communicationMethod;
     }
 
-    public boolean isSuccessful() {
-        return successful;
+    public Code getCode() {
+        return code;
     }
 
     public Optional<String> getAdditionalInfo() {
@@ -62,5 +63,11 @@ public class MessageReceiptCommunicationMethodStatus extends AbstractEntity {
 
     public Set<String> getRecipients() {
         return recipients;
+    }
+
+    public enum Code {
+        SUCCESSFUL,
+        FAILED,
+        NO_RECIPIENTS
     }
 }
