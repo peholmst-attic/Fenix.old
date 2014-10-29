@@ -3,7 +3,6 @@ package net.pkhapps.fenix.app.ui;
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewDisplay;
-import com.vaadin.navigator.ViewProvider;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.UI;
 import net.pkhapps.fenix.theme.FenixTheme;
@@ -34,5 +33,6 @@ public class FenixUI extends UI {
         navigator.setErrorView(errorView);
 
         setContent(content);
+        setPollInterval(300);
     }
 }
