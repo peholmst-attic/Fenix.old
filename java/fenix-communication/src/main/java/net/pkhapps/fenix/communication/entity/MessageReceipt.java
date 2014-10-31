@@ -32,7 +32,7 @@ public class MessageReceipt extends AbstractFireDepartmentSpecificEntity {
     private String messageExcerpt = "";
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "receipt_id")
+    @JoinColumn(name = "receipt_id", nullable = false)
     private Set<MessageReceiptCommunicationMethodStatus> status = new HashSet<>();
 
     public Instant getTimestamp() {
