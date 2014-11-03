@@ -3,6 +3,7 @@ package net.pkhapps.fenix.core.security;
 import net.pkhapps.fenix.core.entity.AbstractFireDepartmentSpecificEntity;
 import net.pkhapps.fenix.core.entity.FireDepartment;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -28,6 +29,12 @@ class SessionInfoBean implements Serializable, SessionInfo {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Assert.notNull(authentication, "No authentication stored in SecurityContext");
         return fenixUserDetailsService.loadUserByUsername(authentication.getName());
+    }
+
+    @Override
+    public void changePasswordOfCurrentUser(String oldPassword, String newPassword) throws BadCredentialsException {
+        String username = getCurrentUserDetails().getUsername();
+        fenixUserDetailsService.changePassword(username, oldPassword, newPassword);
     }
 
     @Override

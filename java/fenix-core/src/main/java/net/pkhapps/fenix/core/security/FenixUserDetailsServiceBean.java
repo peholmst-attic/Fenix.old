@@ -7,6 +7,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -64,5 +65,23 @@ class FenixUserDetailsServiceBean implements FenixUserDetailsService {
             throw new UsernameNotFoundException("Username " + username + " was not found");
         }
         return systemUser;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void changePassword(String username, String oldPassword, String newPassword) throws UsernameNotFoundException, BadCredentialsException {
+        LOGGER.debug("Attempting to change password of {}", username);
+        SystemUser user = systemUserRepository.findByUsername(username);
+        if (user == null) {
+            LOGGER.debug("Username {} was not found", username);
+            throw new UsernameNotFoundException("Username " + username + " was not found");
+        }
+        if (!passwordEncoder.matches(oldPassword, user.getEncryptedPassword())) {
+            LOGGER.debug("Old password for user {} was not correct", username);
+            throw new BadCredentialsException("Old password is not correct");
+        }
+        user.setEncryptedPassword(passwordEncoder.encode(newPassword));
+        systemUserRepository.saveAndFlush(user);
+        LOGGER.debug("Password for user {} was changed successfully");
     }
 }
