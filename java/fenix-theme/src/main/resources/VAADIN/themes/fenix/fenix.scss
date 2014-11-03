@@ -7,8 +7,8 @@ $v-font-size: 14px;
 
   .header-layout {
     @extend .valo-menu-title;
-//    background-color: orangered;
-//    color: whitesmoke;
+    //    background-color: orangered;
+    //    color: whitesmoke;
   }
 
   .header-application-title {
@@ -16,6 +16,11 @@ $v-font-size: 14px;
     font-weight: 700;
     margin-left: 10px;
     margin-right: 10px;
+  }
+
+  .header-user-name {
+    font-size: 15px;
+    padding-right: 10px;
   }
 
   .header-menu-bar {
@@ -86,13 +91,11 @@ $v-font-size: 14px;
       color: $v-font-color;
     }
 
-
     .v-slot-sideBarSectionItem.v-slot-selected {
       background-color: $v-app-background-color;
       border-top-left-radius: 4px;
       border-bottom-left-radius: 4px;
     }
   }
-
 
 }

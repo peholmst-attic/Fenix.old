@@ -9,13 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>fenix-flyway</artifactId>
+    <artifactId>fenix-planning</artifactId>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-core</artifactId>
-        </dependency>
-    </dependencies>
 
 </project>

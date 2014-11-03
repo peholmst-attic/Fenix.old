@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 /**
  * Abstract base class for {@link net.pkhapps.fenix.core.boundary.CrudService} implementations.
  */
+@SuppressWarnings("unchecked")
 public abstract class AbstractCrudService<E extends AbstractEntity, R extends JpaRepository<E, Long>> implements CrudService<E> {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());

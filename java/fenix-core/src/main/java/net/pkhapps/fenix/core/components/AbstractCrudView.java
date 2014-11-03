@@ -71,11 +71,11 @@ public abstract class AbstractCrudView<S extends CrudService<E>, E extends Abstr
         edit = createEditButton();
         edit.ifPresent(buttons::addComponent);
 
-        delete = createDeleteButton();
-        delete.ifPresent(buttons::addComponent);
-
         refresh = createRefreshButton();
         refresh.ifPresent(buttons::addComponent);
+
+        delete = createDeleteButton();
+        delete.ifPresent(buttons::addComponent);
 
         container = createContainer();
         entityListing = createEntityListing(container);
@@ -95,17 +95,16 @@ public abstract class AbstractCrudView<S extends CrudService<E>, E extends Abstr
     }
 
     /**
-     *
+     * @param selection
      */
-    protected void clearSelection() {
-        setSelection(Optional.empty());
+    protected void setSelection(Optional<E> selection) {
     }
 
     /**
      *
-     * @param selection
      */
-    protected void setSelection(Optional<E> selection) {
+    protected void clearSelection() {
+        setSelection(Optional.empty());
     }
 
     /**
@@ -135,6 +134,7 @@ public abstract class AbstractCrudView<S extends CrudService<E>, E extends Abstr
         final Button button = new Button(FontAwesome.TIMES);
         button.addClickListener(ButtonUtils.toClickListener(this::deleteSelected));
         button.setClickShortcut(ShortcutAction.KeyCode.DELETE);
+        button.addStyleName(FenixTheme.BUTTON_DANGER);
         button.setDescription(getI18N().get(getMessages().key("delete.description")));
         return Optional.of(button);
     }
@@ -144,6 +144,7 @@ public abstract class AbstractCrudView<S extends CrudService<E>, E extends Abstr
      */
     protected Optional<Button> createAddButton() {
         final Button button = new Button(FontAwesome.PLUS);
+        button.addStyleName(FenixTheme.BUTTON_FRIENDLY);
         button.addClickListener(ButtonUtils.toClickListener(this::add));
         button.setDescription(getI18N().get(getMessages().key("add.description")));
         return Optional.of(button);

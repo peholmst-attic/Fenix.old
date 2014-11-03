@@ -51,7 +51,7 @@ class EditGroupWindow extends AbstractEntityWindow<ContactGroupService, ContactG
         name.setWidth("100%");
         layout.addComponent(name);
 
-        members = new CustomTwinColSelect(Contact.class);
+        members = new CustomTwinColSelect<>(Contact.class);
         members.setCaption(getI18N().get(getMessages().key("members.caption")));
         members.setFilterInputPrompt(getI18N().get(getMessages().key("members.search.inputPrompt")));
         members.setHeight("300px");

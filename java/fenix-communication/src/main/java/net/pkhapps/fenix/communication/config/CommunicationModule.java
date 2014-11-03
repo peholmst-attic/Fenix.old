@@ -10,7 +10,7 @@ import org.vaadin.spring.stuff.sidebar.SideBarSection;
  * Spring configuration for the Communication module.
  */
 @Configuration
-@SideBarSection(id = CommunicationModule.SECTION_ID, captionCode = "net.pkhapps.fenix.communication.sidebar.section.caption")
+@SideBarSection(id = CommunicationModule.SECTION_ID, captionCode = "net.pkhapps.fenix.communication.sidebar.section.caption", order = 100)
 public class CommunicationModule {
 
     public static final String SECTION_ID = "communication.section";

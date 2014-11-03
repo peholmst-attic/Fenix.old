@@ -49,6 +49,7 @@ class MessageSenderServiceBean implements MessageSenderService {
     @Override
     @Async
     @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @SuppressWarnings("unchecked")
     public Future<MessageReceipt> sendMessage(String message, Collection<Recipient> recipients, Collection<CommunicationMethod> sendAs) {
         Assert.isTrue(message.length() > 0, "Message must not be empty");
         Assert.notEmpty(recipients, "Recipients must be specified");

@@ -1,5 +1,6 @@
 package net.pkhapps.fenix.core.sms.entity;
 
+import com.google.gwt.thirdparty.guava.common.base.Strings;
 import net.pkhapps.fenix.core.entity.AbstractFireDepartmentSpecificEntity;
 
 import javax.persistence.Column;
@@ -25,7 +26,7 @@ public class SmsProperties extends AbstractFireDepartmentSpecificEntity {
     private String password = "";
 
     @Column(name = "originator", nullable = false)
-    private String originator;
+    private String originator = "";
 
     public SmsProperties() {
     }
@@ -35,7 +36,7 @@ public class SmsProperties extends AbstractFireDepartmentSpecificEntity {
     }
 
     public void setUserKey(String userKey) {
-        this.userKey = userKey;
+        this.userKey = Strings.nullToEmpty(userKey);
     }
 
     public String getPassword() {
@@ -43,7 +44,7 @@ public class SmsProperties extends AbstractFireDepartmentSpecificEntity {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = Strings.nullToEmpty(password);
     }
 
     public String getOriginator() {
@@ -51,6 +52,6 @@ public class SmsProperties extends AbstractFireDepartmentSpecificEntity {
     }
 
     public void setOriginator(String originator) {
-        this.originator = originator;
+        this.originator = Strings.nullToEmpty(originator);
     }
 }
