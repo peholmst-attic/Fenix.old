@@ -1,6 +1,6 @@
 package net.pkhapps.fenix.core.entity;
 
-import com.google.gwt.thirdparty.guava.common.base.Strings;
+import com.google.common.base.Strings;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

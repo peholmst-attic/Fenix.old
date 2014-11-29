@@ -1,6 +1,6 @@
 package net.pkhapps.fenix.core.security.entity;
 
-import com.google.gwt.thirdparty.guava.common.base.Strings;
+import com.google.common.base.Strings;
 import net.pkhapps.fenix.core.entity.AbstractEntity;
 import net.pkhapps.fenix.core.entity.FireDepartment;
 import net.pkhapps.fenix.core.security.FenixUserDetails;

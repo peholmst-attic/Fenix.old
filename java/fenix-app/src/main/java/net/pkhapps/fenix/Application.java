@@ -15,10 +15,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.vaadin.spring.stuff.i18n.EnableCompositeMessageSource;
-import org.vaadin.spring.stuff.i18n.MessageProvider;
-import org.vaadin.spring.stuff.i18n.ResourceBundleMessageProvider;
-import org.vaadin.spring.stuff.sidebar.EnableSideBar;
 
 import javax.validation.MessageInterpolator;
 import javax.validation.Validation;
@@ -30,8 +26,6 @@ import java.util.concurrent.Executors;
  * Created by peholmst on 2014-06-19.
  */
 @EnableAutoConfiguration
-@EnableSideBar
-@EnableCompositeMessageSource
 @EnableJpaRepositories
 @EnableAsync
 @ComponentScan
@@ -43,11 +37,6 @@ public class Application implements AsyncConfigurer {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
-    }
-
-    @Bean
-    MessageProvider applicationMessages() {
-        return new ResourceBundleMessageProvider("net.pkhapps.fenix.app.messages");
     }
 
     @Bean

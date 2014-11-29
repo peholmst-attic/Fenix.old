@@ -1,6 +1,6 @@
 package net.pkhapps.fenix.core.sms.entity;
 
-import com.google.gwt.thirdparty.guava.common.base.Strings;
+import com.google.common.base.Strings;
 import net.pkhapps.fenix.core.entity.AbstractFireDepartmentSpecificEntity;
 
 import javax.persistence.Column;

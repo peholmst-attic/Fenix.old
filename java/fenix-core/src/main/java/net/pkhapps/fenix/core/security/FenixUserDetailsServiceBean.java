@@ -1,6 +1,6 @@
 package net.pkhapps.fenix.core.security;
 
-import com.google.gwt.thirdparty.guava.common.collect.Sets;
+import com.google.common.collect.Sets;
 import net.pkhapps.fenix.core.security.entity.SystemUser;
 import net.pkhapps.fenix.core.security.entity.SystemUserRepository;
 import org.apache.commons.lang.RandomStringUtils;
