@@ -1,0 +1,90 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: block;
+    font-family: 'Open Sans', sans-serif;
+}
+
+#header {
+    background: linear-gradient(#2c2c2c 2%, #3c3f41 98%);
+    color: #ffffff;
+    height: 48px;
+}
+
+#header .app-title {
+    font-weight: 600;
+    font-size: 32px;
+    margin-left: 10px;
+    vertical-align: middle;
+    float: left;
+    line-height: 48px;
+}
+
+#header .fire-department-name {
+    font-weight: 300;
+    font-size: 26px;
+    margin-left: 15px;
+    vertical-align: middle;
+    float: left;
+    line-height: 48px;
+}
+
+#header .user-name {
+    margin-right: 10px;
+}
+
+#header ul.menu-bar {
+    list-style-type: none;
+    margin: 1px 15px 1px 0px;
+    padding: 7px;
+    float: right;
+    height: 48px;
+}
+
+#header ul.menu-bar li {
+    display: inline-block;
+}
+
+#header ul.menu-bar a {
+    color: #ffffff;
+    opacity: 0.6;
+    font-size: 20px;
+}
+
+#header ul.menu-bar a:hover {
+    opacity: 1.0;
+}
+
+#side-bar {
+    background: linear-gradient(#3c3f41 2%, #2c2c2c 98%);
+    position: absolute;
+    top: 48px;
+    bottom: 0px;
+    width: 60px;
+}
+
+#side-bar ul {
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+}
+
+#side-bar li a {
+    color: #ffffff;
+    opacity: 0.6;
+    font-size: 40px;
+}
+
+#side-bar li a:hover {
+    opacity: 1.0;
+}
+
+#content {
+    position: absolute;
+    top: 48px;
+    left: 60px;
+    right: 0px;
+    bottom: 0px;
+    overflow: auto;
+}
