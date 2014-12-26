@@ -5,6 +5,9 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
+
+
+
 #header {
     background: linear-gradient(#2c2c2c 2%, #3c3f41 98%);
     color: #ffffff;
@@ -55,35 +58,13 @@ body {
     opacity: 1.0;
 }
 
-#side-bar {
-    background: linear-gradient(#3c3f41 2%, #2c2c2c 98%);
-    position: absolute;
-    top: 48px;
-    bottom: 0px;
-    width: 60px;
-}
 
-#side-bar ul {
-    list-style-type: none;
-    margin: 0px;
-    padding: 0px;
-    text-align: center;
-}
 
-#side-bar li a {
-    color: #ffffff;
-    opacity: 0.6;
-    font-size: 40px;
-}
-
-#side-bar li a:hover {
-    opacity: 1.0;
-}
 
 #content {
     position: absolute;
     top: 48px;
-    left: 60px;
+    left: 200px;
     right: 0px;
     bottom: 0px;
     overflow: auto;
