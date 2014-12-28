@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="fenixApp">
+<html lang="en" ng-app="fxApp">
 <head>
     <meta charset="utf-8">
     <title>Fenix</title>
@@ -22,6 +22,7 @@
     <!-- NOP -->
 
     <!-- Import the application's own script files -->
+    <script src="js/sidebar.js"></script>
     <script src="js/app.js"></script>
 </head>
 <body>
@@ -40,31 +41,37 @@
             <li><a href="#" title="Logga ut"><i class="fa fa-power-off fa-fw"></i></a></li>
         </ul>
     </div>
-    <div id="side-bar">
-        <ul>
-            <li ng-controller="SideBarSectionCtrl as section">
-                <h3 ng-class="{ open:section.isOpen }"><a href ng-click="section.toggle()"><i class="fa fa-globe fa-fw"></i> Kommunikation</a></h3>
-                <ul ng-show="section.isOpen">
-                    <li><a href><i class="fa fa-paper-plane-o fa-fw"></i> Nytt meddelande</a></li>
-                    <li><a href><i class="fa fa-rocket fa-fw"></i> Snabbmeddelanden</a></li>
-                    <li><a href><i class="fa fa-archive fa-fw"></i> Sända meddelanden</a></li>
-                    <li><a href><i class="fa fa-user fa-fw"></i> Kontakter</a></li>
-                    <li><a href><i class="fa fa-users fa-fw"></i> Grupper</a></li>
-                </ul>
-            </li>
-            <li>
-                <h3><a href><i class="fa fa-calendar fa-fw"></i> Planering</a></h3>
-            </li>
-            <li>
-                <h3><a href><i class="fa fa-bullhorn fa-fw"></i> Ärenden</a></h3>
-            </li>
-            <li ng-controller="SideBarSectionCtrl as section">
-                <h3 ng-class="{ open:section.isOpen }"><a href ng-click="section.toggle()"><i class="fa fa-wrench fa-fw"></i> Inställningar</a></h3>
-                <ul ng-show="section.isOpen">
-                    <li><a href="#">SMS inställningar</a></li>
-                </ul>
-            </li>
-        </ul>
+    <div id="side-bar" class="fx-side-bar">
+        <fx-side-bar-section>
+            <fx-side-bar-section-header>
+                <i class="fa fa-globe fa-fw"></i> Kommunikation
+            </fx-side-bar-section-header>
+            <fx-side-bar-section-content>
+                <a href><i class="fa fa-paper-plane-o fa-fw"></i> Nytt meddelande</a>
+                <a href><i class="fa fa-rocket fa-fw"></i> Snabbmeddelanden</a>
+                <a href><i class="fa fa-archive fa-fw"></i> Sända meddelanden</a>
+                <a href><i class="fa fa-user fa-fw"></i> Kontakter</a>
+                <a href><i class="fa fa-users fa-fw"></i> Grupper</a>
+            </fx-side-bar-section-content>
+        </fx-side-bar-section>
+            <fx-side-bar-section>
+                <fx-side-bar-section-header>
+                    <i class="fa fa-calendar fa-fw"></i> Planering
+                </fx-side-bar-section-header>
+            </fx-side-bar-section>
+            <fx-side-bar-section>
+                <fx-side-bar-section-header>
+                    <i class="fa fa-bullhorn fa-fw"></i> Ärenden
+                </fx-side-bar-section-header>
+            </fx-side-bar-section>
+        <fx-side-bar-section>
+            <fx-side-bar-section-header>
+                <i class="fa fa-wrench fa-fw"></i> Inställningar
+            </fx-side-bar-section-header>
+            <fx-side-bar-section-content>
+                <a href="#"><i class="fa fa-mobile fa-fw"></i> SMS inställningar</a>
+            </fx-side-bar-section-content>
+        </fx-side-bar-section>
     </div>
     <div id="content">
         <ng-view></ng-view>
