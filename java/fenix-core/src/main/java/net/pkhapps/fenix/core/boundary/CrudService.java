@@ -3,6 +3,8 @@ package net.pkhapps.fenix.core.boundary;
 import net.pkhapps.fenix.core.entity.AbstractEntity;
 import net.pkhapps.fenix.core.validation.ValidationFailedException;
 import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -35,4 +37,12 @@ public interface CrudService<E extends AbstractEntity> {
      * @return a list of entities.
      */
     List<E> findAll();
+
+    /**
+     * Finds all entities, returning a subset of the result as a page.
+     *
+     * @param pageable the pageable object specifying which part of the result to return.
+     * @return a page of entities.
+     */
+    Page<E> findAll(Pageable pageable);
 }

@@ -7,6 +7,8 @@ import net.pkhapps.fenix.core.security.SessionInfo;
 import net.pkhapps.fenix.core.validation.ValidationFailedException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,5 +55,11 @@ public abstract class AbstractFireDepartmentSpecificCrudService<E extends Abstra
     @Transactional(propagation = Propagation.SUPPORTS)
     public List<E> findAll() {
         return getRepository().findByFireDepartment(getSessionInfo().getCurrentFireDepartment());
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public Page<E> findAll(Pageable pageable) {
+        return getRepository().findByFireDepartment(getSessionInfo().getCurrentFireDepartment(), pageable);
     }
 }

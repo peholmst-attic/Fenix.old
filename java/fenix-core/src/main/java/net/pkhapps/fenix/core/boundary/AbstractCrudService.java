@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,5 +70,11 @@ public abstract class AbstractCrudService<E extends AbstractEntity, R extends Jp
     @Transactional(propagation = Propagation.SUPPORTS)
     public List<E> findAll() {
         return getRepository().findAll();
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public Page<E> findAll(Pageable pageable) {
+        return getRepository().findAll(pageable);
     }
 }
