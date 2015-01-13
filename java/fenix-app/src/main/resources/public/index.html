@@ -47,11 +47,11 @@
                 <i class="fa fa-globe fa-fw"></i> Kommunikation
             </fx-side-bar-section-header>
             <fx-side-bar-section-content>
-                <a href><i class="fa fa-paper-plane-o fa-fw"></i> Nytt meddelande</a>
-                <a href><i class="fa fa-rocket fa-fw"></i> Snabbmeddelanden</a>
-                <a href><i class="fa fa-archive fa-fw"></i> Sända meddelanden</a>
-                <a href><i class="fa fa-user fa-fw"></i> Kontakter</a>
-                <a href><i class="fa fa-users fa-fw"></i> Grupper</a>
+                <a href="#/communication/new-message"><i class="fa fa-paper-plane-o fa-fw"></i> Nytt meddelande</a>
+                <a href="#/communication/quick-messages"><i class="fa fa-rocket fa-fw"></i> Snabbmeddelanden</a>
+                <a href="#/communication/sent-messages"><i class="fa fa-archive fa-fw"></i> Sända meddelanden</a>
+                <a href="#/communication/contacts"><i class="fa fa-user fa-fw"></i> Kontakter</a>
+                <a href="#/communication/groups"><i class="fa fa-users fa-fw"></i> Grupper</a>
             </fx-side-bar-section-content>
         </fx-side-bar-section>
             <fx-side-bar-section>
@@ -69,12 +69,11 @@
                 <i class="fa fa-wrench fa-fw"></i> Inställningar
             </fx-side-bar-section-header>
             <fx-side-bar-section-content>
-                <a href="#"><i class="fa fa-mobile fa-fw"></i> SMS inställningar</a>
+                <a href="#/settings/sms"><i class="fa fa-mobile fa-fw"></i> SMS inställningar</a>
             </fx-side-bar-section-content>
         </fx-side-bar-section>
     </div>
-    <div id="content">
-        <ng-view></ng-view>
+    <div id="content" ng-view>
     </div>
 </body>
 </html>

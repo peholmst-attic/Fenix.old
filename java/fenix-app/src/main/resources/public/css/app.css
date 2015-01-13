@@ -59,12 +59,16 @@ body {
 }
 
 
+
+
 #side-bar {
     position: absolute;
     top: 48px;
     bottom: 0px;
     width: 200px;
 }
+
+
 
 
 #content {
@@ -74,4 +78,43 @@ body {
     right: 0px;
     bottom: 0px;
     overflow: auto;
+    padding: 20px;
+    font-size: 13px;
+}
+
+#content .small {
+    font-size: 10px;
+}
+
+#content h1 {
+/*    border-bottom: 2px solid #cccccc;*/
+    padding: 0;
+    margin: 0 0 15px 0;
+    font-weight: 300;
+    font-size: 30px;
+}
+
+#content .form-field-group {
+    background-color: #eeeeee;
+    padding: 5px;
+    margin: 5px 0 5px 0;
+}
+
+#content .form-field-group h3 {
+    font-weight: 600;
+    font-size: 14px;
+    padding: 0;
+    margin: 0 0 5px 0;
+}
+
+#content ul.form-field-list {
+    padding-left: 0;
+}
+
+#content ul.form-field-list li {
+    list-style-type: none;
+}
+
+#content table.listing {
+    border: 1px solid #cccccc;
 }

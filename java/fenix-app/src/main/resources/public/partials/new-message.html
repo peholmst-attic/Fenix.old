@@ -1,0 +1,55 @@
+<h1>Nytt meddelande</h1>
+<form>
+    <div class="form-field-group">
+        <h3>Skicka meddelande som:</h3>
+
+        <ul class="form-field-list">
+            <li>
+                <input type="checkbox"/> SMS
+                <ul>
+                    <li>Profil: <select><option>Ungdomsavdelningen</option><option>Larmavdelningen</option></select></li>
+                    <li>
+                        <span class="small">
+                            Sändning av SMS kräver ett konto hos <a href="http://aspsms.com/" target="_blank">ASPSMS</a> och tillräckligt med krediter för att betala för meddelandena.
+                            Du kan sedan skapa en SMS-profil <a href="#/settings/sms">här</a>.
+                        </span>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <input type="checkbox"/> E-post
+                <ul>
+                    <li><span class="small">Sändning av e-post är gratis.</span></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="form-field-group">
+        <h3>Meddelande:</h3>
+        <textarea style="width:480px" rows="4"></textarea>
+        <br/>
+        <span class="small">Återstående tecken: 200 (1/15 meddelanden)</span>
+    </div>
+
+    <div class="form-field-group">
+        <h3>Mottagare:</h3>
+        <table style="border-spacing: 0">
+            <tr>
+                <td>
+                    <select size="5" style="width:200px;height:100px"></select>
+                </td>
+                <td>
+                    <button style="width:80px">Lägg till <i class="fa fa-angle-double-right"></i></button><br/>
+                    <button style="width:80px"><i class="fa fa-angle-double-left"></i> Ta bort</button>
+                </td>
+                <td>
+                    <select size="5" style="width:200px;height:100px"></select>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <input type="submit" value="Sänd"/>
+    <input type="reset" value="Töm och börja om"/>
+</form>
