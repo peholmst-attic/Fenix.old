@@ -1,11 +1,7 @@
 package net.pkhapps.fenix.communication.boundary;
 
 import net.pkhapps.fenix.communication.control.Sender;
-import net.pkhapps.fenix.communication.entity.CommunicationMethod;
-import net.pkhapps.fenix.communication.entity.MessageReceipt;
-import net.pkhapps.fenix.communication.entity.MessageReceiptCommunicationMethodStatus;
-import net.pkhapps.fenix.communication.entity.MessageReceiptRepository;
-import net.pkhapps.fenix.communication.entity.Recipient;
+import net.pkhapps.fenix.communication.entity.*;
 import net.pkhapps.fenix.core.security.SessionInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +27,7 @@ import java.util.concurrent.Future;
  * the actual sending to an implementation of {@link net.pkhapps.fenix.communication.control.Sender}.
  */
 @Service
+@Deprecated
 class MessageSenderServiceBean implements MessageSenderService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(MessageSenderServiceBean.class);

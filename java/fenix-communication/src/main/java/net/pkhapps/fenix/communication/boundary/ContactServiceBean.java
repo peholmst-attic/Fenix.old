@@ -7,8 +7,6 @@ import net.pkhapps.fenix.core.security.SessionInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Validator;
 
@@ -16,6 +14,7 @@ import javax.validation.Validator;
  * Default implementation of {@link net.pkhapps.fenix.communication.boundary.ContactService}.
  */
 @Service
+@Deprecated
 class ContactServiceBean extends AbstractFireDepartmentSpecificCrudService<Contact, ContactRepository> implements ContactService {
 
     @Autowired

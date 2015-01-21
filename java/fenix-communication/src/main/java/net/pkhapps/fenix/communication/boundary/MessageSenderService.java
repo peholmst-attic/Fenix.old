@@ -10,6 +10,7 @@ import java.util.concurrent.Future;
 /**
  * TODO Document me!
  */
+@Deprecated
 public interface MessageSenderService {
 
     /**

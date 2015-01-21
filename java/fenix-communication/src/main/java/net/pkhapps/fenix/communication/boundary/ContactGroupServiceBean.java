@@ -17,6 +17,7 @@ import javax.validation.Validator;
  */
 @Service
 @Transactional(propagation = Propagation.REQUIRES_NEW)
+@Deprecated
 class ContactGroupServiceBean extends AbstractFireDepartmentSpecificCrudService<ContactGroup, ContactGroupRepository> implements ContactGroupService {
 
     @Autowired

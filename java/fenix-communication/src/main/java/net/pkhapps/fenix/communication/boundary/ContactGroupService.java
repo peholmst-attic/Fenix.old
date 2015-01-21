@@ -6,5 +6,6 @@ import net.pkhapps.fenix.core.boundary.CrudService;
 /**
  * Service for working with {@link net.pkhapps.fenix.communication.entity.ContactGroup}s.
  */
+@Deprecated
 public interface ContactGroupService extends CrudService<ContactGroup> {
 }
