@@ -11,6 +11,7 @@ import java.util.List;
 /**
  * Service interface for CRUD operations.
  */
+@Deprecated
 public interface CrudService<E extends AbstractEntity> {
 
     /**

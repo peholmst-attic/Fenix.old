@@ -6,6 +6,7 @@ import net.pkhapps.fenix.core.entity.AbstractEntity;
  * Base interface for {@link net.pkhapps.fenix.core.boundary.CrudService} callbacks that are invoked by the
  * service on different occasions.
  */
+@Deprecated
 public interface CrudServiceCallback {
 
     /**

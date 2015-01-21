@@ -19,6 +19,7 @@ import java.util.List;
  * Abstract base class for {@link net.pkhapps.fenix.core.boundary.CrudService} implementations that work with
  * {@link net.pkhapps.fenix.core.entity.AbstractFireDepartmentSpecificEntity} instances.
  */
+@Deprecated
 public abstract class AbstractFireDepartmentSpecificCrudService<E extends AbstractFireDepartmentSpecificEntity, R extends FireDepartmentSpecificEntityRepository<E>> extends AbstractCrudService<E, R> {
 
     private final SessionInfo sessionInfo;
