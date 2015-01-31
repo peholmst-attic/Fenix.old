@@ -1,8 +1,14 @@
 package net.pkhapps.fenix.core.boundary.rest;
 
 import net.pkhapps.fenix.core.entity.AbstractEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Base class for mappers that convert {@link net.pkhapps.fenix.core.entity.AbstractEntity entities} to
@@ -51,6 +57,29 @@ public abstract class AbstractEntityDTOMapper<DTO extends AbstractEntityDTO, E e
         dto.version = entity.getOptLockVersion();
         populateDTO(entity, dto);
         return dto;
+    }
+
+    /**
+     * Converts the specified stream of entities to a stream of DTOs.
+     */
+    public Stream<DTO> toDTOs(Stream<E> entities) {
+        return entities.map(this::toDTO);
+    }
+
+    /**
+     * Converts the specified list of entities to a list of DTOs.
+     */
+    public List<DTO> toDTOs(List<E> entities) {
+        return toDTOs(entities.stream()).collect(Collectors.toList());
+    }
+
+    /**
+     * Converts the specified page of entities to a page of DTOs.
+     */
+    public Page<DTO> toDTOs(Page<E> page) {
+        return new PageImpl<>(toDTOs(page.getContent()),
+                new PageRequest(page.getNumber(), page.getSize(), page.getSort()),
+                page.getTotalElements());
     }
 
     /**
