@@ -39,6 +39,9 @@ public class SystemUser extends AbstractEntity {
     @Column(name = "sysadmin", nullable = false)
     private boolean sysadmin = false;
 
+    @Column(name = "enabled", nullable = false)
+    private boolean enabled = true;
+
     @ElementCollection
     @CollectionTable(name = "user_fire_department_roles",
             joinColumns = @JoinColumn(name = "user_id", nullable = false),
@@ -120,5 +123,13 @@ public class SystemUser extends AbstractEntity {
 
     public void setFireDepartmentRoles(Map<FireDepartment, String> fireDepartmentRoles) {
         this.fireDepartmentRoles = Objects.requireNonNull(fireDepartmentRoles);
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }
