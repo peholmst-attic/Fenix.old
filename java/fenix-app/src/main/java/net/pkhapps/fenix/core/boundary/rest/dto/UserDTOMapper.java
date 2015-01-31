@@ -2,12 +2,12 @@ package net.pkhapps.fenix.core.boundary.rest.dto;
 
 import net.pkhapps.fenix.core.boundary.rest.AbstractEntityDTOMapper;
 import net.pkhapps.fenix.core.entity.SystemUser;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 /**
  * DTO mapper for {@link net.pkhapps.fenix.core.boundary.rest.dto.UserDTO} and {@link net.pkhapps.fenix.core.entity.SystemUser}.
  */
-@Service
+@Component
 public class UserDTOMapper extends AbstractEntityDTOMapper<UserDTO, SystemUser> {
 
     public UserDTOMapper() {
