@@ -26,4 +26,9 @@ public class UserDTOMapper extends AbstractEntityDTOMapper<UserDTO, SystemUser> 
         destination.accountExpires = source.getAccountExpirationDate();
         source.getFireDepartmentRoles().forEach((fd, s) -> destination.fireDepartmentRoles.put(fd.getId(), s));
     }
+
+    @Override
+    protected void populateEntity(UserDTO source, SystemUser destination) {
+        throw new UnsupportedOperationException("Not implemented yet"); // TODO Implement me
+    }
 }

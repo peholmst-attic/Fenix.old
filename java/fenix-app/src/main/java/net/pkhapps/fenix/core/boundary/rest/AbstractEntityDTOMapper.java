@@ -1,6 +1,7 @@
 package net.pkhapps.fenix.core.boundary.rest;
 
 import net.pkhapps.fenix.core.entity.AbstractEntity;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -60,6 +61,35 @@ public abstract class AbstractEntityDTOMapper<DTO extends AbstractEntityDTO, E e
     }
 
     /**
+     * Creates and returns an entity for the specified DTO.
+     */
+    public E toEntity(DTO dto) {
+        Objects.requireNonNull(dto);
+        E entity = newEntity();
+        entity.setId(dto.id);
+        entity.setOptLockVersion(dto.version);
+        populateEntity(dto, entity);
+        return entity;
+    }
+
+    /**
+     * Populates the existing entity with data from the DTO. This method also enforces optimistic locking.
+     *
+     * @throws org.springframework.dao.OptimisticLockingFailureException if the version numbers of both objects are present and do not match.
+     */
+    public E toExistingEntity(DTO dto, E entity) throws OptimisticLockingFailureException {
+        Objects.requireNonNull(dto);
+        Objects.requireNonNull(entity);
+        Long expectedVersion = dto.version;
+        Long actualVersion = entity.getOptLockVersion();
+        if (expectedVersion != null && actualVersion != null && !expectedVersion.equals(actualVersion)) {
+            throw new OptimisticLockingFailureException("Expected version: " + expectedVersion + ", was: " + actualVersion);
+        }
+        populateEntity(dto, entity);
+        return entity;
+    }
+
+    /**
      * Converts the specified stream of entities to a stream of DTOs.
      */
     public Stream<DTO> toDTOs(Stream<E> entities) {
@@ -85,6 +115,16 @@ public abstract class AbstractEntityDTOMapper<DTO extends AbstractEntityDTO, E e
     /**
      * Populates the specified DTO with data from the specified entity. The {@link net.pkhapps.fenix.core.entity.AbstractEntity#getId() ID}
      * and {@link net.pkhapps.fenix.core.entity.AbstractEntity#getOptLockVersion() version} properties do not need to be copied.
+     *
+     * @throws java.lang.UnsupportedOperationException if this mapper is a one-way converter from DTO to entity
      */
     protected abstract void populateDTO(E source, DTO destination);
+
+    /**
+     * Populates the specified entity with data from the specified DTO. The {@link net.pkhapps.fenix.core.entity.AbstractEntity#getId() ID}
+     * and {@link net.pkhapps.fenix.core.entity.AbstractEntity#getOptLockVersion() version} properties do not need to be copied.
+     *
+     * @throws java.lang.UnsupportedOperationException if this mapper is a one-way converter from entity to DTO
+     */
+    protected abstract void populateEntity(DTO source, E destination);
 }

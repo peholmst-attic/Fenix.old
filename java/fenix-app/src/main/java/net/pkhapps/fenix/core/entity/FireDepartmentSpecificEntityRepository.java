@@ -13,6 +13,8 @@ import java.util.List;
 @NoRepositoryBean
 public interface FireDepartmentSpecificEntityRepository<T extends AbstractFireDepartmentSpecificEntity> extends JpaRepository<T, Long> {
 
+    T findByIdAndFireDepartment(Long id, FireDepartment fireDepartment);
+
     List<T> findByFireDepartment(FireDepartment fireDepartment);
 
     Page<T> findByFireDepartment(FireDepartment fireDepartment, Pageable pageable);

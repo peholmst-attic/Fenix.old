@@ -19,11 +19,16 @@ public abstract class AbstractEntity extends AbstractPersistable<Long> {
     protected AbstractEntity() {
     }
 
+    @Override
+    public void setId(Long id) {
+        super.setId(id);
+    }
+
     public Long getOptLockVersion() {
         return optLockVersion;
     }
 
-    protected void setOptLockVersion(Long optLockVersion) {
+    public void setOptLockVersion(Long optLockVersion) {
         this.optLockVersion = optLockVersion;
     }
 

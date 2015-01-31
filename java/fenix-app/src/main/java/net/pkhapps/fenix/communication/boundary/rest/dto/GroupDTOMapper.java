@@ -32,6 +32,11 @@ public class GroupDTOMapper extends AbstractEntityDTOMapper<GroupDTO, Group> {
         destination.contacts = contacts;
     }
 
+    @Override
+    protected void populateEntity(GroupDTO source, Group destination) {
+        throw new UnsupportedOperationException("Not implemented yet"); // TODO Implement me
+    }
+
     private static class ContactComparator implements Comparator<ContactDTO> {
 
         private static String nullToEmpty(String s) {

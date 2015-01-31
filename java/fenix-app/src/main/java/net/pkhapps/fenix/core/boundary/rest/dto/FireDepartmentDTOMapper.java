@@ -19,4 +19,9 @@ public class FireDepartmentDTOMapper extends AbstractEntityDTOMapper<FireDepartm
         destination.name = source.getName();
         destination.enabled = source.isEnabled();
     }
+
+    @Override
+    protected void populateEntity(FireDepartmentDTO source, FireDepartment destination) {
+        throw new UnsupportedOperationException("Not implemented yet"); // TODO Implement me
+    }
 }
