@@ -52,4 +52,10 @@ public abstract class AbstractEntity extends AbstractPersistable<Long> {
         result = 31 * result + (optLockVersion != null ? optLockVersion.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s[id=%d, optLockVersion=%d, hash=%x]", getClass().getSimpleName(), getId(),
+                getOptLockVersion(), System.identityHashCode(this));
+    }
 }
