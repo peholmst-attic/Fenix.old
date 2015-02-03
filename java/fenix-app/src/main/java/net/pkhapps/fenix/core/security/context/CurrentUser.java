@@ -1,4 +1,4 @@
-package net.pkhapps.fenix.core.security;
+package net.pkhapps.fenix.core.security.context;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
