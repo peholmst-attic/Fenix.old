@@ -42,7 +42,7 @@ public class SystemUser extends AbstractEntity {
     @Column(name = "enabled", nullable = false)
     private boolean enabled = true;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "user_fire_department_roles",
             joinColumns = @JoinColumn(name = "user_id", nullable = false),
             uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "fire_department_id", "role"}))
