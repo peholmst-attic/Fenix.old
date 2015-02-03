@@ -4,7 +4,7 @@ import net.pkhapps.fenix.core.boundary.rest.dto.UserDTO;
 import net.pkhapps.fenix.core.boundary.rest.dto.UserDTOMapper;
 import net.pkhapps.fenix.core.entity.SystemUser;
 import net.pkhapps.fenix.core.entity.SystemUserRepository;
-import net.pkhapps.fenix.core.security.CurrentUser;
+import net.pkhapps.fenix.core.security.context.CurrentUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ import java.util.Optional;
  * REST controller that returns information about the current user.
  */
 @RestController
-@RequestMapping("/rest/me")
+@RequestMapping(Constants.REST_URL_PREFIX + "me")
 class CurrentUserController {
 
     private final UserDTOMapper userDTOMapper;
