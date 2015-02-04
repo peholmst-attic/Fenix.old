@@ -3,8 +3,8 @@ package net.pkhapps.fenix.core.boundary.rest.dto;
 import net.pkhapps.fenix.core.boundary.rest.AbstractEntityDTO;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * DTO representing a system user.
@@ -20,5 +20,5 @@ public class UserDTO extends AbstractEntityDTO {
     // TODO JSON date formats
     public Date passwordExpires;
     public Date accountExpires;
-    public Map<Long, String> fireDepartmentRoles = new HashMap<>();
+    public Set<UserFireDepartmentRoleDTO> fireDepartmentRoles = new HashSet<>();
 }

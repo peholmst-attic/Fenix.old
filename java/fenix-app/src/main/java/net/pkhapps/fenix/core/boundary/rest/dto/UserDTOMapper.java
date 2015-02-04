@@ -24,7 +24,7 @@ public class UserDTOMapper extends AbstractEntityDTOMapper<UserDTO, SystemUser> 
         destination.sysadmin = source.isSysadmin();
         destination.passwordExpires = source.getPasswordExpirationDate();
         destination.accountExpires = source.getAccountExpirationDate();
-        source.getFireDepartmentRoles().forEach((fd, s) -> destination.fireDepartmentRoles.put(fd.getId(), s));
+        source.getFireDepartmentRoles().forEach((fd, s) -> destination.fireDepartmentRoles.add(new UserFireDepartmentRoleDTO(fd.getId(), fd.getName(), s)));
     }
 
     @Override
