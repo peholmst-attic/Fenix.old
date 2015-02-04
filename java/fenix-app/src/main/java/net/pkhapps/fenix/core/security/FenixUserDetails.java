@@ -1,20 +1,25 @@
 package net.pkhapps.fenix.core.security;
 
-import net.pkhapps.fenix.core.entity.FireDepartment;
 import net.pkhapps.fenix.core.entity.SystemUser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Implementation of {@link org.springframework.security.core.userdetails.UserDetails} that wraps a {@link net.pkhapps.fenix.core.entity.SystemUser}.
- * The current fire department is taken from {@link net.pkhapps.fenix.core.security.CurrentFireDepartment} when calculating the
- * granted authorities.
+ * {@link net.pkhapps.fenix.core.security.UserRoles#makeFireDepartmentSpecificRole(String, net.pkhapps.fenix.core.entity.FireDepartment)} is used
+ * when creating the granted authorities.
  */
 class FenixUserDetails implements UserDetails {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(FenixUserDetails.class);
     private final SystemUser systemUser;
 
     FenixUserDetails(SystemUser systemUser) {
@@ -24,7 +29,7 @@ class FenixUserDetails implements UserDetails {
     /**
      * {@inheritDoc}
      * <p>
-     * Please note that the result of this method depends on the state of {@link net.pkhapps.fenix.core.security.CurrentFireDepartment}.
+     * Please note that the result of this method depends on the state of {@link net.pkhapps.fenix.core.boundary.rest.context.CurrentFireDepartment}.
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -32,16 +37,13 @@ class FenixUserDetails implements UserDetails {
         if (systemUser.isSysadmin()) {
             authoritySet.add(new SimpleGrantedAuthority(UserRoles.ROLE_SYSTEM_ADMINISTRATOR));
         }
-        getCurrentFireDepartmentRole().ifPresent(authoritySet::add);
+        systemUser.getFireDepartmentRoles()
+                .forEach((fd, role) -> authoritySet.add(
+                                new SimpleGrantedAuthority(UserRoles.makeFireDepartmentSpecificRole(role, fd))
+                        )
+                );
+        LOGGER.debug("User {} has authorities {}", getUsername(), authoritySet);
         return authoritySet;
-    }
-
-    private Optional<SimpleGrantedAuthority> getCurrentFireDepartmentRole() {
-        return CurrentFireDepartment.get().flatMap(this::getRole).map(SimpleGrantedAuthority::new);
-    }
-
-    private Optional<String> getRole(FireDepartment fireDepartment) {
-        return Optional.ofNullable(systemUser.getFireDepartmentRoles().get(fireDepartment));
     }
 
     @Override

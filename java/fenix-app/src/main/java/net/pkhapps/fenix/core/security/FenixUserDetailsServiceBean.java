@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import static net.pkhapps.fenix.core.security.CurrentUser.currentUserName;
+import static net.pkhapps.fenix.core.security.context.CurrentUser.currentUserName;
 
 /**
  * Implementation of {@link net.pkhapps.fenix.core.security.FenixUserDetailsService}.
@@ -36,7 +36,6 @@ class FenixUserDetailsServiceBean implements FenixUserDetailsService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public FenixUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         LOGGER.debug("Looking up user with username {}", username);
         final SystemUser systemUser = systemUserRepository.findByEmail(username);
