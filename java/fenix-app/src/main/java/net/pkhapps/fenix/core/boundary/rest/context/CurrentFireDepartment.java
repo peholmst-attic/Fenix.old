@@ -22,7 +22,7 @@ public final class CurrentFireDepartment {
     /**
      * Returns the {@link net.pkhapps.fenix.core.entity.FireDepartment} bound to the current thread, if any.
      */
-    public static Optional<FireDepartment> get() {
+    public static Optional<FireDepartment> currentFireDepartment() {
         return Optional.ofNullable(CURRENT.get());
     }
 
