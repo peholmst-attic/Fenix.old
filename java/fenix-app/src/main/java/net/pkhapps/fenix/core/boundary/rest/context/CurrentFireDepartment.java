@@ -1,5 +1,6 @@
 package net.pkhapps.fenix.core.boundary.rest.context;
 
+import net.pkhapps.fenix.core.boundary.rest.exceptions.NoSuchFireDepartmentException;
 import net.pkhapps.fenix.core.entity.FireDepartment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +10,7 @@ import java.util.Optional;
 /**
  * Utility class that is used to bind a {@link net.pkhapps.fenix.core.entity.FireDepartment} to the current thread.
  *
- * @see net.pkhapps.fenix.core.boundary.rest.context.CurrentFireDepartmentAwareRequestFilter
+ * @see net.pkhapps.fenix.core.boundary.rest.support.CurrentFireDepartmentAwareRequestFilter
  */
 public final class CurrentFireDepartment {
 
@@ -24,6 +25,14 @@ public final class CurrentFireDepartment {
      */
     public static Optional<FireDepartment> currentFireDepartment() {
         return Optional.ofNullable(CURRENT.get());
+    }
+
+    /**
+     * Returns the {@link net.pkhapps.fenix.core.entity.FireDepartment} bound to the current thread, or throws
+     * an exception.
+     */
+    public static FireDepartment requireFireDepartment() throws NoSuchFireDepartmentException {
+        return currentFireDepartment().orElseThrow(() -> new NoSuchFireDepartmentException());
     }
 
     /**

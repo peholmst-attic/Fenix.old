@@ -1,6 +1,8 @@
-package net.pkhapps.fenix.core.boundary.rest.context;
+package net.pkhapps.fenix.core.boundary.rest.support;
 
-import net.pkhapps.fenix.core.boundary.rest.Constants;
+import net.pkhapps.fenix.core.boundary.rest.context.CurrentFireDepartment;
+import net.pkhapps.fenix.core.boundary.rest.context.FireDepartmentRetriever;
+import net.pkhapps.fenix.core.boundary.rest.exceptions.NoSuchFireDepartmentException;
 import net.pkhapps.fenix.core.entity.FireDepartment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -52,7 +53,8 @@ public class CurrentFireDepartmentAwareRequestFilter implements Filter {
                 }
             } else {
                 LOGGER.warn("{} is not a valid or permitted fire department ID, returning 404", fireDepartmentId.get());
-                ((HttpServletResponse) servletResponse).sendError(HttpServletResponse.SC_NOT_FOUND);
+                throw new NoSuchFireDepartmentException();
+                //((HttpServletResponse) servletResponse).sendError(HttpServletResponse.SC_NOT_FOUND);
             }
         } else {
             filterChain.doFilter(servletRequest, servletResponse);

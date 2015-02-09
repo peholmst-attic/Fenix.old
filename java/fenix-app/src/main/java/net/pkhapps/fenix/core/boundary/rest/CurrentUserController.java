@@ -1,7 +1,8 @@
 package net.pkhapps.fenix.core.boundary.rest;
 
-import net.pkhapps.fenix.core.boundary.rest.dto.UserDTO;
 import net.pkhapps.fenix.core.boundary.rest.dto.UserDTOMapper;
+import net.pkhapps.fenix.core.boundary.rest.exceptions.NoSuchResourceException;
+import net.pkhapps.fenix.core.boundary.rest.support.Constants;
 import net.pkhapps.fenix.core.entity.SystemUser;
 import net.pkhapps.fenix.core.entity.SystemUserRepository;
 import net.pkhapps.fenix.core.security.context.CurrentUser;
@@ -32,7 +33,7 @@ class CurrentUserController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<UserDTO> get() {
+    public ResponseEntity<?> get() {
         Optional<Authentication> currentUser = CurrentUser.currentUser();
         if (currentUser.isPresent()) {
             SystemUser systemUser = systemUserRepository.findByEmail(currentUser.get().getName());
@@ -40,6 +41,6 @@ class CurrentUserController {
                 return new ResponseEntity<>(userDTOMapper.toDTO(systemUser), HttpStatus.OK);
             }
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        throw new NoSuchResourceException();
     }
 }

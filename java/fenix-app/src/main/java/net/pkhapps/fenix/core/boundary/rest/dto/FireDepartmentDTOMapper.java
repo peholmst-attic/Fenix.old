@@ -1,6 +1,5 @@
 package net.pkhapps.fenix.core.boundary.rest.dto;
 
-import net.pkhapps.fenix.core.boundary.rest.AbstractEntityDTOMapper;
 import net.pkhapps.fenix.core.entity.FireDepartment;
 import org.springframework.stereotype.Component;
 

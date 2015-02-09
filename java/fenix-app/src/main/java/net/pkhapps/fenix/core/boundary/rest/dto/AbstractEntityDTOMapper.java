@@ -1,4 +1,4 @@
-package net.pkhapps.fenix.core.boundary.rest;
+package net.pkhapps.fenix.core.boundary.rest.dto;
 
 import net.pkhapps.fenix.core.entity.AbstractEntity;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 
 /**
  * Base class for mappers that convert {@link net.pkhapps.fenix.core.entity.AbstractEntity entities} to
- * {@link net.pkhapps.fenix.core.boundary.rest.AbstractEntityDTO DTOs} and vice versa.
+ * {@link AbstractEntityDTO DTOs} and vice versa.
  */
 public abstract class AbstractEntityDTOMapper<DTO extends AbstractEntityDTO, E extends AbstractEntity> {
 

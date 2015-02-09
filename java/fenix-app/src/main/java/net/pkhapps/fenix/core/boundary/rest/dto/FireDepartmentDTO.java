@@ -1,7 +1,5 @@
 package net.pkhapps.fenix.core.boundary.rest.dto;
 
-import net.pkhapps.fenix.core.boundary.rest.AbstractEntityDTO;
-
 /**
  * DTO representing a fire department.
  */

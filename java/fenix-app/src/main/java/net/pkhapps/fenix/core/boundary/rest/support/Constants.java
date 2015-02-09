@@ -1,4 +1,4 @@
-package net.pkhapps.fenix.core.boundary.rest;
+package net.pkhapps.fenix.core.boundary.rest.support;
 
 /**
  * Class with some constants used by e.g. the REST controllers.

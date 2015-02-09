@@ -1,4 +1,4 @@
-package net.pkhapps.fenix.core.boundary.rest;
+package net.pkhapps.fenix.core.boundary.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

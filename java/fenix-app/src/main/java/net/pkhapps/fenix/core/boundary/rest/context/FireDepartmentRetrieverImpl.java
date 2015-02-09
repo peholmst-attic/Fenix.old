@@ -1,5 +1,6 @@
 package net.pkhapps.fenix.core.boundary.rest.context;
 
+import net.pkhapps.fenix.core.boundary.rest.exceptions.NoSuchFireDepartmentException;
 import net.pkhapps.fenix.core.entity.FireDepartment;
 import net.pkhapps.fenix.core.entity.FireDepartmentRepository;
 import net.pkhapps.fenix.core.entity.SystemUser;
@@ -51,5 +52,10 @@ class FireDepartmentRetrieverImpl implements FireDepartmentRetriever {
             LOGGER.debug("No user bound to current thread");
         }
         return Optional.empty();
+    }
+
+    @Override
+    public FireDepartment requireFireDepartment(Long fireDepartmentId) throws NoSuchFireDepartmentException {
+        return getFireDepartmentIfPermitted(fireDepartmentId).orElseThrow(() -> new NoSuchFireDepartmentException());
     }
 }
