@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Control interface for CRUD operations.
@@ -31,6 +32,14 @@ public interface Crud<E extends AbstractEntity> {
      * @param entity the entity to delete.
      */
     void delete(E entity);
+
+    /**
+     * Retrieves the entity with the specified ID.
+     *
+     * @param id the ID of the entity to retrieve.
+     * @return an {@code Optional} containing the entity if it exists, otherwise an empty {@code Optional}.
+     */
+    Optional<E> findOne(Long id);
 
     /**
      * Finds all entities.

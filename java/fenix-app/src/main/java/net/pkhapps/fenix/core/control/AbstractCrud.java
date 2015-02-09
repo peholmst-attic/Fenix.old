@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Validator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -81,6 +82,12 @@ public abstract class AbstractCrud<E extends AbstractEntity, R extends JpaReposi
     protected <CB extends CrudCallback> Stream<CB> getCallbacks(Class<CB> callbackClass, E entity) {
         logger.trace("Looking up callbacks of type {} for {}", callbackClass, entity);
         return applicationContext.getBeansOfType(callbackClass).values().stream().filter(callback -> callback.supports(entity));
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public Optional<E> findOne(Long id) {
+        return Optional.ofNullable(getRepository().findOne(id));
     }
 
     @Override
