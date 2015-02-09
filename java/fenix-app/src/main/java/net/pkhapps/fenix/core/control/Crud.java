@@ -1,10 +1,11 @@
 package net.pkhapps.fenix.core.control;
 
 import net.pkhapps.fenix.core.entity.AbstractEntity;
+import net.pkhapps.fenix.core.validation.ConflictException;
 import net.pkhapps.fenix.core.validation.ValidationFailedException;
-import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -19,9 +20,9 @@ public interface Crud<E extends AbstractEntity> {
      * @param entity the entity to save.
      * @return the saved entity (may or may not be the same instance as the passed in entity).
      * @throws net.pkhapps.fenix.core.validation.ValidationFailedException if the entity failed validation prior to saving.
-     * @throws org.springframework.dao.OptimisticLockingFailureException   if the entity has been modified by another user.
+     * @throws net.pkhapps.fenix.core.validation.ConflictException         if the entity has been modified by another user.
      */
-    E save(E entity) throws ValidationFailedException, OptimisticLockingFailureException;
+    E save(E entity) throws ValidationFailedException, ConflictException;
 
     /**
      * Deletes the specified entity without checking for optimistic locking. If the entity does not exist,
@@ -34,9 +35,10 @@ public interface Crud<E extends AbstractEntity> {
     /**
      * Finds all entities.
      *
+     * @param sort specification of how the returned list should be sorted.
      * @return a list of entities.
      */
-    List<E> findAll();
+    List<E> findAll(Sort sort);
 
     /**
      * Finds all entities, returning a subset of the result as a page.
