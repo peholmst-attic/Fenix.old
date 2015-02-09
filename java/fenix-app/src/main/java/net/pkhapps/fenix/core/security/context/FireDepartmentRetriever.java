@@ -1,13 +1,11 @@
-package net.pkhapps.fenix.core.boundary.rest.context;
+package net.pkhapps.fenix.core.security.context;
 
-import net.pkhapps.fenix.core.boundary.rest.exceptions.NoSuchFireDepartmentException;
 import net.pkhapps.fenix.core.entity.FireDepartment;
 
 import java.util.Optional;
 
 /**
- * Component used by the REST controllers and {@link net.pkhapps.fenix.core.boundary.rest.support.CurrentFireDepartmentAwareRequestFilter}
- * to fetch a {@link net.pkhapps.fenix.core.entity.FireDepartment} instance.
+ * Component used by components that set the {@link net.pkhapps.fenix.core.security.context.CurrentFireDepartment}.
  */
 public interface FireDepartmentRetriever {
 

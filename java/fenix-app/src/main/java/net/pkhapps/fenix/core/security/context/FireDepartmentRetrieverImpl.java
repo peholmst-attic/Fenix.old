@@ -1,6 +1,5 @@
-package net.pkhapps.fenix.core.boundary.rest.context;
+package net.pkhapps.fenix.core.security.context;
 
-import net.pkhapps.fenix.core.boundary.rest.exceptions.NoSuchFireDepartmentException;
 import net.pkhapps.fenix.core.entity.FireDepartment;
 import net.pkhapps.fenix.core.entity.FireDepartmentRepository;
 import net.pkhapps.fenix.core.entity.SystemUser;

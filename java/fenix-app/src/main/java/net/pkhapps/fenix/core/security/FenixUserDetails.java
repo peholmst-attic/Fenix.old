@@ -29,7 +29,7 @@ class FenixUserDetails implements UserDetails {
     /**
      * {@inheritDoc}
      * <p>
-     * Please note that the result of this method depends on the state of {@link net.pkhapps.fenix.core.boundary.rest.context.CurrentFireDepartment}.
+     * Please note that the result of this method depends on the state of {@link net.pkhapps.fenix.core.security.context.CurrentFireDepartment}.
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

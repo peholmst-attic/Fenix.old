@@ -11,7 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.Collection;
 import java.util.Optional;
 
-import static net.pkhapps.fenix.core.boundary.rest.context.CurrentFireDepartment.currentFireDepartment;
+import static net.pkhapps.fenix.core.security.context.CurrentFireDepartment.currentFireDepartment;
 
 /**
  * An access decision voter that knows how to handle fire department specific roles, i.e. role names that include
@@ -19,7 +19,7 @@ import static net.pkhapps.fenix.core.boundary.rest.context.CurrentFireDepartment
  * <p>
  * This role voter supports all roles that are {@link UserRoles#isFireDepartmentSpecificRole(String) fire department specific}.
  * It will abstain from voting only if the config attributes do not contain such a role at all. Otherwise it will deny
- * access unless the authentication has the required role within the {@link net.pkhapps.fenix.core.boundary.rest.context.CurrentFireDepartment current fire department}.
+ * access unless the authentication has the required role within the {@link net.pkhapps.fenix.core.security.context.CurrentFireDepartment current fire department}.
  *
  * @see net.pkhapps.fenix.core.security.UserRoles#makeFireDepartmentSpecificRole(String, net.pkhapps.fenix.core.entity.FireDepartment)
  */
