@@ -2,6 +2,7 @@ package net.pkhapps.fenix.core.entity;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
@@ -15,7 +16,7 @@ public interface FireDepartmentSpecificEntityRepository<T extends AbstractFireDe
 
     T findByIdAndFireDepartment(Long id, FireDepartment fireDepartment);
 
-    List<T> findByFireDepartment(FireDepartment fireDepartment);
+    List<T> findByFireDepartment(FireDepartment fireDepartment, Sort sort);
 
     Page<T> findByFireDepartment(FireDepartment fireDepartment, Pageable pageable);
 }
