@@ -12,6 +12,9 @@ import javax.persistence.Version;
 @MappedSuperclass
 public abstract class AbstractEntity extends AbstractPersistable<Long> {
 
+    public static final String PROP_ID = "id";
+    public static final String PROP_OPT_LOCK_VERSION = "optLockVersion";
+
     @Column(name = "rev", nullable = false)
     @Version
     private Long optLockVersion;
