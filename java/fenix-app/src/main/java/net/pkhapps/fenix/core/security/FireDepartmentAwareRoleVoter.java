@@ -1,6 +1,5 @@
 package net.pkhapps.fenix.core.security;
 
-import net.pkhapps.fenix.core.boundary.rest.context.CurrentFireDepartment;
 import net.pkhapps.fenix.core.entity.FireDepartment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +10,8 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 import java.util.Optional;
+
+import static net.pkhapps.fenix.core.boundary.rest.context.CurrentFireDepartment.currentFireDepartment;
 
 /**
  * An access decision voter that knows how to handle fire department specific roles, i.e. role names that include
@@ -39,7 +40,7 @@ public class FireDepartmentAwareRoleVoter implements AccessDecisionVoter<Object>
     @Override
     public int vote(Authentication authentication, Object object, Collection<ConfigAttribute> attributes) {
         int result = ACCESS_ABSTAIN;
-        Optional<FireDepartment> fireDepartment = CurrentFireDepartment.get();
+        Optional<FireDepartment> fireDepartment = currentFireDepartment();
         if (fireDepartment.isPresent()) {
             for (ConfigAttribute attribute : attributes) {
                 if (this.supports(attribute)) {
