@@ -1,6 +1,7 @@
 package net.pkhapps.fenix.core.control;
 
 import net.pkhapps.fenix.core.entity.AbstractEntity;
+import net.pkhapps.fenix.core.validation.ConflictException;
 import net.pkhapps.fenix.core.validation.ValidationFailedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +9,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,23 +35,34 @@ public abstract class AbstractCrud<E extends AbstractEntity, R extends JpaReposi
         this.applicationContext = applicationContext;
     }
 
+    /**
+     * Returns the repository to use for saving, deleting and retrieving data.
+     */
     protected R getRepository() {
         return repository;
     }
 
+    /**
+     * Returns the validator to use for validating entities.
+     */
     protected Validator getValidator() {
         return validator;
     }
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
-    public E save(E entity) throws ValidationFailedException, OptimisticLockingFailureException {
+    public E save(E entity) throws ValidationFailedException, ConflictException {
         logger.debug("Saving {}", entity);
         ValidationFailedException.throwIfNotEmpty(getValidator().validate(entity));
-        getCallbacks(CrudCallback.SaveCallback.class, entity).forEach(callback -> callback.beforeSave(entity));
-        final E savedEntity = getRepository().saveAndFlush(entity);
-        getCallbacks(CrudCallback.SaveCallback.class, entity).forEach(callback -> callback.afterSave(savedEntity));
-        return savedEntity;
+        try {
+            getCallbacks(CrudCallback.SaveCallback.class, entity).forEach(callback -> callback.beforeSave(entity));
+            final E savedEntity = getRepository().saveAndFlush(entity);
+            getCallbacks(CrudCallback.SaveCallback.class, entity).forEach(callback -> callback.afterSave(savedEntity));
+            return savedEntity;
+        } catch (OptimisticLockingFailureException ex) {
+            logger.debug("Optimistic locking failure", ex);
+            throw new ConflictException();
+        }
     }
 
     @Override
@@ -61,6 +74,10 @@ public abstract class AbstractCrud<E extends AbstractEntity, R extends JpaReposi
         getCallbacks(CrudCallback.DeleteCallback.class, entity).forEach(callback -> callback.afterDelete(entity));
     }
 
+    /**
+     * Looks up all {@link net.pkhapps.fenix.core.control.CrudCallback} instances of the specified
+     * {@code callbackClass} that support the specified {@code entity}.
+     */
     protected <CB extends CrudCallback> Stream<CB> getCallbacks(Class<CB> callbackClass, E entity) {
         logger.trace("Looking up callbacks of type {} for {}", callbackClass, entity);
         return applicationContext.getBeansOfType(callbackClass).values().stream().filter(callback -> callback.supports(entity));
@@ -68,8 +85,8 @@ public abstract class AbstractCrud<E extends AbstractEntity, R extends JpaReposi
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
-    public List<E> findAll() {
-        return getRepository().findAll();
+    public List<E> findAll(Sort sort) {
+        return getRepository().findAll(sort);
     }
 
     @Override
