@@ -1,5 +1,8 @@
 package net.pkhapps.fenix.core.validation;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
 import javax.validation.ConstraintViolation;
 import java.util.Collections;
 import java.util.Objects;
@@ -8,6 +11,7 @@ import java.util.Set;
 /**
  * Exception thrown when validation of data fails.
  */
+@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Validation failed")
 public class ValidationFailedException extends Exception {
 
     private final Set<ConstraintViolation<?>> constraintViolations;
@@ -26,6 +30,9 @@ public class ValidationFailedException extends Exception {
         }
     }
 
+    /**
+     * Returns a set of constraint violations.
+     */
     public Set<ConstraintViolation<?>> getConstraintViolations() {
         return constraintViolations;
     }
