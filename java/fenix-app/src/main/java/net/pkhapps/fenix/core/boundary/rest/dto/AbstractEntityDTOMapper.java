@@ -117,6 +117,43 @@ public abstract class AbstractEntityDTOMapper<DTO extends AbstractEntityDTO, E e
     }
 
     /**
+     * Converts the specified stream of DTOs to a stream of entities.
+     */
+    public Stream<E> toEntities(Stream<DTO> dtos) {
+        return dtos.map(this::toEntity);
+    }
+
+    /**
+     * Converts the specified list of DTOs to a list of entities.
+     */
+    public List<E> toEntities(List<DTO> dtos) {
+        return toEntities(dtos.stream()).collect(Collectors.toList());
+    }
+
+    /**
+     * TODO Document me
+     *
+     * @param source
+     * @param destination
+     * @return
+     */
+    public Stream<E> merge(Stream<DTO> source, Stream<E> destination) throws ConflictException {
+        throw new UnsupportedOperationException("Not implemented yet"); // TODO Implement me!
+    }
+
+    /**
+     * TODO Document me
+     *
+     * @param source
+     * @param destination
+     * @return
+     */
+    public List<E> merge(List<DTO> source, List<E> destination) throws ConflictException {
+        return merge(source.stream(), destination.stream()).collect(Collectors.toList());
+    }
+
+
+    /**
      * Populates the specified DTO with data from the specified entity. The {@link net.pkhapps.fenix.core.entity.AbstractEntity#getId() ID}
      * and {@link net.pkhapps.fenix.core.entity.AbstractEntity#getOptLockVersion() version} properties do not need to be copied.
      *
@@ -128,7 +165,7 @@ public abstract class AbstractEntityDTOMapper<DTO extends AbstractEntityDTO, E e
      * Populates the specified entity with data from the specified DTO. The {@link net.pkhapps.fenix.core.entity.AbstractEntity#getId() ID}
      * and {@link net.pkhapps.fenix.core.entity.AbstractEntity#getOptLockVersion() version} properties do not need to be copied.
      *
-     * @throws java.lang.UnsupportedOperationException if this mapper is a one-way converter from entity to DTO
+     * @throws java.lang.UnsupportedOperationException             if this mapper is a one-way converter from entity to DTO
      * @throws net.pkhapps.fenix.core.validation.ConflictException if there is a conflict while populating any child entities.
      */
     protected abstract void populateEntity(DTO source, E destination) throws ConflictException;

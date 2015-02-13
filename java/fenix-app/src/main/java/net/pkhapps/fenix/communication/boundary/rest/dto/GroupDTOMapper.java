@@ -1,13 +1,14 @@
 package net.pkhapps.fenix.communication.boundary.rest.dto;
 
 import net.pkhapps.fenix.communication.entity.Group;
-import net.pkhapps.fenix.communication.entity.GroupMember;
 import net.pkhapps.fenix.core.boundary.rest.dto.AbstractEntityDTOMapper;
 import net.pkhapps.fenix.core.validation.ConflictException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -35,16 +36,7 @@ public class GroupDTOMapper extends AbstractEntityDTOMapper<GroupDTO, Group> {
     @Override
     protected void populateEntity(GroupDTO source, Group destination) throws ConflictException {
         destination.setName(source.name);
-        final Map<Long, GroupMemberDTO> contactIdToMemberMap = source.contacts.stream().collect(Collectors.toMap(dto -> dto.contactId, dto -> dto));
-        final Set<GroupMember> newGroupMembers = new HashSet<>();
-        for (GroupMember oldGroupMember : destination.getMembers()) {
-            final GroupMemberDTO dto = contactIdToMemberMap.remove(oldGroupMember.getId());
-            if (dto != null) {
-                newGroupMembers.add(groupMemberDTOMapper.toExistingEntity(dto, oldGroupMember));
-            }
-        }
-        newGroupMembers.addAll(contactIdToMemberMap.values().stream().map(groupMemberDTOMapper::toEntity).collect(Collectors.toList()));
-        destination.setMembers(newGroupMembers);
+        destination.setMembers(groupMemberDTOMapper.merge(source.contacts.stream(), destination.getMembers().stream()).collect(Collectors.toSet()));
     }
 
     private static class ContactComparator implements Comparator<GroupMemberDTO> {
