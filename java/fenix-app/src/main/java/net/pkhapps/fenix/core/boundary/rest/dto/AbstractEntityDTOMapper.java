@@ -68,7 +68,11 @@ public abstract class AbstractEntityDTOMapper<DTO extends AbstractEntityDTO, E e
         E entity = newEntity();
         entity.setId(dto.id);
         entity.setOptLockVersion(dto.version);
-        populateEntity(dto, entity);
+        try {
+            populateEntity(dto, entity);
+        } catch (ConflictException e) {
+            throw new RuntimeException("An optimistic locking conflict has been detected while saving a new object. This should never happen.", e);
+        }
         return entity;
     }
 
@@ -125,6 +129,7 @@ public abstract class AbstractEntityDTOMapper<DTO extends AbstractEntityDTO, E e
      * and {@link net.pkhapps.fenix.core.entity.AbstractEntity#getOptLockVersion() version} properties do not need to be copied.
      *
      * @throws java.lang.UnsupportedOperationException if this mapper is a one-way converter from entity to DTO
+     * @throws net.pkhapps.fenix.core.validation.ConflictException if there is a conflict while populating any child entities.
      */
-    protected abstract void populateEntity(DTO source, E destination);
+    protected abstract void populateEntity(DTO source, E destination) throws ConflictException;
 }

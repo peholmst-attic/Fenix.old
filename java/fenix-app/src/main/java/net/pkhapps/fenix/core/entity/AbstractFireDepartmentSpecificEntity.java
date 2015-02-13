@@ -8,7 +8,7 @@ import javax.persistence.MappedSuperclass;
  * Base class for entities that are always associated with exactly one {@link net.pkhapps.fenix.core.entity.FireDepartment}.
  */
 @MappedSuperclass
-public abstract class AbstractFireDepartmentSpecificEntity extends AbstractEntity {
+public abstract class AbstractFireDepartmentSpecificEntity extends AbstractEntity implements BelongsToFireDepartment {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "fire_department_id", nullable = false)
@@ -17,6 +17,7 @@ public abstract class AbstractFireDepartmentSpecificEntity extends AbstractEntit
     protected AbstractFireDepartmentSpecificEntity() {
     }
 
+    @Override
     public FireDepartment getFireDepartment() {
         return fireDepartment;
     }

@@ -1,5 +1,6 @@
 package net.pkhapps.fenix.core.security.context;
 
+import net.pkhapps.fenix.core.entity.BelongsToFireDepartment;
 import net.pkhapps.fenix.core.entity.FireDepartment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,5 +37,13 @@ class CurrentFireDepartmentImpl implements CurrentFireDepartment {
     public void reset() {
         LOGGER.debug("Resetting current fire department");
         CURRENT.remove();
+    }
+
+    @Override
+    public void checkFireDepartment(BelongsToFireDepartment belongsToFireDepartment) throws WrongFireDepartmentException {
+        final FireDepartment fireDepartment = getFireDepartment().orElseThrow(() -> new WrongFireDepartmentException());
+        if (!fireDepartment.equals(belongsToFireDepartment.getFireDepartment())) {
+            throw new WrongFireDepartmentException();
+        }
     }
 }
