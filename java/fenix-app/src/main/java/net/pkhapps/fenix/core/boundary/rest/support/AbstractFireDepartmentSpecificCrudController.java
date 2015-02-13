@@ -6,6 +6,7 @@ import net.pkhapps.fenix.core.control.FireDepartmentSpecificCrud;
 import net.pkhapps.fenix.core.entity.AbstractEntity;
 import net.pkhapps.fenix.core.entity.AbstractFireDepartmentSpecificEntity;
 import net.pkhapps.fenix.core.entity.FireDepartment;
+import net.pkhapps.fenix.core.security.context.CurrentFireDepartment;
 import net.pkhapps.fenix.core.validation.ConflictException;
 import net.pkhapps.fenix.core.validation.ValidationFailedException;
 import org.springframework.data.domain.Page;
@@ -18,8 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-
-import static net.pkhapps.fenix.core.security.context.CurrentFireDepartment.requireFireDepartment;
 
 /**
  * Base class for a REST controller that provides CRUD operations for {@link net.pkhapps.fenix.core.entity.AbstractFireDepartmentSpecificEntity fire department specific} entities.
@@ -39,9 +38,12 @@ public abstract class AbstractFireDepartmentSpecificCrudController<E extends Abs
 
     private final AbstractEntityDTOMapper<DTO, E> entityDTOMapper;
 
-    protected AbstractFireDepartmentSpecificCrudController(CRUD crud, AbstractEntityDTOMapper<DTO, E> entityDTOMapper) {
+    private final CurrentFireDepartment currentFireDepartment;
+
+    protected AbstractFireDepartmentSpecificCrudController(CRUD crud, AbstractEntityDTOMapper<DTO, E> entityDTOMapper, CurrentFireDepartment currentFireDepartment) {
         this.crud = crud;
         this.entityDTOMapper = entityDTOMapper;
+        this.currentFireDepartment = currentFireDepartment;
     }
 
     /**
@@ -63,7 +65,7 @@ public abstract class AbstractFireDepartmentSpecificCrudController<E extends Abs
     @RequestMapping(method = RequestMethod.POST)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ResponseEntity<?> create(@RequestBody DTO dto) throws ConflictException, ValidationFailedException {
-        final FireDepartment fireDepartment = requireFireDepartment();
+        final FireDepartment fireDepartment = currentFireDepartment.requireFireDepartment();
         E entity = entityDTOMapper.toEntity(dto);
         entity.setFireDepartment(fireDepartment);
         entity = crud.save(entity);
@@ -72,7 +74,7 @@ public abstract class AbstractFireDepartmentSpecificCrudController<E extends Abs
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> retrieveAll(@RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
-        final FireDepartment fireDepartment = requireFireDepartment();
+        final FireDepartment fireDepartment = currentFireDepartment.requireFireDepartment();
         final Pageable pageRequest = new PageRequest(page.orElse(0), size.orElse(getDefaultPageSize()), getDefaultSort());
         final Page<E> entityPage = crud.findAll(fireDepartment, pageRequest);
         final Page<DTO> dtoPage = entityDTOMapper.toDTOs(entityPage);
@@ -81,7 +83,7 @@ public abstract class AbstractFireDepartmentSpecificCrudController<E extends Abs
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public ResponseEntity<?> retrieveOne(@PathVariable("id") Long entityId) {
-        final FireDepartment fireDepartment = requireFireDepartment();
+        final FireDepartment fireDepartment = currentFireDepartment.requireFireDepartment();
         final E entity = crud.findOne(fireDepartment, entityId).orElseThrow(() -> new NoSuchResourceException());
         final DTO dto = entityDTOMapper.toDTO(entity);
         return ResponseEntity.ok(dto);
@@ -90,7 +92,7 @@ public abstract class AbstractFireDepartmentSpecificCrudController<E extends Abs
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ResponseEntity<?> update(@PathVariable("id") Long entityId, @RequestBody DTO dto) throws ConflictException, ValidationFailedException {
-        final FireDepartment fireDepartment = requireFireDepartment();
+        final FireDepartment fireDepartment = currentFireDepartment.requireFireDepartment();
         E entity = crud.findOne(fireDepartment, entityId).orElseThrow(() -> new NoSuchResourceException());
         entity = crud.save(entityDTOMapper.toExistingEntity(dto, entity));
         return ResponseEntity.ok(entityDTOMapper.toDTO(entity));
@@ -99,7 +101,7 @@ public abstract class AbstractFireDepartmentSpecificCrudController<E extends Abs
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ResponseEntity<?> delete(@PathVariable("id") Long entityId) {
-        final FireDepartment fireDepartment = requireFireDepartment();
+        final FireDepartment fireDepartment = currentFireDepartment.requireFireDepartment();
         E entity = crud.findOne(fireDepartment, entityId).orElseThrow(() -> new NoSuchResourceException());
         crud.delete(entity);
         return ResponseEntity.ok().build();

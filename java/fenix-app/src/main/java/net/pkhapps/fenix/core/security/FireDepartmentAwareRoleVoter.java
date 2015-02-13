@@ -1,6 +1,7 @@
 package net.pkhapps.fenix.core.security;
 
 import net.pkhapps.fenix.core.entity.FireDepartment;
+import net.pkhapps.fenix.core.security.context.CurrentFireDepartment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDecisionVoter;
@@ -10,8 +11,6 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 import java.util.Optional;
-
-import static net.pkhapps.fenix.core.security.context.CurrentFireDepartment.currentFireDepartment;
 
 /**
  * An access decision voter that knows how to handle fire department specific roles, i.e. role names that include
@@ -27,6 +26,12 @@ public class FireDepartmentAwareRoleVoter implements AccessDecisionVoter<Object>
 
     public static final Logger LOGGER = LoggerFactory.getLogger(FireDepartmentAwareRoleVoter.class);
 
+    private final CurrentFireDepartment currentFireDepartment;
+
+    public FireDepartmentAwareRoleVoter(CurrentFireDepartment currentFireDepartment) {
+        this.currentFireDepartment = currentFireDepartment;
+    }
+
     @Override
     public boolean supports(ConfigAttribute attribute) {
         return (attribute.getAttribute() != null) && (UserRoles.isFireDepartmentSpecificRole(attribute.getAttribute()));
@@ -40,7 +45,7 @@ public class FireDepartmentAwareRoleVoter implements AccessDecisionVoter<Object>
     @Override
     public int vote(Authentication authentication, Object object, Collection<ConfigAttribute> attributes) {
         int result = ACCESS_ABSTAIN;
-        Optional<FireDepartment> fireDepartment = currentFireDepartment();
+        Optional<FireDepartment> fireDepartment = currentFireDepartment.getFireDepartment();
         if (fireDepartment.isPresent()) {
             for (ConfigAttribute attribute : attributes) {
                 if (this.supports(attribute)) {

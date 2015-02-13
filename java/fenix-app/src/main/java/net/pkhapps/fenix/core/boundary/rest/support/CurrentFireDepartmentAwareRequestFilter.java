@@ -29,10 +29,12 @@ public class CurrentFireDepartmentAwareRequestFilter implements Filter {
     private static final Logger LOGGER = LoggerFactory.getLogger(CurrentFireDepartmentAwareRequestFilter.class);
 
     private final FireDepartmentRetriever fireDepartmentRetriever;
+    private final CurrentFireDepartment currentFireDepartment;
 
     @Autowired
-    public CurrentFireDepartmentAwareRequestFilter(FireDepartmentRetriever fireDepartmentRetriever) {
+    public CurrentFireDepartmentAwareRequestFilter(FireDepartmentRetriever fireDepartmentRetriever, CurrentFireDepartment currentFireDepartment) {
         this.fireDepartmentRetriever = fireDepartmentRetriever;
+        this.currentFireDepartment = currentFireDepartment;
     }
 
     @Override
@@ -46,11 +48,11 @@ public class CurrentFireDepartmentAwareRequestFilter implements Filter {
         if (fireDepartmentId.isPresent()) {
             Optional<FireDepartment> fireDepartment = fireDepartmentId.flatMap(fireDepartmentRetriever::getFireDepartmentIfPermitted);
             if (fireDepartment.isPresent()) {
-                CurrentFireDepartment.set(fireDepartment.get());
+                currentFireDepartment.set(fireDepartment.get());
                 try {
                     filterChain.doFilter(servletRequest, servletResponse);
                 } finally {
-                    CurrentFireDepartment.reset();
+                    currentFireDepartment.reset();
                 }
             } else {
                 LOGGER.debug("{} is not a valid or permitted fire department ID, returning 404", fireDepartmentId.get());
