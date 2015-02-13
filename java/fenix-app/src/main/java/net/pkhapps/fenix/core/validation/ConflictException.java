@@ -9,4 +9,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 @ResponseStatus(value = HttpStatus.CONFLICT, reason = "A conflicting change prevented the operation from succeeding")
 public class ConflictException extends Exception {
+    public ConflictException() {
+    }
+
+    public ConflictException(String message) {
+        super(message);
+    }
 }

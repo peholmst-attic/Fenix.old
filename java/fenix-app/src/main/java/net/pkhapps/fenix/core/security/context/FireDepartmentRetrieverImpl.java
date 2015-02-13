@@ -13,8 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static net.pkhapps.fenix.core.security.context.CurrentUser.currentUser;
-
 /**
  * Implementation of {@link FireDepartmentRetriever}.
  */
@@ -24,18 +22,20 @@ class FireDepartmentRetrieverImpl implements FireDepartmentRetriever {
     private static final Logger LOGGER = LoggerFactory.getLogger(FireDepartmentRetrieverImpl.class);
     private final FireDepartmentRepository fireDepartmentRepository;
     private final SystemUserRepository systemUserRepository;
+    private final CurrentUser currentUser;
 
     @Autowired
-    FireDepartmentRetrieverImpl(FireDepartmentRepository fireDepartmentRepository, SystemUserRepository systemUserRepository) {
+    FireDepartmentRetrieverImpl(FireDepartmentRepository fireDepartmentRepository, SystemUserRepository systemUserRepository, CurrentUser currentUser) {
         this.fireDepartmentRepository = fireDepartmentRepository;
         this.systemUserRepository = systemUserRepository;
+        this.currentUser = currentUser;
     }
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
     public Optional<FireDepartment> getFireDepartmentIfPermitted(Long fireDepartmentId) {
-        if (currentUser().isPresent()) {
-            final String email = currentUser().get().getName();
+        if (currentUser.getUser().isPresent()) {
+            final String email = currentUser.getUser().get().getName();
             FireDepartment fireDepartment = fireDepartmentRepository.findOne(fireDepartmentId);
             if (fireDepartment != null) {
                 SystemUser user = systemUserRepository.findByEmail(email);

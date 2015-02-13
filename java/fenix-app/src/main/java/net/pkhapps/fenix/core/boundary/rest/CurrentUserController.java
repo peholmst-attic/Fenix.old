@@ -25,18 +25,20 @@ class CurrentUserController {
 
     private final UserDTOMapper userDTOMapper;
     private final SystemUserRepository systemUserRepository;
+    private final CurrentUser currentUser;
 
     @Autowired
-    CurrentUserController(UserDTOMapper userDTOMapper, SystemUserRepository systemUserRepository) {
+    CurrentUserController(UserDTOMapper userDTOMapper, SystemUserRepository systemUserRepository, CurrentUser currentUser) {
         this.userDTOMapper = userDTOMapper;
         this.systemUserRepository = systemUserRepository;
+        this.currentUser = currentUser;
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<?> get() {
-        Optional<Authentication> currentUser = CurrentUser.currentUser();
-        if (currentUser.isPresent()) {
-            SystemUser systemUser = systemUserRepository.findByEmail(currentUser.get().getName());
+        final Optional<Authentication> user = currentUser.getUser();
+        if (user.isPresent()) {
+            SystemUser systemUser = systemUserRepository.findByEmail(user.get().getName());
             if (systemUser != null) {
                 return new ResponseEntity<>(userDTOMapper.toDTO(systemUser), HttpStatus.OK);
             }

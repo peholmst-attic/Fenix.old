@@ -1,37 +1,27 @@
 package net.pkhapps.fenix.core.security.context;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
 
 /**
- * Utility class that is used to retrieve the current user.
- *
- * @see org.springframework.security.core.context.SecurityContextHolder
- * @see org.springframework.security.core.context.SecurityContext#getAuthentication()
+ * Utility interface that allows easy access to the current user. Use it by requesting an instance of it from
+ * the application context.
  */
-public class CurrentUser {
+public interface CurrentUser {
 
     /**
-     * User name returned by {@link #currentUserName()} when there is no user information bound to the current thread.
+     * User name returned by {@link #getUserName()} when there is no user information bound to the current thread.
      */
-    public static final String UNKNOWN_USER_NAME = "unknown";
-
-    private CurrentUser() {
-    }
+    String UNKNOWN_USER_NAME = "unknown";
 
     /**
      * Returns the {@link org.springframework.security.core.Authentication} token bound to the current thread, if any.
      */
-    public static Optional<Authentication> currentUser() {
-        return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication());
-    }
+    Optional<Authentication> getUser();
 
     /**
      * Returns the name of the current user, or {@link #UNKNOWN_USER_NAME} if there is none.
      */
-    public static String currentUserName() {
-        return currentUser().map(Authentication::getName).orElse(UNKNOWN_USER_NAME);
-    }
+    String getUserName();
 }
