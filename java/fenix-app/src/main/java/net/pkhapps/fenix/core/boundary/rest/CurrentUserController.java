@@ -1,8 +1,8 @@
 package net.pkhapps.fenix.core.boundary.rest;
 
 import net.pkhapps.fenix.core.boundary.rest.dto.UserDTOMapper;
-import net.pkhapps.fenix.core.boundary.rest.exceptions.NoSuchResourceException;
 import net.pkhapps.fenix.core.boundary.rest.support.Constants;
+import net.pkhapps.fenix.core.boundary.rest.support.NoSuchResourceException;
 import net.pkhapps.fenix.core.entity.SystemUser;
 import net.pkhapps.fenix.core.entity.SystemUserRepository;
 import net.pkhapps.fenix.core.security.context.CurrentUser;

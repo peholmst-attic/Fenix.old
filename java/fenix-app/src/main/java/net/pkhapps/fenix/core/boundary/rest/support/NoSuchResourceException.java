@@ -1,4 +1,4 @@
-package net.pkhapps.fenix.core.boundary.rest.exceptions;
+package net.pkhapps.fenix.core.boundary.rest.support;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

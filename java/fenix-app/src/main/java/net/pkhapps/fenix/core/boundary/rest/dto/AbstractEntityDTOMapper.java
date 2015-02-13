@@ -1,7 +1,7 @@
 package net.pkhapps.fenix.core.boundary.rest.dto;
 
 import net.pkhapps.fenix.core.entity.AbstractEntity;
-import org.springframework.dao.OptimisticLockingFailureException;
+import net.pkhapps.fenix.core.validation.ConflictException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -75,15 +75,15 @@ public abstract class AbstractEntityDTOMapper<DTO extends AbstractEntityDTO, E e
     /**
      * Populates the existing entity with data from the DTO. This method also enforces optimistic locking.
      *
-     * @throws org.springframework.dao.OptimisticLockingFailureException if the version numbers of both objects are present and do not match.
+     * @throws net.pkhapps.fenix.core.validation.ConflictException if the version numbers of both objects are present and do not match.
      */
-    public E toExistingEntity(DTO dto, E entity) throws OptimisticLockingFailureException {
+    public E toExistingEntity(DTO dto, E entity) throws ConflictException {
         Objects.requireNonNull(dto);
         Objects.requireNonNull(entity);
         Long expectedVersion = dto.version;
         Long actualVersion = entity.getOptLockVersion();
         if (expectedVersion != null && actualVersion != null && !expectedVersion.equals(actualVersion)) {
-            throw new OptimisticLockingFailureException("Expected version: " + expectedVersion + ", was: " + actualVersion);
+            throw new ConflictException("Expected version: " + expectedVersion + ", was: " + actualVersion);
         }
         populateEntity(dto, entity);
         return entity;
