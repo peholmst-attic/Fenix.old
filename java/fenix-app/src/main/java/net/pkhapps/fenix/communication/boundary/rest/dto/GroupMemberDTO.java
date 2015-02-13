@@ -4,16 +4,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import net.pkhapps.fenix.core.boundary.rest.dto.AbstractEntityDTO;
 
 /**
- * DTO representing a contact.
+ * DTO representing a contact group member.
+ *
+ * @see net.pkhapps.fenix.communication.boundary.rest.dto.GroupDTO
+ * @see net.pkhapps.fenix.communication.boundary.rest.dto.ContactDTO
  */
-public class ContactDTO extends AbstractEntityDTO {
+public class GroupMemberDTO extends AbstractEntityDTO {
 
     @JsonProperty(required = true)
+    public Long contactId;
     public String name;
-    public String firstName;
-    @JsonProperty(required = true)
     public String email;
-    @JsonProperty(required = true)
     public String cellPhone;
     @JsonProperty(required = true)
     public boolean contactByEmail;

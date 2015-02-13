@@ -15,6 +15,8 @@ import java.util.Set;
 @Table(name = "contacts")
 public class Contact extends AbstractFireDepartmentSpecificEntity {
 
+    // TODO Add validation constraints
+
     @Column(name = "first_name", nullable = false)
     private String firstName = "";
 

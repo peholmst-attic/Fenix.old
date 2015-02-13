@@ -3,7 +3,7 @@ package net.pkhapps.fenix.communication.boundary.rest.dto;
 import com.google.common.base.Strings;
 import net.pkhapps.fenix.communication.entity.CommunicationMethod;
 import net.pkhapps.fenix.communication.entity.Contact;
-import net.pkhapps.fenix.core.boundary.rest.AbstractEntityDTOMapper;
+import net.pkhapps.fenix.core.boundary.rest.dto.AbstractEntityDTOMapper;
 import org.springframework.stereotype.Component;
 
 /**

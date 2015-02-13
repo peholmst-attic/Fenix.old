@@ -14,13 +14,14 @@ import java.util.Set;
 @Table(name = "contact_groups")
 public class Group extends AbstractFireDepartmentSpecificEntity {
 
+    // TODO Add validation constraints
+
     @Column(name = "group_name", nullable = false)
     private String name = "";
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "contact_group_members", joinColumns = @JoinColumn(name = "group_id"),
-            inverseJoinColumns = @JoinColumn(name = "member_id"))
-    private Set<Contact> members = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "group_id")
+    private Set<GroupMember> members = new HashSet<>();
 
     public String getName() {
         return name;
@@ -30,11 +31,11 @@ public class Group extends AbstractFireDepartmentSpecificEntity {
         this.name = Objects.requireNonNull(name);
     }
 
-    public Set<Contact> getMembers() {
+    public Set<GroupMember> getMembers() {
         return members;
     }
 
-    public void setMembers(Set<Contact> members) {
+    public void setMembers(Set<GroupMember> members) {
         this.members = Objects.requireNonNull(members);
     }
 

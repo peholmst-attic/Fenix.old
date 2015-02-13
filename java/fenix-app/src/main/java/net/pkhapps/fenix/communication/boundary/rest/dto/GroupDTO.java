@@ -1,14 +1,20 @@
 package net.pkhapps.fenix.communication.boundary.rest.dto;
 
-import net.pkhapps.fenix.core.boundary.rest.AbstractEntityDTO;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import net.pkhapps.fenix.core.boundary.rest.dto.AbstractEntityDTO;
 
 import java.util.List;
 
 /**
  * DTO representing a group of contacts.
+ *
+ * @see net.pkhapps.fenix.communication.boundary.rest.dto.GroupMemberDTO
+ * @see net.pkhapps.fenix.communication.boundary.rest.dto.ContactDTO
  */
 public class GroupDTO extends AbstractEntityDTO {
 
+    @JsonProperty(required = true)
     public String name;
-    public List<ContactDTO> contacts;
+    @JsonProperty(required = true)
+    public List<GroupMemberDTO> contacts;
 }

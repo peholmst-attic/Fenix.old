@@ -1,9 +1,9 @@
 package net.pkhapps.fenix.communication.boundary.rest;
 
-import net.pkhapps.fenix.communication.boundary.rest.dto.ContactDTO;
-import net.pkhapps.fenix.communication.boundary.rest.dto.ContactDTOMapper;
-import net.pkhapps.fenix.communication.control.ContactCrud;
-import net.pkhapps.fenix.communication.entity.Contact;
+import net.pkhapps.fenix.communication.boundary.rest.dto.GroupDTO;
+import net.pkhapps.fenix.communication.boundary.rest.dto.GroupDTOMapper;
+import net.pkhapps.fenix.communication.control.GroupCrud;
+import net.pkhapps.fenix.communication.entity.Group;
 import net.pkhapps.fenix.core.boundary.rest.support.AbstractFireDepartmentSpecificCrudController;
 import net.pkhapps.fenix.core.boundary.rest.support.Constants;
 import net.pkhapps.fenix.core.security.UserRoles;
@@ -18,20 +18,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 /**
- * Rest controller for managing {@link net.pkhapps.fenix.communication.entity.Contact contacts}.
+ * Rest controller for managing {@link net.pkhapps.fenix.communication.entity.Group contact groups}.
  */
 @RestController
-@RequestMapping(value = Constants.REST_URL_PREFIX + "*/contacts")
-class ContactsController extends AbstractFireDepartmentSpecificCrudController<Contact, ContactDTO, ContactCrud> {
+@RequestMapping(value = Constants.REST_URL_PREFIX + "*/contact-groups")
+class GroupsController extends AbstractFireDepartmentSpecificCrudController<Group, GroupDTO, GroupCrud> {
 
     @Autowired
-    ContactsController(ContactCrud crud, ContactDTOMapper entityDTOMapper, CurrentFireDepartment currentFireDepartment) {
+    GroupsController(GroupCrud crud, GroupDTOMapper entityDTOMapper, CurrentFireDepartment currentFireDepartment) {
         super(crud, entityDTOMapper, currentFireDepartment);
     }
 
     @Override
     @Secured({UserRoles.ROLE_FD_ADMINISTRATOR, UserRoles.ROLE_FD_POWER_USER})
-    public ResponseEntity<?> create(@RequestBody ContactDTO dto) throws ConflictException, ValidationFailedException {
+    public ResponseEntity<?> create(@RequestBody GroupDTO dto) throws ConflictException, ValidationFailedException {
         return super.create(dto);
     }
 
@@ -49,7 +49,7 @@ class ContactsController extends AbstractFireDepartmentSpecificCrudController<Co
 
     @Override
     @Secured({UserRoles.ROLE_FD_ADMINISTRATOR, UserRoles.ROLE_FD_POWER_USER})
-    public ResponseEntity<?> update(@PathVariable("id") Long entityId, @RequestBody ContactDTO dto) throws ConflictException, ValidationFailedException {
+    public ResponseEntity<?> update(@PathVariable("id") Long entityId, @RequestBody GroupDTO dto) throws ConflictException, ValidationFailedException {
         return super.update(entityId, dto);
     }
 
